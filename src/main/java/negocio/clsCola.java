@@ -12,7 +12,7 @@ package negocio;
 public class clsCola {
     private clsNodo primero,ultimo;  // private no permite acceder otras clases de manera externa pero si de manera local
     
-    //constructor por defecto 
+    //constructor por defecto
     public clsCola(){
         this.ultimo = null; //this permite hacer referencia de manera correcta 
         this.primero = null;

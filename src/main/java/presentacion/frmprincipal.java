@@ -527,16 +527,62 @@ public class frmprincipal extends javax.swing.JFrame {
             int val = Integer.parseInt(txtDato.getText());
             int idx = tabbedPane.getSelectedIndex();
             boolean found = false;
+            
             switch(idx){
                 case 0: // Pila: buscar en toda la pila
                     clsNodo p = objPila.getCima();
-                    while(p!=null){ if(p.getDato()==val){ found = true; break; } p = p.getRef(); }
+                    int posicionPila = 0;
+                    java.util.ArrayList<Integer> posicionesPila = new java.util.ArrayList<>();
+                    while(p != null){ 
+                        if(p.getDato() == val){ 
+                            found = true; 
+                            posicionesPila.add(posicionPila);
+                        } 
+                        p = p.getRef(); 
+                        posicionPila++;
+                    }
+                    if(found) {
+                        System.out.println("Dato " + val + " encontrado en posición(es): " + posicionesPila);
+                    } else {
+                        System.out.println("Buscar " + val + " -> false");
+                    }
                     break;
-                case 1: found = objListaSimple.buscar(val); break; // Lista Simple
-                case 2: found = objListaDoble.buscar(val); break; // Lista Doble
+                    
+                case 1: // Lista Simple: buscar con posiciones múltiples
+                    int[] posiciones = objListaSimple.buscarTodasLasPosiciones(val);
+                    found = posiciones.length > 0;
+                    if(found) {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("[");
+                        for(int i = 0; i < posiciones.length; i++) {
+                            sb.append(posiciones[i]);
+                            if(i < posiciones.length - 1) sb.append(",");
+                        }
+                        sb.append("]");
+                        System.out.println("Dato " + val + " -> true, posición " + sb.toString());
+                    } else {
+                        System.out.println("Dato " + val + " -> false");
+                    }
+                    break;
+                    
+                case 2: // Lista Doble: buscar con posiciones múltiples
+                    int[] posicionesDoble = objListaDoble.buscarTodasLasPosiciones(val);
+                    found = posicionesDoble.length > 0;
+                    if(found) {
+                        StringBuilder sb2 = new StringBuilder();
+                        sb2.append("[");
+                        for(int i = 0; i < posicionesDoble.length; i++) {
+                            sb2.append(posicionesDoble[i]);
+                            if(i < posicionesDoble.length - 1) sb2.append(",");
+                        }
+                        sb2.append("]");
+                        System.out.println("Dato " + val + " -> true, posición " + sb2.toString());
+                    } else {
+                        System.out.println("Dato " + val + " -> false");
+                    }
+                    break;
             }
             drawSelected(); // Refrescar visualización
-            System.out.println("Buscar " + val + " -> " + found);
         }catch(Exception ex){ System.out.println("Valor inválido"); }
     }
 

@@ -107,6 +107,32 @@ public class clsListaSimple {
         return false;
     }
 
+    /**
+     * Busca un valor y retorna todas las posiciones donde se encuentra
+     * @param valor Valor a buscar
+     * @return Array con todas las posiciones (0-indexadas) donde se encuentra el valor
+     */
+    public int[] buscarTodasLasPosiciones(int valor) {
+        java.util.ArrayList<Integer> posiciones = new java.util.ArrayList<>();
+        clsNodo aux = cabeza;
+        int posicion = 0;
+        
+        while(aux != null) {
+            if(aux.getDato() == valor) {
+                posiciones.add(posicion);
+            }
+            aux = aux.getRef();
+            posicion++;
+        }
+        
+        // Convertir ArrayList a array int[]
+        int[] resultado = new int[posiciones.size()];
+        for(int i = 0; i < posiciones.size(); i++) {
+            resultado[i] = posiciones.get(i);
+        }
+        return resultado;
+    }
+
     public int size(){
         int cnt = 0;
         clsNodo aux = cabeza;
