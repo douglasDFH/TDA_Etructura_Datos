@@ -71,6 +71,11 @@ public class frmprincipal extends javax.swing.JFrame {
             jButtonBuscar.setVisible(true);
             jButtonVaciar.setVisible(true);
             jButton3.setVisible(false); // Ocultar "Mostrar Pila" cuando ya estamos en Pila
+            // Ocultar botones específicos de Lista Doble
+            btnInsertarIzquierda.setVisible(false);
+            btnEliminarIzquierda.setVisible(false);
+            btnRecorridoForward.setVisible(false);
+            btnRecorridoBackward.setVisible(false);
             
         } else if (selectedIndex == 1) { // Pestaña Lista Simple
             // Todos los controles avanzados visibles
@@ -85,20 +90,30 @@ public class frmprincipal extends javax.swing.JFrame {
             jButtonBuscar.setVisible(true);
             jButtonVaciar.setVisible(true);
             jButton3.setVisible(false);
+            // Ocultar botones específicos de Lista Doble
+            btnInsertarIzquierda.setVisible(false);
+            btnEliminarIzquierda.setVisible(false);
+            btnRecorridoForward.setVisible(false);
+            btnRecorridoBackward.setVisible(false);
             
         } else if (selectedIndex == 2) { // Pestaña Lista Doble
-            // Controles básicos + algunos avanzados (sin posición específica por ahora)
-            lblPosicion.setVisible(false);
-            txtPosicion.setVisible(false);
+            // Todos los controles para Lista Doble (incluyendo posición y botones específicos)
+            lblPosicion.setVisible(true);
+            txtPosicion.setVisible(true);
             btnInsertarOrdenado.setVisible(true);
-            btnInsertarDerecha.setVisible(false);
-            btnEliminarDerecha.setVisible(false);
+            btnInsertarDerecha.setVisible(true);
+            btnEliminarDerecha.setVisible(true);
             btnOrdenarAsc.setVisible(true);
-            btnOrdenarRef.setVisible(true);
+            btnOrdenarRef.setVisible(false); // No implementado para Lista Doble
             btnSumarElementos.setVisible(true);
             jButtonBuscar.setVisible(true);
             jButtonVaciar.setVisible(true);
             jButton3.setVisible(false);
+            // Botones específicos de Lista Doble
+            btnInsertarIzquierda.setVisible(true);
+            btnEliminarIzquierda.setVisible(true);
+            btnRecorridoForward.setVisible(true);
+            btnRecorridoBackward.setVisible(true);
         }
         
         this.revalidate();
@@ -208,6 +223,11 @@ public class frmprincipal extends javax.swing.JFrame {
         btnOrdenarAsc = new javax.swing.JButton();
         btnOrdenarRef = new javax.swing.JButton();
         btnSumarElementos = new javax.swing.JButton();
+        // Nuevos botones para Lista Doble
+        btnInsertarIzquierda = new javax.swing.JButton();
+        btnEliminarIzquierda = new javax.swing.JButton();
+        btnRecorridoForward = new javax.swing.JButton();
+        btnRecorridoBackward = new javax.swing.JButton();
         dato = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -309,6 +329,35 @@ public class frmprincipal extends javax.swing.JFrame {
             }
         });
 
+        // Configuración de botones específicos para Lista Doble
+        btnInsertarIzquierda.setText("Ins. Izq.");
+        btnInsertarIzquierda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertarIzquierdaActionPerformed(evt);
+            }
+        });
+
+        btnEliminarIzquierda.setText("Elim. Izq.");
+        btnEliminarIzquierda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarIzquierdaActionPerformed(evt);
+            }
+        });
+
+        btnRecorridoForward.setText("→ Forward");
+        btnRecorridoForward.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRecorridoForwardActionPerformed(evt);
+            }
+        });
+
+        btnRecorridoBackward.setText("← Backward");
+        btnRecorridoBackward.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRecorridoBackwardActionPerformed(evt);
+            }
+        });
+
         lblPosicion.setText("Posición:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -347,6 +396,14 @@ public class frmprincipal extends javax.swing.JFrame {
                         .addComponent(jButtonBuscar)
                         .addGap(10, 10, 10)
                         .addComponent(jButtonVaciar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnInsertarIzquierda)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnEliminarIzquierda)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnRecorridoForward)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnRecorridoBackward))
                     .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
                         .addGap(150, 150, 150)
                         .addComponent(jButton3)))
@@ -376,6 +433,12 @@ public class frmprincipal extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(jButtonBuscar)
                     .addComponent(jButtonVaciar))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnInsertarIzquierda)
+                    .addComponent(btnEliminarIzquierda)
+                    .addComponent(btnRecorridoForward)
+                    .addComponent(btnRecorridoBackward))
                 .addGap(10, 10, 10)
                 .addComponent(jButton3)
                 .addGap(25, 25, 25))
@@ -508,6 +571,11 @@ public class frmprincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnOrdenarAsc;
     private javax.swing.JButton btnOrdenarRef;
     private javax.swing.JButton btnSumarElementos;
+    // Botones específicos para Lista Doble
+    private javax.swing.JButton btnInsertarIzquierda;
+    private javax.swing.JButton btnEliminarIzquierda;
+    private javax.swing.JButton btnRecorridoForward;
+    private javax.swing.JButton btnRecorridoBackward;
     private javax.swing.JLabel dato;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -601,11 +669,21 @@ public class frmprincipal extends javax.swing.JFrame {
     private void insertarOrdenadoAction() {
         try {
             int valor = Integer.parseInt(txtDato.getText());
-            objListaSimple.insertarOrdenado(valor);
+            int idx = tabbedPane.getSelectedIndex();
+            
+            switch(idx) {
+                case 1: // Lista Simple
+                    objListaSimple.insertarOrdenado(valor);
+                    break;
+                case 2: // Lista Doble
+                    objListaDoble.insertarOrdenado(valor);
+                    break;
+            }
+            
             txtDato.setText("");
             drawSelected();
         } catch (Exception ex) {
-            // Valor inválido - no se hace nada
+            System.out.println("Valor inválido para insertar ordenado");
         }
     }
     
@@ -613,32 +691,67 @@ public class frmprincipal extends javax.swing.JFrame {
         try {
             int posicion = Integer.parseInt(txtPosicion.getText());
             int valor = Integer.parseInt(txtDato.getText());
-            boolean exito = objListaSimple.insertarDerecha(posicion, valor);
+            int idx = tabbedPane.getSelectedIndex();
+            boolean exito = false;
+            
+            switch(idx) {
+                case 1: // Lista Simple
+                    exito = objListaSimple.insertarDerecha(posicion, valor);
+                    break;
+                case 2: // Lista Doble
+                    exito = objListaDoble.insertarDerecha(posicion, valor);
+                    break;
+            }
+            
             if (exito) {
                 txtDato.setText("");
                 txtPosicion.setText("");
                 drawSelected();
             }
         } catch (Exception ex) {
-            // Valores inválidos - no se hace nada
+            System.out.println("Valores inválidos para insertar a la derecha");
         }
     }
     
     private void eliminarDerechaAction() {
         try {
             int posicion = Integer.parseInt(txtPosicion.getText());
-            int eliminado = objListaSimple.eliminarDerecha(posicion);
+            int idx = tabbedPane.getSelectedIndex();
+            int eliminado = -1;
+            
+            switch(idx) {
+                case 1: // Lista Simple
+                    eliminado = objListaSimple.eliminarDerecha(posicion);
+                    break;
+                case 2: // Lista Doble
+                    eliminado = objListaDoble.eliminarDerecha(posicion);
+                    break;
+            }
+            
             if (eliminado != -1) {
                 txtPosicion.setText("");
+                System.out.println("Eliminado a la derecha de posición " + posicion + ": " + eliminado);
                 drawSelected();
+            } else {
+                System.out.println("No se pudo eliminar: posición inválida o no hay nodo a la derecha");
             }
         } catch (Exception ex) {
-            // Posición inválida - no se hace nada
+            System.out.println("Posición inválida para eliminar a la derecha");
         }
     }
     
     private void ordenarAscendenteAction() {
-        objListaSimple.ordenarAscendente();
+        int idx = tabbedPane.getSelectedIndex();
+        
+        switch(idx) {
+            case 1: // Lista Simple
+                objListaSimple.ordenarAscendente();
+                break;
+            case 2: // Lista Doble
+                objListaDoble.ordenarAscendente();
+                break;
+        }
+        
         drawSelected();
     }
     
@@ -648,12 +761,31 @@ public class frmprincipal extends javax.swing.JFrame {
     }
     
     private void sumarElementosAction() {
-        int suma = objListaSimple.sumarElementos();
-        int tamaño = objListaSimple.size();
-        javax.swing.JOptionPane.showMessageDialog(this, 
-            "Suma de elementos: " + suma + "\nTamaño de la lista: " + tamaño,
-            "Información de Lista Simple", 
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        int idx = tabbedPane.getSelectedIndex();
+        int suma = 0;
+        int tamaño = 0;
+        String tipoLista = "";
+        
+        switch(idx) {
+            case 1: // Lista Simple
+                suma = objListaSimple.sumarElementos();
+                tamaño = objListaSimple.size();
+                tipoLista = "Lista Simple";
+                break;
+            case 2: // Lista Doble
+                suma = objListaDoble.sumarElementos();
+                tamaño = objListaDoble.size();
+                tipoLista = "Lista Doble";
+                break;
+        }
+        
+        if (idx == 1 || idx == 2) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Suma de elementos: " + suma + "\nTamaño de la lista: " + tamaño,
+                "Información de " + tipoLista, 
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        }
+        
         // Actualizar solo la visualización
         drawSelected();
     }
@@ -683,4 +815,75 @@ public class frmprincipal extends javax.swing.JFrame {
     private void btnSumarElementosActionPerformed(java.awt.event.ActionEvent evt) {
         sumarElementosAction();
     }
+    
+    // ==================== MÉTODOS DE EVENTOS PARA LISTA DOBLE ====================
+    
+    private void btnInsertarIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {
+        insertarIzquierdaAction();
+    }
+    
+    private void btnEliminarIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {
+        eliminarIzquierdaAction();
+    }
+    
+    private void btnRecorridoForwardActionPerformed(java.awt.event.ActionEvent evt) {
+        recorridoForwardAction();
+    }
+    
+    private void btnRecorridoBackwardActionPerformed(java.awt.event.ActionEvent evt) {
+        recorridoBackwardAction();
+    }
+
+    // ==================== MÉTODOS DE ACCIÓN PARA LISTA DOBLE ====================
+    
+    private void insertarIzquierdaAction() {
+        try {
+            int posicion = Integer.parseInt(txtPosicion.getText());
+            int valor = Integer.parseInt(txtDato.getText());
+            boolean exito = objListaDoble.insertarIzquierda(posicion, valor);
+            if (exito) {
+                txtDato.setText("");
+                txtPosicion.setText("");
+                drawSelected();
+            }
+        } catch (Exception ex) {
+            System.out.println("Valores inválidos para insertar a la izquierda");
+        }
+    }
+    
+    private void eliminarIzquierdaAction() {
+        try {
+            int posicion = Integer.parseInt(txtPosicion.getText());
+            int eliminado = objListaDoble.eliminarIzquierda(posicion);
+            if (eliminado != -1) {
+                txtPosicion.setText("");
+                System.out.println("Eliminado a la izquierda de posición " + posicion + ": " + eliminado);
+                drawSelected();
+            } else {
+                System.out.println("No se pudo eliminar: posición inválida o no hay nodo a la izquierda");
+            }
+        } catch (Exception ex) {
+            System.out.println("Posición inválida para eliminar a la izquierda");
+        }
+    }
+    
+    private void recorridoForwardAction() {
+        String recorrido = objListaDoble.recorridoForward();
+        System.out.println("Recorrido Forward (Head → Tail): " + recorrido);
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Recorrido Forward (Head → Tail):\n" + recorrido,
+            "Lista Doble - Recorrido Directo", 
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void recorridoBackwardAction() {
+        String recorrido = objListaDoble.recorridoBackward();
+        System.out.println("Recorrido Backward (Tail ← Head): " + recorrido);
+        javax.swing.JOptionPane.showMessageDialog(this, 
+            "Recorrido Backward (Tail ← Head):\n" + recorrido,
+            "Lista Doble - Recorrido Inverso", 
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+
 }
