@@ -4,6 +4,7 @@
  */
 package presentacion;
 import negocio.clsPila;
+import negocio.clsCola;
 import negocio.clsListaSimple;
 import negocio.clsListaDoble;
 import java.awt.Graphics;
@@ -20,6 +21,7 @@ public class frmprincipal extends javax.swing.JFrame {
      * Creates new form frmprincipal
      */
     private final clsPila objPila;
+    private final clsCola objCola;
     private Graphics objPintor;
     private clsListaSimple objListaSimple;
     private clsListaDoble objListaDoble;
@@ -27,6 +29,7 @@ public class frmprincipal extends javax.swing.JFrame {
     public frmprincipal() {
         initComponents();
         objPila = new clsPila();
+        objCola = new clsCola();
         objListaSimple = new clsListaSimple();
         objListaDoble = new clsListaDoble();
         objPintor = getGraphics();
@@ -50,7 +53,7 @@ public class frmprincipal extends javax.swing.JFrame {
 
 
     private void adaptarControlesSegunPestaña(int selectedIndex) {
-        // selectedIndex: 0=Pila, 1=Lista Simple, 2=Lista Doble
+        // selectedIndex: 0=Pila, 1=Cola, 2=Lista Simple, 3=Lista Doble
         
         // Controles básicos siempre visibles
         dato.setVisible(true);
@@ -77,7 +80,26 @@ public class frmprincipal extends javax.swing.JFrame {
             btnRecorridoForward.setVisible(false);
             btnRecorridoBackward.setVisible(false);
             
-        } else if (selectedIndex == 1) { // Pestaña Lista Simple
+        } else if (selectedIndex == 1) { // Pestaña Cola
+            // Solo controles básicos para Cola
+            lblPosicion.setVisible(false);
+            txtPosicion.setVisible(false);
+            btnInsertarOrdenado.setVisible(false);
+            btnInsertarDerecha.setVisible(false);
+            btnEliminarDerecha.setVisible(false);
+            btnOrdenarAsc.setVisible(false);
+            btnOrdenarRef.setVisible(false);
+            btnSumarElementos.setVisible(false);
+            jButtonBuscar.setVisible(true);
+            jButtonVaciar.setVisible(true);
+            jButton3.setVisible(true); // Mostrar información de cola
+            // Ocultar botones específicos de Lista Doble
+            btnInsertarIzquierda.setVisible(false);
+            btnEliminarIzquierda.setVisible(false);
+            btnRecorridoForward.setVisible(false);
+            btnRecorridoBackward.setVisible(false);
+            
+        } else if (selectedIndex == 2) { // Pestaña Lista Simple
             // Todos los controles avanzados visibles
             lblPosicion.setVisible(true);
             txtPosicion.setVisible(true);
@@ -96,7 +118,7 @@ public class frmprincipal extends javax.swing.JFrame {
             btnRecorridoForward.setVisible(false);
             btnRecorridoBackward.setVisible(false);
             
-        } else if (selectedIndex == 2) { // Pestaña Lista Doble
+        } else if (selectedIndex == 3) { // Pestaña Lista Doble
             // Todos los controles para Lista Doble (incluyendo posición y botones específicos)
             lblPosicion.setVisible(true);
             txtPosicion.setVisible(true);
@@ -137,8 +159,9 @@ public class frmprincipal extends javax.swing.JFrame {
         int idx = tabbedPane.getSelectedIndex();
         switch(idx){
             case 0: graficarPila(objPila.getCima()); break; // Pila
-            case 1: graficarListaSimple(); break; // Lista Simple
-            case 2: graficarListaDoble(); break; // Lista Doble
+            case 1: graficarCola(objCola.getPrimero()); break; // Cola
+            case 2: graficarListaSimple(); break; // Lista Simple
+            case 3: graficarListaDoble(); break; // Lista Doble
         }
         repaint(); // Asegurar actualización visual
     }
@@ -241,6 +264,7 @@ public class frmprincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         tabbedPane.addTab("Pila", new javax.swing.JLabel("Vista: Pila"));
+        tabbedPane.addTab("Cola", new javax.swing.JLabel("Vista: Cola"));
         tabbedPane.addTab("Lista Simple", new javax.swing.JLabel("Vista: Lista Simple"));
         tabbedPane.addTab("Lista Doble", new javax.swing.JLabel("Vista: Lista Doble"));
 
@@ -344,14 +368,14 @@ public class frmprincipal extends javax.swing.JFrame {
             }
         });
 
-        btnRecorridoForward.setText("→ Forward");
+        btnRecorridoForward.setText("→ Adelante");
         btnRecorridoForward.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRecorridoForwardActionPerformed(evt);
             }
         });
 
-        btnRecorridoBackward.setText("← Backward");
+        btnRecorridoBackward.setText("← Atrás");
         btnRecorridoBackward.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRecorridoBackwardActionPerformed(evt);
@@ -453,8 +477,9 @@ public class frmprincipal extends javax.swing.JFrame {
          int idx = tabbedPane.getSelectedIndex();
          switch(idx){
              case 0: objPila.insert(dato); break; // Pila
-             case 1: objListaSimple.insertarFinal(dato); break; // Lista Simple
-             case 2: objListaDoble.insertarFinal(dato); break; // Lista Doble
+             case 1: objCola.insertar(dato); break; // Cola
+             case 2: objListaSimple.insertarFinal(dato); break; // Lista Simple
+             case 3: objListaDoble.insertarFinal(dato); break; // Lista Doble
          }
          txtDato.setText(""); // Limpiar campo después de insertar
          drawSelected();
@@ -466,8 +491,9 @@ public class frmprincipal extends javax.swing.JFrame {
          int dato = -1;
          switch(idx){
               case 0: dato = objPila.eliminar(); break; // Pila
-              case 1: dato = objListaSimple.eliminarInicio(); break; // Lista Simple
-              case 2: dato = objListaDoble.eliminarInicio(); break; // Lista Doble
+              case 1: dato = objCola.eliminar(); break; // Cola
+              case 2: dato = objListaSimple.eliminarInicio(); break; // Lista Simple
+              case 3: dato = objListaDoble.eliminarInicio(); break; // Lista Doble
          }
          System.out.println("dato"+dato);
          drawSelected();
@@ -483,11 +509,19 @@ public class frmprincipal extends javax.swing.JFrame {
                     System.out.println("Pila vacía");
                 }
                 break;
-            case 1: // Lista Simple - Función especial (recorrer)
+            case 1: // Cola - Mostrar información
+                if(objCola.getPrimero() != null) {
+                    System.out.println("Primero en cola: " + objCola.getPrimero().getDato());
+                    System.out.println("Último en cola: " + objCola.getUltimo().getDato());
+                } else {
+                    System.out.println("Cola vacía");
+                }
+                break;
+            case 2: // Lista Simple - Función especial (recorrer)
                 String recorridoLS = objListaSimple.toString();
                 System.out.println("Recorrido Lista Simple: " + recorridoLS);
                 break;
-            case 2: // Lista Doble - Recorrer
+            case 3: // Lista Doble - Recorrer
                 String recorrido = objListaDoble.recorridoForward();
                 System.out.println("Recorrido Lista Doble: " + recorrido);
                 break;
@@ -616,7 +650,26 @@ public class frmprincipal extends javax.swing.JFrame {
                     }
                     break;
                     
-                case 1: // Lista Simple: buscar con posiciones múltiples
+                case 1: // Cola: buscar en toda la cola
+                    clsNodo pCola = objCola.getPrimero();
+                    int posicionCola = 0;
+                    java.util.ArrayList<Integer> posicionesCola = new java.util.ArrayList<>();
+                    while(pCola != null){ 
+                        if(pCola.getDato() == val){ 
+                            found = true; 
+                            posicionesCola.add(posicionCola);
+                        } 
+                        pCola = pCola.getRef(); 
+                        posicionCola++;
+                    }
+                    if(found) {
+                        System.out.println("Dato " + val + " encontrado en posición(es): " + posicionesCola);
+                    } else {
+                        System.out.println("Buscar " + val + " -> false");
+                    }
+                    break;
+                    
+                case 2: // Lista Simple: buscar con posiciones múltiples
                     int[] posiciones = objListaSimple.buscarTodasLasPosiciones(val);
                     found = posiciones.length > 0;
                     if(found) {
@@ -633,7 +686,7 @@ public class frmprincipal extends javax.swing.JFrame {
                     }
                     break;
                     
-                case 2: // Lista Doble: buscar con posiciones múltiples
+                case 3: // Lista Doble: buscar con posiciones múltiples
                     int[] posicionesDoble = objListaDoble.buscarTodasLasPosiciones(val);
                     found = posicionesDoble.length > 0;
                     if(found) {
@@ -658,8 +711,9 @@ public class frmprincipal extends javax.swing.JFrame {
         int idx = tabbedPane.getSelectedIndex();
         switch(idx){
             case 0: objPila.vaciarPila(); break; // Pila
-            case 1: objListaSimple.vaciar(); break; // Lista Simple
-            case 2: objListaDoble.vaciar(); break; // Lista Doble
+            case 1: objCola.vaciarCola(); break; // Cola
+            case 2: objListaSimple.vaciar(); break; // Lista Simple
+            case 3: objListaDoble.vaciar(); break; // Lista Doble
         }
         drawSelected();
     }
