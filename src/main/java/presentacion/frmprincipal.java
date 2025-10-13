@@ -348,6 +348,7 @@ public class frmprincipal extends javax.swing.JFrame {
         });
 
         btnInsertarDerecha.setText("Ins. Derecha");
+        btnInsertarDerecha.setToolTipText("Insertar a la derecha de la posición del puntero actual");
         btnInsertarDerecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInsertarDerechaActionPerformed(evt);
@@ -355,6 +356,7 @@ public class frmprincipal extends javax.swing.JFrame {
         });
 
         btnEliminarDerecha.setText("Elim. Derecha");
+        btnEliminarDerecha.setToolTipText("Eliminar el nodo a la derecha de la posición del puntero actual");
         btnEliminarDerecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarDerechaActionPerformed(evt);
@@ -384,6 +386,7 @@ public class frmprincipal extends javax.swing.JFrame {
 
         // Configuración de botones específicos para Lista Doble
         btnInsertarIzquierda.setText("Ins. Izq.");
+        btnInsertarIzquierda.setToolTipText("Insertar a la izquierda de la posición del puntero actual");
         btnInsertarIzquierda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnInsertarIzquierdaActionPerformed(evt);
@@ -391,6 +394,7 @@ public class frmprincipal extends javax.swing.JFrame {
         });
 
         btnEliminarIzquierda.setText("Elim. Izq.");
+        btnEliminarIzquierda.setToolTipText("Eliminar el nodo a la izquierda de la posición del puntero actual");
         btnEliminarIzquierda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarIzquierdaActionPerformed(evt);
@@ -447,7 +451,7 @@ public class frmprincipal extends javax.swing.JFrame {
         lblInfoPuntero.setText("Puntero: Inicio");
         lblInfoPuntero.setForeground(java.awt.Color.BLUE);
 
-        lblPosicion.setText("Posición:");
+        lblPosicion.setText("Posición (solo para inserción ordenada):");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -878,54 +882,101 @@ public class frmprincipal extends javax.swing.JFrame {
     
     private void insertarDerechaAction() {
         try {
-            int posicion = Integer.parseInt(txtPosicion.getText());
             int valor = Integer.parseInt(txtDato.getText());
             int idx = tabbedPane.getSelectedIndex();
             boolean exito = false;
+            int posicionPuntero = -1;
             
             switch(idx) {
                 case 2: // Lista Simple
-                    exito = objListaSimple.insertarDerecha(posicion, valor);
+                    if (objListaSimple.esPunteroNulo()) {
+                        javax.swing.JOptionPane.showMessageDialog(this, 
+                            "El puntero no está posicionado. Use los botones de navegación para posicionar el puntero primero.",
+                            "Puntero no posicionado", 
+                            javax.swing.JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    posicionPuntero = objListaSimple.getPosicionPuntero();
+                    exito = objListaSimple.insertarDerecha(posicionPuntero, valor);
                     break;
                 case 3: // Lista Doble
-                    exito = objListaDoble.insertarDerecha(posicion, valor);
+                    if (objListaDoble.esPunteroNulo()) {
+                        javax.swing.JOptionPane.showMessageDialog(this, 
+                            "El puntero no está posicionado. Use los botones de navegación para posicionar el puntero primero.",
+                            "Puntero no posicionado", 
+                            javax.swing.JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    posicionPuntero = objListaDoble.getPosicionPuntero();
+                    exito = objListaDoble.insertarDerecha(posicionPuntero, valor);
                     break;
             }
             
             if (exito) {
                 txtDato.setText("");
-                txtPosicion.setText("");
+                System.out.println("Insertado valor " + valor + " a la derecha del puntero (posición " + posicionPuntero + ")");
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Valor " + valor + " insertado a la derecha del puntero\n(Posición: " + posicionPuntero + ")",
+                    "Inserción Exitosa", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 drawSelected();
             }
+        } catch (NumberFormatException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Ingrese un valor numérico válido",
+                "Error de Entrada", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
-            System.out.println("Valores inválidos para insertar a la derecha");
+            System.out.println("Error al insertar a la derecha: " + ex.getMessage());
         }
     }
     
     private void eliminarDerechaAction() {
         try {
-            int posicion = Integer.parseInt(txtPosicion.getText());
             int idx = tabbedPane.getSelectedIndex();
             int eliminado = -1;
+            int posicionPuntero = -1;
             
             switch(idx) {
                 case 2: // Lista Simple
-                    eliminado = objListaSimple.eliminarDerecha(posicion);
+                    if (objListaSimple.esPunteroNulo()) {
+                        javax.swing.JOptionPane.showMessageDialog(this, 
+                            "El puntero no está posicionado. Use los botones de navegación para posicionar el puntero primero.",
+                            "Puntero no posicionado", 
+                            javax.swing.JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    posicionPuntero = objListaSimple.getPosicionPuntero();
+                    eliminado = objListaSimple.eliminarDerecha(posicionPuntero);
                     break;
                 case 3: // Lista Doble
-                    eliminado = objListaDoble.eliminarDerecha(posicion);
+                    if (objListaDoble.esPunteroNulo()) {
+                        javax.swing.JOptionPane.showMessageDialog(this, 
+                            "El puntero no está posicionado. Use los botones de navegación para posicionar el puntero primero.",
+                            "Puntero no posicionado", 
+                            javax.swing.JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    posicionPuntero = objListaDoble.getPosicionPuntero();
+                    eliminado = objListaDoble.eliminarDerecha(posicionPuntero);
                     break;
             }
             
             if (eliminado != -1) {
-                txtPosicion.setText("");
-                System.out.println("Eliminado a la derecha de posición " + posicion + ": " + eliminado);
+                System.out.println("Eliminado a la derecha del puntero (posición " + posicionPuntero + "): " + eliminado);
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Eliminado valor " + eliminado + " a la derecha del puntero\n(Posición: " + posicionPuntero + ")",
+                    "Eliminación Exitosa", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 drawSelected();
             } else {
-                System.out.println("No se pudo eliminar: posición inválida o no hay nodo a la derecha");
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "No se pudo eliminar: no hay nodo a la derecha del puntero actual",
+                    "No se puede eliminar", 
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
             }
         } catch (Exception ex) {
-            System.out.println("Posición inválida para eliminar a la derecha");
+            System.out.println("Error al eliminar a la derecha: " + ex.getMessage());
         }
     }
     
@@ -1027,32 +1078,67 @@ public class frmprincipal extends javax.swing.JFrame {
     
     private void insertarIzquierdaAction() {
         try {
-            int posicion = Integer.parseInt(txtPosicion.getText());
+            // Verificar que el puntero esté posicionado
+            if (objListaDoble.esPunteroNulo()) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "El puntero no está posicionado. Use los botones de navegación para posicionar el puntero primero.",
+                    "Puntero no posicionado", 
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
             int valor = Integer.parseInt(txtDato.getText());
-            boolean exito = objListaDoble.insertarIzquierda(posicion, valor);
+            int posicionPuntero = objListaDoble.getPosicionPuntero();
+            
+            boolean exito = objListaDoble.insertarIzquierda(posicionPuntero, valor);
             if (exito) {
                 txtDato.setText("");
-                txtPosicion.setText("");
+                System.out.println("Insertado valor " + valor + " a la izquierda del puntero (posición " + posicionPuntero + ")");
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Valor " + valor + " insertado a la izquierda del puntero\n(Posición: " + posicionPuntero + ")",
+                    "Inserción Exitosa", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 drawSelected();
             }
+        } catch (NumberFormatException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Ingrese un valor numérico válido",
+                "Error de Entrada", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
-            System.out.println("Valores inválidos para insertar a la izquierda");
+            System.out.println("Error al insertar a la izquierda: " + ex.getMessage());
         }
     }
     
     private void eliminarIzquierdaAction() {
         try {
-            int posicion = Integer.parseInt(txtPosicion.getText());
-            int eliminado = objListaDoble.eliminarIzquierda(posicion);
+            // Verificar que el puntero esté posicionado
+            if (objListaDoble.esPunteroNulo()) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "El puntero no está posicionado. Use los botones de navegación para posicionar el puntero primero.",
+                    "Puntero no posicionado", 
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            int posicionPuntero = objListaDoble.getPosicionPuntero();
+            int eliminado = objListaDoble.eliminarIzquierda(posicionPuntero);
+            
             if (eliminado != -1) {
-                txtPosicion.setText("");
-                System.out.println("Eliminado a la izquierda de posición " + posicion + ": " + eliminado);
+                System.out.println("Eliminado a la izquierda del puntero (posición " + posicionPuntero + "): " + eliminado);
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Eliminado valor " + eliminado + " a la izquierda del puntero\n(Posición: " + posicionPuntero + ")",
+                    "Eliminación Exitosa", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
                 drawSelected();
             } else {
-                System.out.println("No se pudo eliminar: posición inválida o no hay nodo a la izquierda");
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "No se pudo eliminar: no hay nodo a la izquierda del puntero actual",
+                    "No se puede eliminar", 
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
             }
         } catch (Exception ex) {
-            System.out.println("Posición inválida para eliminar a la izquierda");
+            System.out.println("Error al eliminar a la izquierda: " + ex.getMessage());
         }
     }
     
