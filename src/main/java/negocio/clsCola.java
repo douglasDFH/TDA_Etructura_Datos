@@ -161,6 +161,13 @@ public class clsCola {
         int posicion = getPosicionPuntero();
         return "Pos " + posicion + " (Valor: " + punteroActual.getDato() + ")";
     }
+    
+    /**
+     * Verificar si la cola está vacía
+     */
+    public boolean estaVacia() {
+        return primero == null;
+    }
 
 }
 

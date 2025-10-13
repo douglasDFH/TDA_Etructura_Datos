@@ -144,6 +144,13 @@ public class clsPila {
         int posicion = getPosicionPuntero();
         return "Pos " + posicion + " (Valor: " + punteroActual.getDato() + ")";
     }
+    
+    /**
+     * Verificar si la pila está vacía
+     */
+    public boolean estaVacia() {
+        return cima == null;
+    }
 
     
 }
