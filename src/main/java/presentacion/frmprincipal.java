@@ -726,10 +726,10 @@ public class frmprincipal extends javax.swing.JFrame {
             int idx = tabbedPane.getSelectedIndex();
             
             switch(idx) {
-                case 1: // Lista Simple
+                case 2: // Lista Simple
                     objListaSimple.insertarOrdenado(valor);
                     break;
-                case 2: // Lista Doble
+                case 3: // Lista Doble
                     objListaDoble.insertarOrdenado(valor);
                     break;
             }
@@ -749,10 +749,10 @@ public class frmprincipal extends javax.swing.JFrame {
             boolean exito = false;
             
             switch(idx) {
-                case 1: // Lista Simple
+                case 2: // Lista Simple
                     exito = objListaSimple.insertarDerecha(posicion, valor);
                     break;
-                case 2: // Lista Doble
+                case 3: // Lista Doble
                     exito = objListaDoble.insertarDerecha(posicion, valor);
                     break;
             }
@@ -774,10 +774,10 @@ public class frmprincipal extends javax.swing.JFrame {
             int eliminado = -1;
             
             switch(idx) {
-                case 1: // Lista Simple
+                case 2: // Lista Simple
                     eliminado = objListaSimple.eliminarDerecha(posicion);
                     break;
-                case 2: // Lista Doble
+                case 3: // Lista Doble
                     eliminado = objListaDoble.eliminarDerecha(posicion);
                     break;
             }
@@ -798,10 +798,10 @@ public class frmprincipal extends javax.swing.JFrame {
         int idx = tabbedPane.getSelectedIndex();
         
         switch(idx) {
-            case 1: // Lista Simple
+            case 2: // Lista Simple
                 objListaSimple.ordenarAscendente();
                 break;
-            case 2: // Lista Doble
+            case 3: // Lista Doble
                 objListaDoble.ordenarAscendente();
                 break;
         }
@@ -821,19 +821,19 @@ public class frmprincipal extends javax.swing.JFrame {
         String tipoLista = "";
         
         switch(idx) {
-            case 1: // Lista Simple
+            case 2: // Lista Simple
                 suma = objListaSimple.sumarElementos();
                 tamaño = objListaSimple.size();
                 tipoLista = "Lista Simple";
                 break;
-            case 2: // Lista Doble
+            case 3: // Lista Doble
                 suma = objListaDoble.sumarElementos();
                 tamaño = objListaDoble.size();
                 tipoLista = "Lista Doble";
                 break;
         }
         
-        if (idx == 1 || idx == 2) {
+        if (idx == 2 || idx == 3) {
             javax.swing.JOptionPane.showMessageDialog(this, 
                 "Suma de elementos: " + suma + "\nTamaño de la lista: " + tamaño,
                 "Información de " + tipoLista, 
