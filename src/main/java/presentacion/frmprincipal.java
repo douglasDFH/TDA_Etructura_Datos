@@ -157,11 +157,25 @@ public class frmprincipal extends javax.swing.JFrame {
         if (objPintor == null) return;
         if (tabbedPane == null) return;
         int idx = tabbedPane.getSelectedIndex();
+        
+        // Actualizar información del puntero según la pestaña seleccionada
         switch(idx){
-            case 0: graficarPila(objPila.getCima()); break; // Pila
-            case 1: graficarCola(objCola.getPrimero()); break; // Cola
-            case 2: graficarListaSimple(); break; // Lista Simple
-            case 3: graficarListaDoble(); break; // Lista Doble
+            case 0: 
+                graficarPila(objPila.getCima()); 
+                lblInfoPuntero.setText("Puntero: " + objPila.obtenerInfoPuntero());
+                break; // Pila
+            case 1: 
+                graficarCola(objCola.getPrimero()); 
+                lblInfoPuntero.setText("Puntero: " + objCola.obtenerInfoPuntero());
+                break; // Cola
+            case 2: 
+                graficarListaSimple(); 
+                lblInfoPuntero.setText("Puntero: " + objListaSimple.obtenerInfoPuntero());
+                break; // Lista Simple
+            case 3: 
+                graficarListaDoble(); 
+                lblInfoPuntero.setText("Puntero: " + objListaDoble.obtenerInfoPuntero());
+                break; // Lista Doble
         }
         repaint(); // Asegurar actualización visual
     }
@@ -174,8 +188,11 @@ public class frmprincipal extends javax.swing.JFrame {
         objPintor.drawString("COLA (FIFO - Primero en entrar, primero en salir)", 60, 70);
         int j = 0;
         clsNodo n = primero;
+        clsNodo puntero = objCola.getPunteroActual();
         while(n != null){
-            graficarNodo(80 + j*60, 90, ""+n.getDato());
+            // Determinar si este nodo es donde está el puntero
+            boolean esPuntero = (n == puntero);
+            graficarNodoConPuntero(80 + j*60, 90, ""+n.getDato(), esPuntero);
             if(n.getRef() != null) {
                 // Dibujar flecha hacia el siguiente
                 objPintor.drawString("->", 80 + j*60 + 45, 105);
@@ -196,8 +213,11 @@ public class frmprincipal extends javax.swing.JFrame {
         objPintor.drawString("LISTA SIMPLE (Cabeza -> ... -> null)", 60, 70);
         int j = 0;
         clsNodo n = objListaSimple == null ? null : objListaSimple.getCabeza();
+        clsNodo puntero = objListaSimple.getPunteroActual();
         while(n != null){
-            graficarNodo(80 + j*60, 90, ""+n.getDato());
+            // Determinar si este nodo es donde está el puntero
+            boolean esPuntero = (n == puntero);
+            graficarNodoConPuntero(80 + j*60, 90, ""+n.getDato(), esPuntero);
             if(n.getRef() != null) {
                 objPintor.drawString("->", 80 + j*60 + 45, 105);
             }
@@ -216,9 +236,12 @@ public class frmprincipal extends javax.swing.JFrame {
         objPintor.clearRect(50, 50, 600, 200);
         objPintor.drawString("LISTA DOBLE (null <- Head <-> ... <-> Tail -> null)", 60, 70);
         clsNodoDoble cur = objListaDoble == null ? null : objListaDoble.getCabeza();
+        clsNodoDoble puntero = objListaDoble.getPunteroActual();
         int j = 0;
         while(cur != null){
-            graficarNodo(80 + j*70, 90, ""+cur.getDato());
+            // Determinar si este nodo es donde está el puntero
+            boolean esPuntero = (cur == puntero);
+            graficarNodoDobleConPuntero(80 + j*70, 90, ""+cur.getDato(), esPuntero);
             if(cur.getNext() != null) {
                 objPintor.drawString("<->", 80 + j*70 + 45, 105);
             }
@@ -251,6 +274,12 @@ public class frmprincipal extends javax.swing.JFrame {
         btnEliminarIzquierda = new javax.swing.JButton();
         btnRecorridoForward = new javax.swing.JButton();
         btnRecorridoBackward = new javax.swing.JButton();
+        // Botones de navegación del puntero
+        btnPunteroInicio = new javax.swing.JButton();
+        btnPunteroSiguiente = new javax.swing.JButton();
+        btnPunteroAnterior = new javax.swing.JButton();
+        btnPunteroFinal = new javax.swing.JButton();
+        lblInfoPuntero = new javax.swing.JLabel();
         dato = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -382,6 +411,42 @@ public class frmprincipal extends javax.swing.JFrame {
             }
         });
 
+        // Configuración de botones de navegación del puntero
+        btnPunteroInicio.setText("⟦⤶⟧");
+        btnPunteroInicio.setToolTipText("Ir al inicio");
+        btnPunteroInicio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPunteroInicioActionPerformed(evt);
+            }
+        });
+
+        btnPunteroAnterior.setText("◀");
+        btnPunteroAnterior.setToolTipText("Anterior");
+        btnPunteroAnterior.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPunteroAnteriorActionPerformed(evt);
+            }
+        });
+
+        btnPunteroSiguiente.setText("▶");
+        btnPunteroSiguiente.setToolTipText("Siguiente");
+        btnPunteroSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPunteroSiguienteActionPerformed(evt);
+            }
+        });
+
+        btnPunteroFinal.setText("⟦⤷⟧");
+        btnPunteroFinal.setToolTipText("Ir al final");
+        btnPunteroFinal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPunteroFinalActionPerformed(evt);
+            }
+        });
+
+        lblInfoPuntero.setText("Puntero: Inicio");
+        lblInfoPuntero.setForeground(java.awt.Color.BLUE);
+
         lblPosicion.setText("Posición:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -428,6 +493,16 @@ public class frmprincipal extends javax.swing.JFrame {
                         .addComponent(btnRecorridoForward)
                         .addGap(10, 10, 10)
                         .addComponent(btnRecorridoBackward))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnPunteroInicio)
+                        .addGap(5, 5, 5)
+                        .addComponent(btnPunteroAnterior)
+                        .addGap(5, 5, 5)
+                        .addComponent(btnPunteroSiguiente)
+                        .addGap(5, 5, 5)
+                        .addComponent(btnPunteroFinal)
+                        .addGap(15, 15, 15)
+                        .addComponent(lblInfoPuntero))
                     .addGroup(javax.swing.GroupLayout.Alignment.CENTER, layout.createSequentialGroup()
                         .addGap(150, 150, 150)
                         .addComponent(jButton3)))
@@ -463,6 +538,13 @@ public class frmprincipal extends javax.swing.JFrame {
                     .addComponent(btnEliminarIzquierda)
                     .addComponent(btnRecorridoForward)
                     .addComponent(btnRecorridoBackward))
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPunteroInicio)
+                    .addComponent(btnPunteroAnterior)
+                    .addComponent(btnPunteroSiguiente)
+                    .addComponent(btnPunteroFinal)
+                    .addComponent(lblInfoPuntero))
                 .addGap(10, 10, 10)
                 .addComponent(jButton3)
                 .addGap(25, 25, 25))
@@ -538,6 +620,50 @@ public class frmprincipal extends javax.swing.JFrame {
           objPintor.drawString(dato, px+5, py+15);
     }
     
+    public void graficarNodoConPuntero(int px, int py, String dato, boolean esPuntero){
+        // Guardar color original
+        java.awt.Color colorOriginal = objPintor.getColor();
+        
+        if (esPuntero) {
+            // Cambiar a color rojo para resaltar el puntero
+            objPintor.setColor(java.awt.Color.RED);
+            objPintor.fillRect(px, py, 40, 20);
+            objPintor.setColor(java.awt.Color.WHITE);
+            objPintor.drawString(dato, px+5, py+15);
+            objPintor.setColor(java.awt.Color.RED);
+            objPintor.drawRect(px, py, 40, 20);
+        } else {
+            // Nodo normal
+            objPintor.drawRect(px, py, 40, 20);
+            objPintor.drawString(dato, px+5, py+15);
+        }
+        
+        // Restaurar color original
+        objPintor.setColor(colorOriginal);
+    }
+    
+    public void graficarNodoDobleConPuntero(int px, int py, String dato, boolean esPuntero){
+        // Guardar color original
+        java.awt.Color colorOriginal = objPintor.getColor();
+        
+        if (esPuntero) {
+            // Cambiar a color azul para resaltar el puntero en lista doble
+            objPintor.setColor(java.awt.Color.BLUE);
+            objPintor.fillRect(px, py, 40, 20);
+            objPintor.setColor(java.awt.Color.WHITE);
+            objPintor.drawString(dato, px+5, py+15);
+            objPintor.setColor(java.awt.Color.BLUE);
+            objPintor.drawRect(px, py, 40, 20);
+        } else {
+            // Nodo normal
+            objPintor.drawRect(px, py, 40, 20);
+            objPintor.drawString(dato, px+5, py+15);
+        }
+        
+        // Restaurar color original
+        objPintor.setColor(colorOriginal);
+    }
+    
     public void graficarPila(clsNodo cima){
         if (objPintor == null) objPintor = getGraphics();
         if (objPintor == null) return;
@@ -549,8 +675,11 @@ public class frmprincipal extends javax.swing.JFrame {
         objPintor.drawString("v", 160, 105);
         int j = 0;
         clsNodo actual = cima;
+        clsNodo puntero = objPila.getPunteroActual();
         while(actual != null){
-            graficarNodo(140, 110 + j*30, ""+actual.getDato());
+            // Determinar si este nodo es donde está el puntero
+            boolean esPuntero = (actual == puntero);
+            graficarNodoConPuntero(140, 110 + j*30, ""+actual.getDato(), esPuntero);
             if(actual.getRef() != null) {
                 objPintor.drawString("|", 160, 135 + j*30);
                 objPintor.drawString("v", 160, 145 + j*30);
@@ -610,6 +739,12 @@ public class frmprincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarIzquierda;
     private javax.swing.JButton btnRecorridoForward;
     private javax.swing.JButton btnRecorridoBackward;
+    // Botones de navegación del puntero
+    private javax.swing.JButton btnPunteroInicio;
+    private javax.swing.JButton btnPunteroSiguiente;
+    private javax.swing.JButton btnPunteroAnterior;
+    private javax.swing.JButton btnPunteroFinal;
+    private javax.swing.JLabel lblInfoPuntero;
     private javax.swing.JLabel dato;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -937,6 +1072,99 @@ public class frmprincipal extends javax.swing.JFrame {
             "Recorrido Backward (Tail ← Head):\n" + recorrido,
             "Lista Doble - Recorrido Inverso", 
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    // Métodos de acción para navegación del puntero
+    private void btnPunteroInicioActionPerformed(java.awt.event.ActionEvent evt) {
+        int idx = tabbedPane.getSelectedIndex();
+        switch(idx) {
+            case 0: // Pila
+                objPila.moverPunteroInicio();
+                lblInfoPuntero.setText("Puntero: " + objPila.obtenerInfoPuntero());
+                break;
+            case 1: // Cola
+                objCola.moverPunteroInicio();
+                lblInfoPuntero.setText("Puntero: " + objCola.obtenerInfoPuntero());
+                break;
+            case 2: // Lista Simple
+                objListaSimple.moverPunteroInicio();
+                lblInfoPuntero.setText("Puntero: " + objListaSimple.obtenerInfoPuntero());
+                break;
+            case 3: // Lista Doble
+                objListaDoble.moverPunteroInicio();
+                lblInfoPuntero.setText("Puntero: " + objListaDoble.obtenerInfoPuntero());
+                break;
+        }
+        drawSelected();
+    }
+    
+    private void btnPunteroSiguienteActionPerformed(java.awt.event.ActionEvent evt) {
+        int idx = tabbedPane.getSelectedIndex();
+        switch(idx) {
+            case 0: // Pila
+                objPila.moverPunteroSiguiente();
+                lblInfoPuntero.setText("Puntero: " + objPila.obtenerInfoPuntero());
+                break;
+            case 1: // Cola
+                objCola.moverPunteroSiguiente();
+                lblInfoPuntero.setText("Puntero: " + objCola.obtenerInfoPuntero());
+                break;
+            case 2: // Lista Simple
+                objListaSimple.moverPunteroSiguiente();
+                lblInfoPuntero.setText("Puntero: " + objListaSimple.obtenerInfoPuntero());
+                break;
+            case 3: // Lista Doble
+                objListaDoble.moverPunteroSiguiente();
+                lblInfoPuntero.setText("Puntero: " + objListaDoble.obtenerInfoPuntero());
+                break;
+        }
+        drawSelected();
+    }
+    
+    private void btnPunteroAnteriorActionPerformed(java.awt.event.ActionEvent evt) {
+        int idx = tabbedPane.getSelectedIndex();
+        switch(idx) {
+            case 0: // Pila
+                objPila.moverPunteroAnterior();
+                lblInfoPuntero.setText("Puntero: " + objPila.obtenerInfoPuntero());
+                break;
+            case 1: // Cola
+                objCola.moverPunteroAnterior();
+                lblInfoPuntero.setText("Puntero: " + objCola.obtenerInfoPuntero());
+                break;
+            case 2: // Lista Simple
+                objListaSimple.moverPunteroAnterior();
+                lblInfoPuntero.setText("Puntero: " + objListaSimple.obtenerInfoPuntero());
+                break;
+            case 3: // Lista Doble
+                objListaDoble.moverPunteroAnterior();
+                lblInfoPuntero.setText("Puntero: " + objListaDoble.obtenerInfoPuntero());
+                break;
+        }
+        drawSelected();
+    }
+    
+    private void btnPunteroFinalActionPerformed(java.awt.event.ActionEvent evt) {
+        int idx = tabbedPane.getSelectedIndex();
+        switch(idx) {
+            case 0: // Pila
+                objPila.moverPunteroFinal();
+                lblInfoPuntero.setText("Puntero: " + objPila.obtenerInfoPuntero());
+                break;
+            case 1: // Cola
+                objCola.moverPunteroFinal();
+                lblInfoPuntero.setText("Puntero: " + objCola.obtenerInfoPuntero());
+                break;
+            case 2: // Lista Simple
+                objListaSimple.moverPunteroFinal();
+                lblInfoPuntero.setText("Puntero: " + objListaSimple.obtenerInfoPuntero());
+                break;
+            case 3: // Lista Doble
+                objListaDoble.moverPunteroFinal();
+                lblInfoPuntero.setText("Puntero: " + objListaDoble.obtenerInfoPuntero());
+                break;
+        }
+        drawSelected();
     }
     
 
