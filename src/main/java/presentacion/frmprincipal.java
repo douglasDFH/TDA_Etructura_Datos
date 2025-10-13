@@ -1940,98 +1940,168 @@ public class frmprincipal extends javax.swing.JFrame {
             return;
         }
         
+        // Obtener posición del puntero para resaltarlo
+        int posicionPuntero = obtenerPosicionPuntero(op.estadoDespues);
+        
+        // Determinar si es lista doble
+        boolean esListaDoble = op.estructura.equals("LISTA_DOBLE");
+        
+        // Ajustar espaciado mejorado
+        int espacioMejorado = Math.max(80, espacioEntre + 20);
+        
         // Dibujar cabeza
         g2d.setColor(java.awt.Color.BLUE);
-        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 11));
         g2d.drawString("cabeza", inicioX, inicioY - 5);
+        
+        // Dibujar cola para lista doble
+        if (esListaDoble && nodos.length > 0) {
+            int colaX = inicioX + ((nodos.length - 1) * espacioMejorado);
+            g2d.setColor(java.awt.Color.GREEN);
+            g2d.drawString("cola", colaX, inicioY + tamanoNodo + 40);
+            dibujarFlechaMejorada(g2d, colaX + 20, inicioY + tamanoNodo + 35, colaX + tamanoNodo/2, inicioY + tamanoNodo + 5, "cola");
+        }
         
         // Dibujar nodos y enlaces
         for (int i = 0; i < nodos.length; i++) {
-            int nodoX = inicioX + (i * espacioEntre);
+            int nodoX = inicioX + (i * espacioMejorado);
             int nodoY = inicioY;
+            
+            // Determinar si este nodo es donde está el puntero
+            boolean esPuntero = (i == posicionPuntero);
             
             // Dibujar enlace desde cabeza al primer nodo
             if (i == 0) {
                 g2d.setColor(java.awt.Color.BLUE);
-                dibujarFlecha(g2d, inicioX + 35, inicioY - 10, nodoX + tamanoNodo/2, nodoY);
+                dibujarFlechaMejorada(g2d, inicioX + 35, inicioY - 10, nodoX + tamanoNodo/2, nodoY, "cabeza");
             }
             
-            // Dibujar nodo
-            dibujarNodoAnalisis(g2d, nodoX, nodoY, tamanoNodo, nodos[i], i == 0); // Primer nodo es donde apunta puntero inicialmente
+            // Dibujar nodo con resaltado si es donde está el puntero
+            dibujarNodoMejorado(g2d, nodoX, nodoY, tamanoNodo, nodos[i], esPuntero, esListaDoble);
             
-            // Dibujar enlace al siguiente nodo
+            // Dibujar enlaces entre nodos
             if (i < nodos.length - 1) {
-                g2d.setColor(java.awt.Color.BLACK);
-                dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + tamanoNodo/2, nodoX + espacioEntre, nodoY + tamanoNodo/2);
+                int siguienteX = nodoX + espacioMejorado;
+                
+                if (esListaDoble) {
+                    // Lista doble: enlaces bidireccionales
+                    // Flecha hacia adelante (arriba)
+                    g2d.setColor(java.awt.Color.BLACK);
+                    dibujarFlechaMejorada(g2d, nodoX + tamanoNodo, nodoY + tamanoNodo/3, 
+                                        siguienteX, nodoY + tamanoNodo/3, "next");
+                    
+                    // Flecha hacia atrás (abajo)
+                    g2d.setColor(java.awt.Color.GRAY);
+                    dibujarFlechaMejorada(g2d, siguienteX, nodoY + (2*tamanoNodo)/3, 
+                                        nodoX + tamanoNodo, nodoY + (2*tamanoNodo)/3, "prev");
+                } else {
+                    // Lista simple: solo enlace hacia adelante
+                    g2d.setColor(java.awt.Color.BLACK);
+                    dibujarFlechaMejorada(g2d, nodoX + tamanoNodo, nodoY + tamanoNodo/2, 
+                                        siguienteX, nodoY + tamanoNodo/2, "next");
+                }
             } else {
                 // Último nodo apunta a null
                 g2d.setColor(java.awt.Color.GRAY);
-                g2d.drawLine(nodoX + tamanoNodo, nodoY + tamanoNodo/2, nodoX + tamanoNodo + 25, nodoY + tamanoNodo/2);
-                g2d.drawString("null", nodoX + tamanoNodo + 30, nodoY + tamanoNodo/2 + 5);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 9));
+                int nullX = nodoX + tamanoNodo + 15;
+                g2d.drawLine(nodoX + tamanoNodo, nodoY + tamanoNodo/2, nullX, nodoY + tamanoNodo/2);
+                g2d.drawString("null", nullX + 5, nodoY + tamanoNodo/2 + 4);
+                
+                if (esListaDoble) {
+                    // En lista doble, también mostrar prev del último nodo
+                    g2d.drawString("prev", nodoX + tamanoNodo/4, nodoY + (3*tamanoNodo)/4);
+                }
             }
         }
         
-        // Dibujar puntero en la posición correcta
-        int posicionPuntero = obtenerPosicionPuntero(op.estadoDespues);
+        // Dibujar indicador del puntero
         if (nodos.length > 0 && posicionPuntero >= 0 && posicionPuntero < nodos.length) {
-            int punteroX = inicioX + (posicionPuntero * espacioEntre);
+            int punteroX = inicioX + (posicionPuntero * espacioMejorado);
             g2d.setColor(java.awt.Color.RED);
-            g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
-            g2d.drawString("puntero", punteroX, inicioY + tamanoNodo + 20);
-            dibujarFlecha(g2d, punteroX + 35, inicioY + tamanoNodo + 15, punteroX + tamanoNodo/2, inicioY + tamanoNodo + 5);
+            g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 11));
+            g2d.drawString("puntero", punteroX, inicioY - 20);
+            dibujarFlechaMejorada(g2d, punteroX + 35, inicioY - 15, punteroX + tamanoNodo/2, inicioY, "ptr");
         } else if (nodos.length > 0 && posicionPuntero == -1) {
             // Puntero es null
             g2d.setColor(java.awt.Color.RED);
-            g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
-            g2d.drawString("puntero -> null", inicioX, inicioY + tamanoNodo + 20);
+            g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 11));
+            g2d.drawString("puntero -> null", inicioX, inicioY - 20);
         }
         
-        // Explicación de la operación
+        // Explicación de la operación con mejor formato
         g2d.setColor(java.awt.Color.DARK_GRAY);
         g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 10));
         String explicacion = obtenerExplicacionGraficaOperacion(op);
         String[] lineas = explicacion.split("\n");
-        for (int i = 0; i < lineas.length && i < 3; i++) {
-            g2d.drawString(lineas[i], inicioX, inicioY + tamanoNodo + 50 + (i * 15));
+        int explicacionY = inicioY + tamanoNodo + (esListaDoble ? 70 : 50);
+        for (int i = 0; i < lineas.length && i < 4; i++) {
+            g2d.drawString(lineas[i], inicioX, explicacionY + (i * 14));
         }
     }
     
     /**
-     * Dibuja un nodo individual en el análisis
+     * Dibuja un nodo mejorado con mejor visualización
      */
-    private void dibujarNodoAnalisis(java.awt.Graphics2D g2d, int x, int y, int tamano, String valor, boolean esPuntero) {
+    private void dibujarNodoMejorado(java.awt.Graphics2D g2d, int x, int y, int tamano, String valor, boolean esPuntero, boolean esListaDoble) {
+        // Color de fondo según si es el puntero
+        if (esPuntero) {
+            // Nodo resaltado donde está el puntero
+            g2d.setColor(new java.awt.Color(255, 255, 0, 200)); // Amarillo translúcido
+            g2d.fillRect(x - 2, y - 2, tamano + 4, tamano + 4);
+            g2d.setColor(java.awt.Color.RED);
+            g2d.setStroke(new java.awt.BasicStroke(3));
+            g2d.drawRect(x - 2, y - 2, tamano + 4, tamano + 4);
+            g2d.setStroke(new java.awt.BasicStroke(1)); // Reset stroke
+        }
+        
         // Nodo principal
-        g2d.setColor(java.awt.Color.WHITE);
+        g2d.setColor(esPuntero ? new java.awt.Color(255, 255, 200) : java.awt.Color.WHITE);
         g2d.fillRect(x, y, tamano, tamano);
-        g2d.setColor(java.awt.Color.BLACK);
+        g2d.setColor(esPuntero ? java.awt.Color.RED : java.awt.Color.BLACK);
+        g2d.setStroke(new java.awt.BasicStroke(esPuntero ? 2 : 1));
         g2d.drawRect(x, y, tamano, tamano);
+        g2d.setStroke(new java.awt.BasicStroke(1)); // Reset stroke
         
         // Valor del nodo
-        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 12));
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, esPuntero ? 13 : 12));
+        g2d.setColor(esPuntero ? java.awt.Color.RED : java.awt.Color.BLACK);
         java.awt.FontMetrics fm = g2d.getFontMetrics();
         int textX = x + (tamano - fm.stringWidth(valor)) / 2;
         int textY = y + (tamano + fm.getAscent()) / 2;
         g2d.drawString(valor, textX, textY);
         
-        // Indicador de puntero
-        if (esPuntero && mostrarPunteroVisual) {
-            g2d.setColor(java.awt.Color.RED);
-            g2d.fillRect(x - 5, y - 5, tamano + 10, 3);
-            g2d.fillRect(x - 5, y + tamano + 2, tamano + 10, 3);
-            g2d.fillRect(x - 5, y - 5, 3, tamano + 10);
-            g2d.fillRect(x + tamano + 2, y - 5, 3, tamano + 10);
+        // Para lista doble, dividir el nodo para mostrar prev y next
+        if (esListaDoble) {
+            g2d.setColor(java.awt.Color.LIGHT_GRAY);
+            // Línea horizontal para separar prev/data/next
+            g2d.drawLine(x, y + tamano/3, x + tamano, y + tamano/3);
+            g2d.drawLine(x, y + 2*tamano/3, x + tamano, y + 2*tamano/3);
+            
+            // Etiquetas pequeñas
+            g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 8));
+            g2d.setColor(java.awt.Color.GRAY);
+            g2d.drawString("prev", x + 2, y + tamano/6 + 3);
+            g2d.drawString("next", x + 2, y + 5*tamano/6 + 3);
+        }
+        
+        // Sombra para mejor efecto visual
+        if (esPuntero) {
+            g2d.setColor(new java.awt.Color(255, 0, 0, 50));
+            g2d.fillRect(x + 3, y + 3, tamano, tamano);
         }
     }
     
     /**
-     * Dibuja una flecha entre dos puntos
+     * Dibuja una flecha mejorada con etiqueta
      */
-    private void dibujarFlecha(java.awt.Graphics2D g2d, int x1, int y1, int x2, int y2) {
+    private void dibujarFlechaMejorada(java.awt.Graphics2D g2d, int x1, int y1, int x2, int y2, String etiqueta) {
+        // Línea principal
         g2d.drawLine(x1, y1, x2, y2);
         
         // Calcular la punta de la flecha
         double angulo = Math.atan2(y2 - y1, x2 - x1);
-        int longitud = 8;
+        int longitud = 10;
         double anguloFlecha = Math.PI / 6;
         
         int x3 = (int) (x2 - longitud * Math.cos(angulo - anguloFlecha));
@@ -2039,9 +2109,23 @@ public class frmprincipal extends javax.swing.JFrame {
         int x4 = (int) (x2 - longitud * Math.cos(angulo + anguloFlecha));
         int y4 = (int) (y2 - longitud * Math.sin(angulo + anguloFlecha));
         
+        // Dibujar punta de flecha
         g2d.drawLine(x2, y2, x3, y3);
         g2d.drawLine(x2, y2, x4, y4);
+        
+        // Etiqueta en el medio de la flecha (opcional)
+        if (etiqueta != null && !etiqueta.isEmpty() && etiqueta.length() <= 4) {
+            g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 8));
+            int midX = (x1 + x2) / 2;
+            int midY = (y1 + y2) / 2 - 5;
+            g2d.drawString(etiqueta, midX - 8, midY);
+        }
     }
+    
+    /**
+     * Dibuja una flecha entre dos puntos
+     */
+
     
     /**
      * Obtiene la posición del puntero desde el estado de la estructura
