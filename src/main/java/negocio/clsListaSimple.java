@@ -51,6 +51,8 @@ public class clsListaSimple {
         if(cabeza == null) return -1;
         int val = cabeza.getDato();
         cabeza = cabeza.getRef();
+        // TDA CONSISTENCIA: Actualizar puntero al nuevo inicio
+        punteroActual = cabeza;
         return val;
     }
 
@@ -59,6 +61,8 @@ public class clsListaSimple {
         if(cabeza.getRef() == null){
             int val = cabeza.getDato();
             cabeza = null;
+            // TDA CONSISTENCIA: Lista vacía, puntero a null
+            punteroActual = null;
             return val;
         }
         clsNodo aux = cabeza;
@@ -67,12 +71,20 @@ public class clsListaSimple {
         }
         int val = aux.getRef().getDato();
         aux.setRef(null);
+        // TDA CONSISTENCIA: Si el puntero apuntaba al nodo eliminado, moverlo al anterior
+        if(punteroActual != null && punteroActual.getRef() == null){
+            punteroActual = aux;
+        }
         return val;
     }
 
     public int eliminarPorPos(int pos){
         if(pos < 0 || cabeza == null) return -1;
-        if(pos == 0) return eliminarInicio();
+        if(pos == 0) {
+            int eliminado = eliminarInicio();
+            punteroActual = cabeza; // Actualizar el puntero al nuevo inicio
+            return eliminado;
+        }
         clsNodo aux = cabeza;
         int i = 0;
         while(aux.getRef() != null && i < pos - 1){
@@ -82,6 +94,7 @@ public class clsListaSimple {
         if(aux.getRef() == null) return -1;
         int val = aux.getRef().getDato();
         aux.setRef(aux.getRef().getRef());
+        punteroActual = aux.getRef(); // Actualizar el puntero al siguiente nodo
         return val;
     }
 

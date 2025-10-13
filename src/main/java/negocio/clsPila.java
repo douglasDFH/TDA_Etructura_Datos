@@ -40,6 +40,7 @@ public class clsPila {
         if(this.cima != null){
             dato = cima.getDato();
             this.cima = this.cima.getRef();
+            this.punteroActual = this.cima; // Actualizar el puntero al nuevo nodo en la cima
         }
         return dato;
     }

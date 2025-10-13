@@ -65,15 +65,22 @@ public class clsListaDoble {
         cabeza = cabeza.getNext();
         if(cabeza == null) cola = null;
         else cabeza.setPrev(null);
+        // TDA CONSISTENCIA: Actualizar puntero al nuevo inicio
+        punteroActual = cabeza;
         return val;
     }
 
     public int eliminarFinal(){
         if(cola == null) return -1;
         int val = cola.getDato();
+        clsNodoDoble nodoEliminado = cola;
         cola = cola.getPrev();
         if(cola == null) cabeza = null;
         else cola.setNext(null);
+        // TDA CONSISTENCIA: Si el puntero apuntaba al nodo eliminado, moverlo al anterior
+        if(punteroActual == nodoEliminado){
+            punteroActual = cola;
+        }
         return val;
     }
 
@@ -382,9 +389,10 @@ public class clsListaDoble {
         if (anterior != null) {
             anterior.setNext(aux);
         } else {
-            cabeza = aux; // aux se convierte en la nueva cabeza
+            cabeza = aux; // Actualizar la cabeza si el nodo eliminado era el primero
         }
-        
+
+        punteroActual = aux; // Actualizar el puntero al nodo actual
         return valor;
     }
 

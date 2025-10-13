@@ -45,6 +45,7 @@ public class clsCola {
             if (this.primero == null) {  // Si queda vacía
                 this.ultimo = null;
             }
+            this.punteroActual = this.primero; // Actualizar el puntero al nuevo nodo en la cabeza
         }
         return dato;
     }
