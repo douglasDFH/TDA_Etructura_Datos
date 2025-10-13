@@ -1,34 +1,34 @@
 package negocio;
 
 public class clsListaDoble {
-    private clsNodoDoble head;
-    private clsNodoDoble tail;
+    private clsNodoDoble cabeza;
+    private clsNodoDoble cola;
 
     public clsListaDoble(){
-        this.head = null;
-        this.tail = null;
+        this.cabeza = null;
+        this.cola = null;
     }
 
     public void insertarInicio(int dato){
         clsNodoDoble n = new clsNodoDoble(dato);
-        if(head == null){
-            head = tail = n;
+        if(cabeza == null){
+            cabeza = cola = n;
             return;
         }
-        n.setNext(head);
-        head.setPrev(n);
-        head = n;
+        n.setNext(cabeza);
+        cabeza.setPrev(n);
+        cabeza = n;
     }
 
     public void insertarFinal(int dato){
         clsNodoDoble n = new clsNodoDoble(dato);
-        if(tail == null){
-            head = tail = n;
+        if(cola == null){
+            cabeza = cola = n;
             return;
         }
-        tail.setNext(n);
-        n.setPrev(tail);
-        tail = n;
+        cola.setNext(n);
+        n.setPrev(cola);
+        cola = n;
     }
 
     public boolean insertarEnPos(int pos, int dato){
@@ -37,14 +37,14 @@ public class clsListaDoble {
             insertarInicio(dato);
             return true;
         }
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         int i = 0;
         while(aux != null && i < pos - 1){
             aux = aux.getNext();
             i++;
         }
         if(aux == null) return false;
-        if(aux == tail){
+        if(aux == cola){
             insertarFinal(dato);
             return true;
         }
@@ -58,33 +58,33 @@ public class clsListaDoble {
     }
 
     public int eliminarInicio(){
-        if(head == null) return -1;
-        int val = head.getDato();
-        head = head.getNext();
-        if(head == null) tail = null;
-        else head.setPrev(null);
+        if(cabeza == null) return -1;
+        int val = cabeza.getDato();
+        cabeza = cabeza.getNext();
+        if(cabeza == null) cola = null;
+        else cabeza.setPrev(null);
         return val;
     }
 
     public int eliminarFinal(){
-        if(tail == null) return -1;
-        int val = tail.getDato();
-        tail = tail.getPrev();
-        if(tail == null) head = null;
-        else tail.setNext(null);
+        if(cola == null) return -1;
+        int val = cola.getDato();
+        cola = cola.getPrev();
+        if(cola == null) cabeza = null;
+        else cola.setNext(null);
         return val;
     }
 
     public boolean eliminarPorValor(int valor){
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         while(aux != null){
             if(aux.getDato() == valor){
                 clsNodoDoble p = aux.getPrev();
                 clsNodoDoble n = aux.getNext();
                 if(p != null) p.setNext(n);
-                else head = n;
+                else cabeza = n;
                 if(n != null) n.setPrev(p);
-                else tail = p;
+                else cola = p;
                 return true;
             }
             aux = aux.getNext();
@@ -93,7 +93,7 @@ public class clsListaDoble {
     }
 
     public boolean buscar(int valor){
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         while(aux != null){
             if(aux.getDato() == valor) return true;
             aux = aux.getNext();
@@ -108,7 +108,7 @@ public class clsListaDoble {
      */
     public int[] buscarTodasLasPosiciones(int valor) {
         java.util.ArrayList<Integer> posiciones = new java.util.ArrayList<>();
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         int posicion = 0;
         
         while(aux != null) {
@@ -129,7 +129,7 @@ public class clsListaDoble {
 
     public int size(){
         int cnt = 0;
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         while(aux != null){
             cnt++;
             aux = aux.getNext();
@@ -138,14 +138,14 @@ public class clsListaDoble {
     }
 
     public void vaciar(){
-        head = null;
-        tail = null;
+        cabeza = null;
+        cola = null;
     }
 
     public String recorridoForward(){
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         while(aux != null){
             sb.append(aux.getDato());
             if(aux.getNext() != null) sb.append(",");
@@ -158,7 +158,7 @@ public class clsListaDoble {
     public String recorridoBackward(){
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        clsNodoDoble aux = tail;
+        clsNodoDoble aux = cola;
         while(aux != null){
             sb.append(aux.getDato());
             if(aux.getPrev() != null) sb.append(",");
@@ -169,12 +169,12 @@ public class clsListaDoble {
     }
 
     // Getters para dibujo desde GUI
-    public clsNodoDoble getHead(){
-        return this.head;
+    public clsNodoDoble getCabeza(){
+        return this.cabeza;
     }
 
-    public clsNodoDoble getTail(){
-        return this.tail;
+    public clsNodoDoble getCola(){
+        return this.cola;
     }
 
     // ==================== MÉTODOS ADICIONALES PARA LISTA DOBLE ====================
@@ -187,12 +187,12 @@ public class clsListaDoble {
      */
     public boolean insertarIzquierda(int pos, int dato) {
         if (pos < 0) return false;
-        if (pos == 0 || head == null) {
+        if (pos == 0 || cabeza == null) {
             insertarInicio(dato);
             return true;
         }
         
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         int i = 0;
         
         // Navegar hasta la posición
@@ -214,7 +214,7 @@ public class clsListaDoble {
         if (anterior != null) {
             anterior.setNext(nuevo);
         } else {
-            head = nuevo; // El nuevo nodo es la nueva cabeza
+            cabeza = nuevo; // El nuevo nodo es la nueva cabeza
         }
         
         return true;
@@ -227,9 +227,9 @@ public class clsListaDoble {
      * @return true si se insertó correctamente, false si la posición no existe
      */
     public boolean insertarDerecha(int pos, int dato) {
-        if (pos < 0 || head == null) return false;
+        if (pos < 0 || cabeza == null) return false;
         
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         int i = 0;
         
         // Navegar hasta la posición
@@ -241,7 +241,7 @@ public class clsListaDoble {
         if (aux == null) return false; // Posición fuera de rango
         
         // Si es el último nodo, usar insertarFinal
-        if (aux == tail) {
+        if (aux == cola) {
             insertarFinal(dato);
             return true;
         }
@@ -267,9 +267,9 @@ public class clsListaDoble {
      * @return Valor del nodo eliminado, -1 si no se pudo eliminar
      */
     public int eliminarIzquierda(int pos) {
-        if (pos <= 0 || head == null) return -1; // No hay nodo a la izquierda de posición 0
+        if (pos <= 0 || cabeza == null) return -1; // No hay nodo a la izquierda de posición 0
         
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         int i = 0;
         
         // Navegar hasta la posición
@@ -290,7 +290,7 @@ public class clsListaDoble {
         if (anterior != null) {
             anterior.setNext(aux);
         } else {
-            head = aux; // aux se convierte en la nueva cabeza
+            cabeza = aux; // aux se convierte en la nueva cabeza
         }
         
         return valor;
@@ -302,9 +302,9 @@ public class clsListaDoble {
      * @return Valor del nodo eliminado, -1 si no se pudo eliminar
      */
     public int eliminarDerecha(int pos) {
-        if (pos < 0 || head == null) return -1;
+        if (pos < 0 || cabeza == null) return -1;
         
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         int i = 0;
         
         // Navegar hasta la posición
@@ -325,7 +325,7 @@ public class clsListaDoble {
         if (siguiente != null) {
             siguiente.setPrev(aux);
         } else {
-            tail = aux; // aux se convierte en la nueva cola
+            cola = aux; // aux se convierte en la nueva cola
         }
         
         return valor;
@@ -339,25 +339,25 @@ public class clsListaDoble {
         clsNodoDoble nuevo = new clsNodoDoble(dato);
         
         // Lista vacía
-        if (head == null) {
-            head = tail = nuevo;
+        if (cabeza == null) {
+            cabeza = cola = nuevo;
             return;
         }
         
-        // Insertar al inicio si es menor que head
-        if (dato <= head.getDato()) {
+        // Insertar al inicio si es menor que cabeza
+        if (dato <= cabeza.getDato()) {
             insertarInicio(dato);
             return;
         }
         
-        // Insertar al final si es mayor que tail
-        if (dato >= tail.getDato()) {
+        // Insertar al final si es mayor que cola
+        if (dato >= cola.getDato()) {
             insertarFinal(dato);
             return;
         }
         
         // Buscar posición correcta
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         while (aux.getNext() != null && aux.getNext().getDato() < dato) {
             aux = aux.getNext();
         }
@@ -378,7 +378,7 @@ public class clsListaDoble {
      */
     public int sumarElementos() {
         int suma = 0;
-        clsNodoDoble aux = head;
+        clsNodoDoble aux = cabeza;
         
         while (aux != null) {
             suma += aux.getDato();
@@ -392,12 +392,12 @@ public class clsListaDoble {
      * Ordenar la lista en orden ascendente usando algoritmo burbuja
      */
     public void ordenarAscendente() {
-        if (head == null || head.getNext() == null) return;
+        if (cabeza == null || cabeza.getNext() == null) return;
         
         boolean intercambio;
         do {
             intercambio = false;
-            clsNodoDoble actual = head;
+            clsNodoDoble actual = cabeza;
             
             while (actual.getNext() != null) {
                 if (actual.getDato() > actual.getNext().getDato()) {
@@ -417,6 +417,6 @@ public class clsListaDoble {
      * @return true si está vacía, false en caso contrario
      */
     public boolean estaVacia() {
-        return head == null;
+        return cabeza == null;
     }
 }

@@ -53,7 +53,7 @@ public class frmprincipal extends javax.swing.JFrame {
 
 
     private void adaptarControlesSegunPestaña(int selectedIndex) {
-        // selectedIndex: 0=Pila, 1=Cola, 2=Lista Simple, 3=Lista Doble
+        // selectedIndex: 0=Pila, 1=Cola, 2=Lista Simple, 3=Lista Doble esta son las pestañas segun la necesidad 
         
         // Controles básicos siempre visibles
         dato.setVisible(true);
@@ -215,7 +215,7 @@ public class frmprincipal extends javax.swing.JFrame {
         // Limpiar área de dibujo en la zona de pestañas
         objPintor.clearRect(50, 50, 600, 200);
         objPintor.drawString("LISTA DOBLE (null <- Head <-> ... <-> Tail -> null)", 60, 70);
-        clsNodoDoble cur = objListaDoble == null ? null : objListaDoble.getHead();
+        clsNodoDoble cur = objListaDoble == null ? null : objListaDoble.getCabeza();
         int j = 0;
         while(cur != null){
             graficarNodo(80 + j*70, 90, ""+cur.getDato());
@@ -225,7 +225,7 @@ public class frmprincipal extends javax.swing.JFrame {
             cur = cur.getNext();
             j++;
         }
-        if(objListaDoble.getHead() == null) {
+        if(objListaDoble.getCabeza() == null) {
             objPintor.drawString("Lista Doble vacía", 80, 110);
         }
     }
