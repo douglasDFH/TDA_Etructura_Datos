@@ -959,9 +959,12 @@ public class frmprincipal extends javax.swing.JFrame {
             int val = Integer.parseInt(txtDato.getText());
             int idx = tabbedPane.getSelectedIndex();
             boolean found = false;
+            String mensaje = "";
+            String titulo = "";
             
             switch(idx){
                 case 0: // Pila: buscar en toda la pila
+                    String estadoAntes0 = obtenerEstadoPila();
                     clsNodo p = objPila.getCima();
                     int posicionPila = 0;
                     java.util.ArrayList<Integer> posicionesPila = new java.util.ArrayList<>();
@@ -973,14 +976,28 @@ public class frmprincipal extends javax.swing.JFrame {
                         p = p.getRef(); 
                         posicionPila++;
                     }
+                    String estadoDespues0 = obtenerEstadoPila();
+                    registrarOperacion("PILA", "BUSCAR", String.valueOf(val), estadoAntes0, estadoDespues0);
+                    
+                    titulo = "Búsqueda en Pila";
                     if(found) {
-                        System.out.println("Dato " + val + " encontrado en posición(es): " + posicionesPila);
+                        mensaje = "🔍 Dato buscado: " + val + "\n";
+                        mensaje += "✅ Estado: ENCONTRADO\n";
+                        if(posicionesPila.size() == 1) {
+                            mensaje += "📍 Posición: " + posicionesPila.get(0);
+                        } else {
+                            mensaje += "📍 Posiciones encontradas: " + posicionesPila.toString() + "\n";
+                            mensaje += "📊 Total de coincidencias: " + posicionesPila.size();
+                        }
                     } else {
-                        System.out.println("Buscar " + val + " -> false");
+                        mensaje = "🔍 Dato buscado: " + val + "\n";
+                        mensaje += "❌ Estado: NO ENCONTRADO\n";
+                        mensaje += "📍 El dato no existe en la pila";
                     }
                     break;
                     
                 case 1: // Cola: buscar en toda la cola
+                    String estadoAntes1 = obtenerEstadoCola();
                     clsNodo pCola = objCola.getPrimero();
                     int posicionCola = 0;
                     java.util.ArrayList<Integer> posicionesCola = new java.util.ArrayList<>();
@@ -992,49 +1009,100 @@ public class frmprincipal extends javax.swing.JFrame {
                         pCola = pCola.getRef(); 
                         posicionCola++;
                     }
+                    String estadoDespues1 = obtenerEstadoCola();
+                    registrarOperacion("COLA", "BUSCAR", String.valueOf(val), estadoAntes1, estadoDespues1);
+                    
+                    titulo = "Búsqueda en Cola";
                     if(found) {
-                        System.out.println("Dato " + val + " encontrado en posición(es): " + posicionesCola);
+                        mensaje = "🔍 Dato buscado: " + val + "\n";
+                        mensaje += "✅ Estado: ENCONTRADO\n";
+                        if(posicionesCola.size() == 1) {
+                            mensaje += "📍 Posición: " + posicionesCola.get(0);
+                        } else {
+                            mensaje += "📍 Posiciones encontradas: " + posicionesCola.toString() + "\n";
+                            mensaje += "📊 Total de coincidencias: " + posicionesCola.size();
+                        }
                     } else {
-                        System.out.println("Buscar " + val + " -> false");
+                        mensaje = "🔍 Dato buscado: " + val + "\n";
+                        mensaje += "❌ Estado: NO ENCONTRADO\n";
+                        mensaje += "📍 El dato no existe en la cola";
                     }
                     break;
                     
                 case 2: // Lista Simple: buscar con posiciones múltiples
+                    String estadoAntes2 = obtenerEstadoListaSimple();
                     int[] posiciones = objListaSimple.buscarTodasLasPosiciones(val);
                     found = posiciones.length > 0;
+                    String estadoDespues2 = obtenerEstadoListaSimple();
+                    registrarOperacion("LISTA_SIMPLE", "BUSCAR", String.valueOf(val), estadoAntes2, estadoDespues2);
+                    
+                    titulo = "Búsqueda en Lista Simple";
                     if(found) {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("[");
-                        for(int i = 0; i < posiciones.length; i++) {
-                            sb.append(posiciones[i]);
-                            if(i < posiciones.length - 1) sb.append(",");
+                        mensaje = "🔍 Dato buscado: " + val + "\n";
+                        mensaje += "✅ Estado: ENCONTRADO\n";
+                        if(posiciones.length == 1) {
+                            mensaje += "📍 Posición: " + posiciones[0];
+                        } else {
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("[");
+                            for(int i = 0; i < posiciones.length; i++) {
+                                sb.append(posiciones[i]);
+                                if(i < posiciones.length - 1) sb.append(", ");
+                            }
+                            sb.append("]");
+                            mensaje += "📍 Posiciones encontradas: " + sb.toString() + "\n";
+                            mensaje += "📊 Total de coincidencias: " + posiciones.length;
                         }
-                        sb.append("]");
-                        System.out.println("Dato " + val + " -> true, posición " + sb.toString());
                     } else {
-                        System.out.println("Dato " + val + " -> false");
+                        mensaje = "🔍 Dato buscado: " + val + "\n";
+                        mensaje += "❌ Estado: NO ENCONTRADO\n";
+                        mensaje += "📍 El dato no existe en la lista";
                     }
                     break;
                     
                 case 3: // Lista Doble: buscar with posiciones múltiples
+                    String estadoAntes3 = obtenerEstadoListaDoble();
                     int[] posicionesDoble = objListaDoble.buscarTodasLasPosiciones(val);
                     found = posicionesDoble.length > 0;
+                    String estadoDespues3 = obtenerEstadoListaDoble();
+                    registrarOperacion("LISTA_DOBLE", "BUSCAR", String.valueOf(val), estadoAntes3, estadoDespues3);
+                    
+                    titulo = "Búsqueda en Lista Doble";
                     if(found) {
-                        StringBuilder sb2 = new StringBuilder();
-                        sb2.append("[");
-                        for(int i = 0; i < posicionesDoble.length; i++) {
-                            sb2.append(posicionesDoble[i]);
-                            if(i < posicionesDoble.length - 1) sb2.append(",");
+                        mensaje = "🔍 Dato buscado: " + val + "\n";
+                        mensaje += "✅ Estado: ENCONTRADO\n";
+                        if(posicionesDoble.length == 1) {
+                            mensaje += "📍 Posición: " + posicionesDoble[0];
+                        } else {
+                            StringBuilder sb2 = new StringBuilder();
+                            sb2.append("[");
+                            for(int i = 0; i < posicionesDoble.length; i++) {
+                                sb2.append(posicionesDoble[i]);
+                                if(i < posicionesDoble.length - 1) sb2.append(", ");
+                            }
+                            sb2.append("]");
+                            mensaje += "📍 Posiciones encontradas: " + sb2.toString() + "\n";
+                            mensaje += "📊 Total de coincidencias: " + posicionesDoble.length;
                         }
-                        sb2.append("]");
-                        System.out.println("Dato " + val + " -> true, posición " + sb2.toString());
                     } else {
-                        System.out.println("Dato " + val + " -> false");
+                        mensaje = "🔍 Dato buscado: " + val + "\n";
+                        mensaje += "❌ Estado: NO ENCONTRADO\n";
+                        mensaje += "📍 El dato no existe en la lista";
                     }
                     break;
             }
+            
+            // Mostrar mensaje modal
+            int tipoMensaje = found ? javax.swing.JOptionPane.INFORMATION_MESSAGE : javax.swing.JOptionPane.WARNING_MESSAGE;
+            javax.swing.JOptionPane.showMessageDialog(this, mensaje, titulo, tipoMensaje);
+            
             drawSelected(); // Refrescar visualización
-        }catch(Exception ex){ System.out.println("Valor inválido"); }
+        }catch(Exception ex){ 
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "❌ Error: Ingrese un valor numérico válido", 
+                "Valor Inválido", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void jButtonVaciarActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1222,10 +1290,16 @@ public class frmprincipal extends javax.swing.JFrame {
         
         switch(idx) {
             case 2: // Lista Simple
+                String estadoAntes2 = obtenerEstadoListaSimple();
                 objListaSimple.ordenarAscendente();
+                String estadoDespues2 = obtenerEstadoListaSimple();
+                registrarOperacion("LISTA_SIMPLE", "ORDENAR_ASCENDENTE", "", estadoAntes2, estadoDespues2);
                 break;
             case 3: // Lista Doble
+                String estadoAntes3 = obtenerEstadoListaDoble();
                 objListaDoble.ordenarAscendente();
+                String estadoDespues3 = obtenerEstadoListaDoble();
+                registrarOperacion("LISTA_DOBLE", "ORDENAR_ASCENDENTE", "", estadoAntes3, estadoDespues3);
                 break;
         }
         
@@ -1245,14 +1319,20 @@ public class frmprincipal extends javax.swing.JFrame {
         
         switch(idx) {
             case 2: // Lista Simple
+                String estadoAntes2 = obtenerEstadoListaSimple();
                 suma = objListaSimple.sumarElementos();
                 tamaño = objListaSimple.size();
                 tipoLista = "Lista Simple";
+                String estadoDespues2 = obtenerEstadoListaSimple();
+                registrarOperacion("LISTA_SIMPLE", "SUMAR_ELEMENTOS", "", estadoAntes2, estadoDespues2);
                 break;
             case 3: // Lista Doble
+                String estadoAntes3 = obtenerEstadoListaDoble();
                 suma = objListaDoble.sumarElementos();
                 tamaño = objListaDoble.size();
                 tipoLista = "Lista Doble";
+                String estadoDespues3 = obtenerEstadoListaDoble();
+                registrarOperacion("LISTA_DOBLE", "SUMAR_ELEMENTOS", "", estadoAntes3, estadoDespues3);
                 break;
         }
         
@@ -1823,7 +1903,8 @@ public class frmprincipal extends javax.swing.JFrame {
                     }
                     info.append("\nESTADO ANTES:\n").append(op.estadoAntes).append("\n");
                     info.append("\nESTADO DESPUÉS:\n").append(op.estadoDespues).append("\n");
-                    info.append("\n").append(obtenerExplicacionOperacion(op));
+                    info.append("\nEXPLICACIÓN TÉCNICA:\n").append(obtenerExplicacionOperacion(op));
+                    info.append("\n\nMÉTODO DE NEGOCIO:\n").append(obtenerCodigoNegocio(op));
                     areaEstado.setText(info.toString());
                 }
             }
@@ -2290,6 +2371,530 @@ public class frmprincipal extends javax.swing.JFrame {
         return explicacion.toString();
     }
     
+    /**
+     * Obtiene el código de la lógica de negocio utilizada para la operación
+     */
+    private String obtenerCodigoNegocio(OperacionAnalisis op) {
+        StringBuilder codigo = new StringBuilder();
+        
+        switch (op.operacion) {
+            case "INSERTAR_INICIO":
+                if (op.estructura.equals("LISTA_SIMPLE")) {
+                    codigo.append("// Método: insertarInicio(int dato)\n");
+                    codigo.append("clsNodo n = new clsNodo(").append(op.valor).append(");\n");
+                    codigo.append("n.setRef(cabeza);\n");
+                    codigo.append("cabeza = n;\n");
+                    codigo.append("// TDA: punteroActual = cabeza;");
+                } else if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: insertarInicio(int dato)\n");
+                    codigo.append("clsNodoDoble n = new clsNodoDoble(").append(op.valor).append(");\n");
+                    codigo.append("n.setNext(cabeza);\n");
+                    codigo.append("if(cabeza != null) cabeza.setPrev(n);\n");
+                    codigo.append("cabeza = n;\n");
+                    codigo.append("if(cola == null) cola = n;\n");
+                    codigo.append("// TDA: punteroActual = cabeza;");
+                }
+                break;
+                
+            case "INSERTAR_FINAL":
+                if (op.estructura.equals("LISTA_SIMPLE")) {
+                    codigo.append("// Método: insertarFinal(int dato)\n");
+                    codigo.append("clsNodo n = new clsNodo(").append(op.valor).append(");\n");
+                    codigo.append("if(cabeza == null) {\n");
+                    codigo.append("    cabeza = n;  // Primer nodo\n");
+                    codigo.append("    punteroActual = cabeza;  // TDA: Inicializar puntero\n");
+                    codigo.append("    return;\n");
+                    codigo.append("}\n");
+                    codigo.append("// Recorrer hasta el final\n");
+                    codigo.append("clsNodo aux = cabeza;\n");
+                    codigo.append("while(aux.getRef() != null) {\n");
+                    codigo.append("    aux = aux.getRef();\n");
+                    codigo.append("}\n");
+                    codigo.append("aux.setRef(n);  // Enlazar al final");
+                } else if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: insertarFinal(int dato)\n");
+                    codigo.append("clsNodoDoble n = new clsNodoDoble(").append(op.valor).append(");\n");
+                    codigo.append("if(cabeza == null) {\n");
+                    codigo.append("    cabeza = n;  // Primer nodo\n");
+                    codigo.append("    cola = n;\n");
+                    codigo.append("    punteroActual = cabeza;  // TDA: Inicializar puntero\n");
+                    codigo.append("    return;\n");
+                    codigo.append("}\n");
+                    codigo.append("// Agregar al final\n");
+                    codigo.append("n.setPrev(cola);\n");
+                    codigo.append("cola.setNext(n);\n");
+                    codigo.append("cola = n;  // Actualizar cola");
+                }
+                break;
+                
+            case "ELIMINAR_INICIO":
+                if (op.estructura.equals("LISTA_SIMPLE")) {
+                    codigo.append("// Método: eliminarInicio()\n");
+                    codigo.append("if(cabeza == null) return -1;\n");
+                    codigo.append("int val = cabeza.getDato();\n");
+                    codigo.append("cabeza = cabeza.getRef();\n");
+                    codigo.append("// TDA: punteroActual = cabeza;\n");
+                    codigo.append("return val;");
+                } else if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: eliminarInicio()\n");
+                    codigo.append("if(cabeza == null) return -1;\n");
+                    codigo.append("int val = cabeza.getDato();\n");
+                    codigo.append("cabeza = cabeza.getNext();\n");
+                    codigo.append("if(cabeza == null) cola = null;\n");
+                    codigo.append("else cabeza.setPrev(null);\n");
+                    codigo.append("// TDA: punteroActual = cabeza;\n");
+                    codigo.append("return val;");
+                }
+                break;
+                
+            case "INSERTAR_DERECHA":
+                if (op.estructura.equals("LISTA_SIMPLE")) {
+                    codigo.append("// Método: insertarDerecha(int pos, int valor)\n");
+                    codigo.append("clsNodo aux = cabeza;\n");
+                    codigo.append("for(int i = 0; i < pos && aux != null; i++)\n");
+                    codigo.append("    aux = aux.getRef();\n");
+                    codigo.append("if(aux == null) return false;\n");
+                    codigo.append("clsNodo nuevo = new clsNodo(").append(op.valor).append(");\n");
+                    codigo.append("nuevo.setRef(aux.getRef());\n");
+                    codigo.append("aux.setRef(nuevo);\n");
+                    codigo.append("return true;");
+                } else if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: insertarDerecha(int pos, int valor)\n");
+                    codigo.append("clsNodoDoble aux = obtenerNodoEnPosicion(pos);\n");
+                    codigo.append("if(aux == null) return false;\n");
+                    codigo.append("clsNodoDoble nuevo = new clsNodoDoble(").append(op.valor).append(");\n");
+                    codigo.append("nuevo.setNext(aux.getNext());\n");
+                    codigo.append("nuevo.setPrev(aux);\n");
+                    codigo.append("if(aux.getNext() != null)\n");
+                    codigo.append("    aux.getNext().setPrev(nuevo);\n");
+                    codigo.append("aux.setNext(nuevo);");
+                }
+                break;
+                
+            case "MOVER_PUNTERO_INICIO":
+                codigo.append("// Método: moverPunteroInicio()\n");
+                codigo.append("punteroActual = cabeza;\n");
+                codigo.append("// TDA: Posiciona en el primer nodo");
+                break;
+                
+            case "MOVER_PUNTERO_SIGUIENTE":
+                codigo.append("// Método: moverPunteroSiguiente()\n");
+                codigo.append("if(punteroActual != null && \n");
+                codigo.append("   punteroActual.getRef() != null) {\n");
+                codigo.append("    punteroActual = punteroActual.getRef();\n");
+                codigo.append("    return true;\n");
+                codigo.append("}\n");
+                codigo.append("return false;");
+                break;
+                
+            case "MOVER_PUNTERO_ANTERIOR":
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: moverPunteroAnterior()\n");
+                    codigo.append("if(punteroActual != null && \n");
+                    codigo.append("   punteroActual.getPrev() != null) {\n");
+                    codigo.append("    punteroActual = punteroActual.getPrev();\n");
+                    codigo.append("    return true;\n");
+                    codigo.append("}\n");
+                    codigo.append("return false;");
+                } else {
+                    codigo.append("// Lista Simple no soporta navegación anterior\n");
+                    codigo.append("// TDA: Solo enlaces unidireccionales");
+                }
+                break;
+                
+            case "POP":
+                codigo.append("// Método: eliminar() - Pila\n");
+                codigo.append("if(cima != null) {\n");
+                codigo.append("    int dato = cima.getDato();\n");
+                codigo.append("    cima = cima.getRef();\n");
+                codigo.append("    // TDA: punteroActual = cima;\n");
+                codigo.append("    return dato;\n");
+                codigo.append("}\n");
+                codigo.append("return -1;");
+                break;
+                
+            case "PUSH":
+                codigo.append("// Método: insert(int dato) - Pila\n");
+                codigo.append("clsNodo n = new clsNodo(").append(op.valor).append(");\n");
+                codigo.append("if(cima == null) {\n");
+                codigo.append("    cima = n;  // Primera inserción\n");
+                codigo.append("    punteroActual = cima;  // TDA: Inicializar puntero\n");
+                codigo.append("} else {\n");
+                codigo.append("    n.setRef(cima);  // Enlazar al tope\n");
+                codigo.append("    cima = n;        // Nuevo tope\n");
+                codigo.append("    punteroActual = cima;  // TDA: Actualizar puntero\n");
+                codigo.append("}");
+                break;
+                
+            case "DEQUEUE":
+                codigo.append("// Método: eliminar() - Cola\n");
+                codigo.append("if(primero != null) {\n");
+                codigo.append("    int dato = primero.getDato();\n");
+                codigo.append("    primero = primero.getRef();\n");
+                codigo.append("    if(primero == null) ultimo = null;\n");
+                codigo.append("    // TDA: punteroActual = primero;\n");
+                codigo.append("    return dato;\n");
+                codigo.append("}\n");
+                codigo.append("return -1;");
+                break;
+                
+            case "ENQUEUE":
+                codigo.append("// Método: insertar(int dato) - Cola\n");
+                codigo.append("clsNodo n = new clsNodo(").append(op.valor).append(");\n");
+                codigo.append("if(primero == null) {\n");
+                codigo.append("    primero = n;  // Primera inserción\n");
+                codigo.append("    ultimo = n;\n");
+                codigo.append("    punteroActual = primero;  // TDA: Inicializar puntero\n");
+                codigo.append("} else {\n");
+                codigo.append("    ultimo.setRef(n);  // Enlazar al final\n");
+                codigo.append("    ultimo = n;        // Nuevo último\n");
+                codigo.append("    // punteroActual mantiene su posición\n");
+                codigo.append("}");
+                break;
+                
+            case "INSERTAR_IZQUIERDA":
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: insertarIzquierda(int pos, int valor)\n");
+                    codigo.append("if (pos <= 0 || cabeza == null) return false;\n\n");
+                    codigo.append("// Navegar hasta la posición\n");
+                    codigo.append("clsNodoDoble aux = cabeza;\n");
+                    codigo.append("for (int i = 0; i < pos && aux != null; i++) {\n");
+                    codigo.append("    aux = aux.getNext();\n");
+                    codigo.append("}\n");
+                    codigo.append("if (aux == null || aux.getPrev() == null) return false;\n\n");
+                    codigo.append("// Crear nuevo nodo\n");
+                    codigo.append("clsNodoDoble nuevo = new clsNodoDoble(").append(op.valor).append(");\n");
+                    codigo.append("clsNodoDoble anterior = aux.getPrev();\n\n");
+                    codigo.append("// Establecer enlaces\n");
+                    codigo.append("nuevo.setNext(aux);\n");
+                    codigo.append("nuevo.setPrev(anterior);\n");
+                    codigo.append("anterior.setNext(nuevo);\n");
+                    codigo.append("aux.setPrev(nuevo);\n");
+                    codigo.append("// TDA: punteroActual = aux (mantiene posición)");
+                }
+                break;
+                
+            case "ELIMINAR_IZQUIERDA":
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: eliminarIzquierda(int pos)\n");
+                    codigo.append("if (pos <= 0 || cabeza == null) return -1;\n\n");
+                    codigo.append("// Navegar hasta la posición\n");
+                    codigo.append("clsNodoDoble aux = cabeza;\n");
+                    codigo.append("for (int i = 0; i < pos && aux != null; i++) {\n");
+                    codigo.append("    aux = aux.getNext();\n");
+                    codigo.append("}\n");
+                    codigo.append("if (aux == null || aux.getPrev() == null) return -1;\n\n");
+                    codigo.append("// Eliminar el nodo anterior\n");
+                    codigo.append("clsNodoDoble aEliminar = aux.getPrev();\n");
+                    codigo.append("int valor = aEliminar.getDato();\n");
+                    codigo.append("clsNodoDoble anterior = aEliminar.getPrev();\n\n");
+                    codigo.append("// Actualizar enlaces\n");
+                    codigo.append("aux.setPrev(anterior);\n");
+                    codigo.append("if (anterior != null) {\n");
+                    codigo.append("    anterior.setNext(aux);\n");
+                    codigo.append("} else {\n");
+                    codigo.append("    cabeza = aux; // Actualizar cabeza\n");
+                    codigo.append("}\n");
+                    codigo.append("// TDA: punteroActual = aux\n");
+                    codigo.append("return valor;");
+                }
+                break;
+                
+            case "ELIMINAR_DERECHA":
+                if (op.estructura.equals("LISTA_SIMPLE")) {
+                    codigo.append("// Método: eliminarDerecha(int pos)\n");
+                    codigo.append("if (pos < 0 || cabeza == null) return -1;\n\n");
+                    codigo.append("// Navegar hasta la posición\n");
+                    codigo.append("clsNodo aux = cabeza;\n");
+                    codigo.append("for (int i = 0; i < pos && aux != null; i++) {\n");
+                    codigo.append("    aux = aux.getRef();\n");
+                    codigo.append("}\n");
+                    codigo.append("if (aux == null || aux.getRef() == null) return -1;\n\n");
+                    codigo.append("// Eliminar el nodo siguiente\n");
+                    codigo.append("clsNodo aEliminar = aux.getRef();\n");
+                    codigo.append("int valor = aEliminar.getDato();\n");
+                    codigo.append("aux.setRef(aEliminar.getRef());\n");
+                    codigo.append("// TDA: punteroActual = aux.getRef()\n");
+                    codigo.append("return valor;");
+                } else if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: eliminarDerecha(int pos)\n");
+                    codigo.append("if (pos < 0 || cabeza == null) return -1;\n\n");
+                    codigo.append("// Navegar hasta la posición\n");
+                    codigo.append("clsNodoDoble aux = cabeza;\n");
+                    codigo.append("for (int i = 0; i < pos && aux != null; i++) {\n");
+                    codigo.append("    aux = aux.getNext();\n");
+                    codigo.append("}\n");
+                    codigo.append("if (aux == null || aux.getNext() == null) return -1;\n\n");
+                    codigo.append("// Eliminar el nodo siguiente\n");
+                    codigo.append("clsNodoDoble aEliminar = aux.getNext();\n");
+                    codigo.append("int valor = aEliminar.getDato();\n");
+                    codigo.append("clsNodoDoble siguiente = aEliminar.getNext();\n\n");
+                    codigo.append("// Actualizar enlaces\n");
+                    codigo.append("aux.setNext(siguiente);\n");
+                    codigo.append("if (siguiente != null) {\n");
+                    codigo.append("    siguiente.setPrev(aux);\n");
+                    codigo.append("} else {\n");
+                    codigo.append("    cola = aux; // Actualizar cola\n");
+                    codigo.append("}\n");
+                    codigo.append("return valor;");
+                }
+                break;
+                
+            case "VACIAR":
+                if (op.estructura.equals("PILA")) {
+                    codigo.append("// Método: vaciarPila()\n");
+                    codigo.append("cima = null;\n");
+                    codigo.append("punteroActual = null;\n");
+                    codigo.append("// TDA: Libera todas las referencias");
+                } else if (op.estructura.equals("COLA")) {
+                    codigo.append("// Método: vaciarCola()\n");
+                    codigo.append("primero = null;\n");
+                    codigo.append("ultimo = null;\n");
+                    codigo.append("punteroActual = null;\n");
+                    codigo.append("// TDA: Libera todas las referencias");
+                } else if (op.estructura.equals("LISTA_SIMPLE")) {
+                    codigo.append("// Método: vaciar()\n");
+                    codigo.append("cabeza = null;\n");
+                    codigo.append("punteroActual = null;\n");
+                    codigo.append("// TDA: Libera todas las referencias");
+                } else if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: vaciar()\n");
+                    codigo.append("cabeza = null;\n");
+                    codigo.append("cola = null;\n");
+                    codigo.append("punteroActual = null;\n");
+                    codigo.append("// TDA: Libera todas las referencias");
+                }
+                break;
+                
+            case "ORDENAR_ASCENDENTE":
+                if (op.estructura.equals("LISTA_SIMPLE")) {
+                    codigo.append("// Método: ordenarAscendente()\n");
+                    codigo.append("if (cabeza == null || cabeza.getRef() == null) return;\n\n");
+                    codigo.append("// Algoritmo burbuja para listas enlazadas\n");
+                    codigo.append("boolean intercambio;\n");
+                    codigo.append("do {\n");
+                    codigo.append("    intercambio = false;\n");
+                    codigo.append("    clsNodo actual = cabeza;\n");
+                    codigo.append("    while (actual.getRef() != null) {\n");
+                    codigo.append("        if (actual.getDato() > actual.getRef().getDato()) {\n");
+                    codigo.append("            // Intercambiar valores\n");
+                    codigo.append("            int temp = actual.getDato();\n");
+                    codigo.append("            actual.setDato(actual.getRef().getDato());\n");
+                    codigo.append("            actual.getRef().setDato(temp);\n");
+                    codigo.append("            intercambio = true;\n");
+                    codigo.append("        }\n");
+                    codigo.append("        actual = actual.getRef();\n");
+                    codigo.append("    }\n");
+                    codigo.append("} while (intercambio);\n");
+                    codigo.append("// TDA: punteroActual mantiene su referencia");
+                } else if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: ordenarAscendente()\n");
+                    codigo.append("if (cabeza == null || cabeza.getNext() == null) return;\n\n");
+                    codigo.append("// Algoritmo burbuja para listas doblemente enlazadas\n");
+                    codigo.append("boolean intercambio;\n");
+                    codigo.append("do {\n");
+                    codigo.append("    intercambio = false;\n");
+                    codigo.append("    clsNodoDoble actual = cabeza;\n");
+                    codigo.append("    while (actual.getNext() != null) {\n");
+                    codigo.append("        if (actual.getDato() > actual.getNext().getDato()) {\n");
+                    codigo.append("            // Intercambiar valores\n");
+                    codigo.append("            int temp = actual.getDato();\n");
+                    codigo.append("            actual.setDato(actual.getNext().getDato());\n");
+                    codigo.append("            actual.getNext().setDato(temp);\n");
+                    codigo.append("            intercambio = true;\n");
+                    codigo.append("        }\n");
+                    codigo.append("        actual = actual.getNext();\n");
+                    codigo.append("    }\n");
+                    codigo.append("} while (intercambio);\n");
+                    codigo.append("// TDA: punteroActual mantiene su referencia");
+                }
+                break;
+                
+            case "SUMAR_ELEMENTOS":
+                if (op.estructura.equals("LISTA_SIMPLE")) {
+                    codigo.append("// Método: sumarElementos()\n");
+                    codigo.append("int suma = 0;\n");
+                    codigo.append("clsNodo actual = cabeza;\n");
+                    codigo.append("while (actual != null) {\n");
+                    codigo.append("    suma += actual.getDato();\n");
+                    codigo.append("    actual = actual.getRef();\n");
+                    codigo.append("}\n");
+                    codigo.append("return suma;\n");
+                    codigo.append("// TDA: Operación de solo lectura");
+                } else if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: sumarElementos()\n");
+                    codigo.append("int suma = 0;\n");
+                    codigo.append("clsNodoDoble actual = cabeza;\n");
+                    codigo.append("while (actual != null) {\n");
+                    codigo.append("    suma += actual.getDato();\n");
+                    codigo.append("    actual = actual.getNext();\n");
+                    codigo.append("}\n");
+                    codigo.append("return suma;\n");
+                    codigo.append("// TDA: Operación de solo lectura");
+                }
+                break;
+                
+            case "BUSCAR":
+                if (op.estructura.equals("PILA")) {
+                    codigo.append("// Método: buscar(int valor)\n");
+                    codigo.append("clsNodo actual = cima;\n");
+                    codigo.append("int posicion = 0;\n");
+                    codigo.append("ArrayList<Integer> posiciones = new ArrayList<>();\n\n");
+                    codigo.append("while (actual != null) {\n");
+                    codigo.append("    if (actual.getDato() == ").append(op.valor).append(") {\n");
+                    codigo.append("        posiciones.add(posicion);\n");
+                    codigo.append("    }\n");
+                    codigo.append("    actual = actual.getRef();\n");
+                    codigo.append("    posicion++;\n");
+                    codigo.append("}\n");
+                    codigo.append("// TDA: Operación de solo lectura, no afecta punteros");
+                } else if (op.estructura.equals("COLA")) {
+                    codigo.append("// Método: buscar(int valor)\n");
+                    codigo.append("clsNodo actual = primero;\n");
+                    codigo.append("int posicion = 0;\n");
+                    codigo.append("ArrayList<Integer> posiciones = new ArrayList<>();\n\n");
+                    codigo.append("while (actual != null) {\n");
+                    codigo.append("    if (actual.getDato() == ").append(op.valor).append(") {\n");
+                    codigo.append("        posiciones.add(posicion);\n");
+                    codigo.append("    }\n");
+                    codigo.append("    actual = actual.getRef();\n");
+                    codigo.append("    posicion++;\n");
+                    codigo.append("}\n");
+                    codigo.append("// TDA: Operación de solo lectura, no afecta punteros");
+                } else if (op.estructura.equals("LISTA_SIMPLE")) {
+                    codigo.append("// Método: buscarTodasLasPosiciones(int valor)\n");
+                    codigo.append("ArrayList<Integer> posiciones = new ArrayList<>();\n");
+                    codigo.append("clsNodo actual = cabeza;\n");
+                    codigo.append("int indice = 0;\n\n");
+                    codigo.append("while (actual != null) {\n");
+                    codigo.append("    if (actual.getDato() == ").append(op.valor).append(") {\n");
+                    codigo.append("        posiciones.add(indice);\n");
+                    codigo.append("    }\n");
+                    codigo.append("    actual = actual.getRef();\n");
+                    codigo.append("    indice++;\n");
+                    codigo.append("}\n");
+                    codigo.append("// Convertir a array y retornar\n");
+                    codigo.append("return posiciones.toArray(new int[0]);\n");
+                    codigo.append("// TDA: Operación de solo lectura");
+                } else if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: buscarTodasLasPosiciones(int valor)\n");
+                    codigo.append("ArrayList<Integer> posiciones = new ArrayList<>();\n");
+                    codigo.append("clsNodoDoble actual = cabeza;\n");
+                    codigo.append("int indice = 0;\n\n");
+                    codigo.append("while (actual != null) {\n");
+                    codigo.append("    if (actual.getDato() == ").append(op.valor).append(") {\n");
+                    codigo.append("        posiciones.add(indice);\n");
+                    codigo.append("    }\n");
+                    codigo.append("    actual = actual.getNext();\n");
+                    codigo.append("    indice++;\n");
+                    codigo.append("}\n");
+                    codigo.append("// Convertir a array y retornar\n");
+                    codigo.append("return posiciones.toArray(new int[0]);\n");
+                    codigo.append("// TDA: Operación de solo lectura");
+                }
+                break;
+                
+            case "INSERTAR_ORDENADO":
+                if (op.estructura.equals("LISTA_SIMPLE")) {
+                    codigo.append("// Método: insertarOrdenado(int valor)\n");
+                    codigo.append("clsNodo nuevo = new clsNodo(").append(op.valor).append(");\n\n");
+                    codigo.append("// Si lista vacía o valor menor al primero\n");
+                    codigo.append("if (cabeza == null || ").append(op.valor).append(" <= cabeza.getDato()) {\n");
+                    codigo.append("    nuevo.setRef(cabeza);\n");
+                    codigo.append("    cabeza = nuevo;\n");
+                    codigo.append("    punteroActual = cabeza;\n");
+                    codigo.append("    return;\n");
+                    codigo.append("}\n\n");
+                    codigo.append("// Buscar posición correcta\n");
+                    codigo.append("clsNodo actual = cabeza;\n");
+                    codigo.append("while (actual.getRef() != null && \n");
+                    codigo.append("       actual.getRef().getDato() < ").append(op.valor).append(") {\n");
+                    codigo.append("    actual = actual.getRef();\n");
+                    codigo.append("}\n\n");
+                    codigo.append("// Insertar en posición\n");
+                    codigo.append("nuevo.setRef(actual.getRef());\n");
+                    codigo.append("actual.setRef(nuevo);\n");
+                    codigo.append("// TDA: punteroActual = nuevo");
+                } else if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// Método: insertarOrdenado(int valor)\n");
+                    codigo.append("clsNodoDoble nuevo = new clsNodoDoble(").append(op.valor).append(");\n\n");
+                    codigo.append("// Si lista vacía\n");
+                    codigo.append("if (cabeza == null) {\n");
+                    codigo.append("    cabeza = cola = nuevo;\n");
+                    codigo.append("    punteroActual = cabeza;\n");
+                    codigo.append("    return;\n");
+                    codigo.append("}\n\n");
+                    codigo.append("// Si valor menor al primero\n");
+                    codigo.append("if (").append(op.valor).append(" <= cabeza.getDato()) {\n");
+                    codigo.append("    nuevo.setNext(cabeza);\n");
+                    codigo.append("    cabeza.setPrev(nuevo);\n");
+                    codigo.append("    cabeza = nuevo;\n");
+                    codigo.append("    punteroActual = cabeza;\n");
+                    codigo.append("    return;\n");
+                    codigo.append("}\n\n");
+                    codigo.append("// Buscar posición correcta\n");
+                    codigo.append("clsNodoDoble actual = cabeza;\n");
+                    codigo.append("while (actual.getNext() != null && \n");
+                    codigo.append("       actual.getNext().getDato() < ").append(op.valor).append(") {\n");
+                    codigo.append("    actual = actual.getNext();\n");
+                    codigo.append("}\n\n");
+                    codigo.append("// Insertar después de actual\n");
+                    codigo.append("nuevo.setNext(actual.getNext());\n");
+                    codigo.append("nuevo.setPrev(actual);\n");
+                    codigo.append("if (actual.getNext() != null) {\n");
+                    codigo.append("    actual.getNext().setPrev(nuevo);\n");
+                    codigo.append("} else {\n");
+                    codigo.append("    cola = nuevo;\n");
+                    codigo.append("}\n");
+                    codigo.append("actual.setNext(nuevo);\n");
+                    codigo.append("// TDA: punteroActual = nuevo");
+                }
+                break;
+                
+            default:
+                // Casos adicionales para operaciones no específicamente definidas
+                if (op.operacion.contains("INSERTAR") && !op.valor.isEmpty()) {
+                    codigo.append("// Operación de Inserción: ").append(op.operacion).append("\n");
+                    codigo.append("// Valor insertado: ").append(op.valor).append("\n");
+                    codigo.append("// Estructura: ").append(op.estructura).append("\n\n");
+                    codigo.append("// Lógica general de inserción:\n");
+                    codigo.append("// 1. Crear nuevo nodo con el valor\n");
+                    codigo.append("// 2. Establecer enlaces apropiados\n");
+                    codigo.append("// 3. Actualizar referencias de cabeza/cola\n");
+                    codigo.append("// 4. Posicionar puntero según reglas TDA");
+                } else if (op.operacion.contains("ELIMINAR")) {
+                    codigo.append("// Operación de Eliminación: ").append(op.operacion).append("\n");
+                    if (!op.valor.isEmpty()) {
+                        codigo.append("// Valor eliminado: ").append(op.valor).append("\n");
+                    }
+                    codigo.append("// Estructura: ").append(op.estructura).append("\n\n");
+                    codigo.append("// Lógica general de eliminación:\n");
+                    codigo.append("// 1. Localizar el nodo a eliminar\n");
+                    codigo.append("// 2. Actualizar enlaces de nodos vecinos\n");
+                    codigo.append("// 3. Liberar memoria del nodo eliminado\n");
+                    codigo.append("// 4. Reposicionar puntero si es necesario");
+                } else if (op.operacion.contains("MOVER")) {
+                    codigo.append("// Operación de Navegación: ").append(op.operacion).append("\n");
+                    codigo.append("// Estructura: ").append(op.estructura).append("\n\n");
+                    codigo.append("// Lógica de navegación del puntero:\n");
+                    codigo.append("// Actualizar punteroActual según la dirección\n");
+                    codigo.append("// Verificar límites de la estructura\n");
+                    codigo.append("// Mantener consistencia TDA");
+                } else {
+                    codigo.append("// Operación: ").append(op.operacion).append("\n");
+                    codigo.append("// Estructura: ").append(op.estructura).append("\n");
+                    if (!op.valor.isEmpty()) {
+                        codigo.append("// Valor: ").append(op.valor).append("\n");
+                    }
+                    codigo.append("\n// Consulte las clases de negocio:\n");
+                    codigo.append("// - clsPila.java, clsCola.java\n");
+                    codigo.append("// - clsListaSimple.java, clsListaDoble.java\n");
+                    codigo.append("// para ver la implementación específica");
+                }
+        }
+        
+        return codigo.toString();
+    }
 
     
     // Métodos auxiliares para obtener estado de las estructuras
