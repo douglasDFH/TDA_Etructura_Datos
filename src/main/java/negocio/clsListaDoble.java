@@ -1,533 +1,447 @@
 package negocio;
 
+
 public class clsListaDoble {
     private clsNodoDoble cabeza;
     private clsNodoDoble cola;
-    private clsNodoDoble punteroActual; // Puntero para navegación y visualización
+    private clsNodoDoble pLD; // Puntero Lista Doble 
 
     public clsListaDoble(){
         this.cabeza = null;
         this.cola = null;
-        this.punteroActual = null;
+        this.pLD = null;
     }
-
+    
     public void insertarInicio(int dato){
-        clsNodoDoble n = new clsNodoDoble(dato);
+        clsNodoDoble nuevo = new clsNodoDoble(dato);
         if(cabeza == null){
-            cabeza = cola = n;
-            return;
+            // Lista vacía
+            cabeza = cola = nuevo;
+            pLD = nuevo; // El puntero apunta al primer nodo
+        } else {
+            // Lista con elementos
+            nuevo.setRefD(cabeza); // Referencia Derecha apunta a la cabeza actual
+            cabeza.setRefI(nuevo); // Referencia Izquierda de cabeza apunta al nuevo
+            cabeza = nuevo;
         }
-        n.setNext(cabeza);
-        cabeza.setPrev(n);
-        cabeza = n;
     }
+    
 
     public void insertarFinal(int dato){
-        clsNodoDoble n = new clsNodoDoble(dato);
+        clsNodoDoble nuevo = new clsNodoDoble(dato);
         if(cola == null){
-            cabeza = cola = n;
-            return;
-        }
-        cola.setNext(n);
-        n.setPrev(cola);
-        cola = n;
-    }
-
-    public boolean insertarEnPos(int pos, int dato){
-        if(pos < 0) return false;
-        if(pos == 0){
-            insertarInicio(dato);
-            return true;
-        }
-        clsNodoDoble aux = cabeza;
-        int i = 0;
-        while(aux != null && i < pos - 1){
-            aux = aux.getNext();
-            i++;
-        }
-        if(aux == null) return false;
-        if(aux == cola){
-            insertarFinal(dato);
-            return true;
-        }
-        clsNodoDoble n = new clsNodoDoble(dato);
-        clsNodoDoble siguiente = aux.getNext();
-        aux.setNext(n);
-        n.setPrev(aux);
-        n.setNext(siguiente);
-        if(siguiente != null) siguiente.setPrev(n);
-        return true;
-    }
-
-    public int eliminarInicio(){
-        if(cabeza == null) return -1;
-        int val = cabeza.getDato();
-        cabeza = cabeza.getNext();
-        if(cabeza == null) cola = null;
-        else cabeza.setPrev(null);
-        // TDA CONSISTENCIA: Actualizar puntero al nuevo inicio
-        punteroActual = cabeza;
-        return val;
-    }
-
-    public int eliminarFinal(){
-        if(cola == null) return -1;
-        int val = cola.getDato();
-        clsNodoDoble nodoEliminado = cola;
-        cola = cola.getPrev();
-        if(cola == null) cabeza = null;
-        else cola.setNext(null);
-        // TDA CONSISTENCIA: Si el puntero apuntaba al nodo eliminado, moverlo al anterior
-        if(punteroActual == nodoEliminado){
-            punteroActual = cola;
-        }
-        return val;
-    }
-
-    public boolean eliminarPorValor(int valor){
-        clsNodoDoble aux = cabeza;
-        while(aux != null){
-            if(aux.getDato() == valor){
-                clsNodoDoble p = aux.getPrev();
-                clsNodoDoble n = aux.getNext();
-                if(p != null) p.setNext(n);
-                else cabeza = n;
-                if(n != null) n.setPrev(p);
-                else cola = p;
-                return true;
-            }
-            aux = aux.getNext();
-        }
-        return false;
-    }
-
-    public boolean buscar(int valor){
-        clsNodoDoble aux = cabeza;
-        while(aux != null){
-            if(aux.getDato() == valor) return true;
-            aux = aux.getNext();
-        }
-        return false;
-    }
-
-    /**
-     * Busca un valor y retorna todas las posiciones donde se encuentra
-     * @param valor Valor a buscar
-     * @return Array con todas las posiciones (0-indexadas) donde se encuentra el valor
-     */
-    public int[] buscarTodasLasPosiciones(int valor) {
-        java.util.ArrayList<Integer> posiciones = new java.util.ArrayList<>();
-        clsNodoDoble aux = cabeza;
-        int posicion = 0;
-        
-        while(aux != null) {
-            if(aux.getDato() == valor) {
-                posiciones.add(posicion);
-            }
-            aux = aux.getNext();
-            posicion++;
-        }
-        
-        // Convertir ArrayList a array int[]
-        int[] resultado = new int[posiciones.size()];
-        for(int i = 0; i < posiciones.size(); i++) {
-            resultado[i] = posiciones.get(i);
-        }
-        return resultado;
-    }
-
-    public int size(){
-        int cnt = 0;
-        clsNodoDoble aux = cabeza;
-        while(aux != null){
-            cnt++;
-            aux = aux.getNext();
-        }
-        return cnt;
-    }
-
-    public void vaciar(){
-        cabeza = null;
-        cola = null;
-        punteroActual = null;
-    }
-    
-    // ==================== MÉTODOS DE NAVEGACIÓN DE PUNTERO ====================
-    
-    /**
-     * Mover el puntero al inicio (cabeza) de la lista
-     */
-    public void moverPunteroInicio() {
-        punteroActual = cabeza;
-    }
-    
-    /**
-     * Mover el puntero al siguiente elemento (hacia adelante)
-     */
-    public boolean moverPunteroSiguiente() {
-        if (punteroActual != null && punteroActual.getNext() != null) {
-            punteroActual = punteroActual.getNext();
-            return true;
-        }
-        return false;
-    }
-    
-    /**
-     * Mover el puntero al anterior elemento (hacia atrás)
-     */
-    public boolean moverPunteroAnterior() {
-        if (punteroActual != null && punteroActual.getPrev() != null) {
-            punteroActual = punteroActual.getPrev();
-            return true;
-        }
-        return false;
-    }
-    
-    /**
-     * Mover el puntero al final (cola) de la lista
-     */
-    public void moverPunteroFinal() {
-        punteroActual = cola;
-    }
-    
-    /**
-     * Mover el puntero a una posición específica
-     */
-    public boolean moverPunteroAPosicion(int pos) {
-        if (pos < 0 || cabeza == null) {
-            punteroActual = null;
-            return false;
-        }
-        
-        punteroActual = cabeza;
-        int i = 0;
-        
-        while (punteroActual != null && i < pos) {
-            punteroActual = punteroActual.getNext();
-            i++;
-        }
-        
-        return punteroActual != null;
-    }
-    
-    /**
-     * Obtener el nodo donde está el puntero actual
-     */
-    public clsNodoDoble getPunteroActual() {
-        return punteroActual;
-    }
-    
-    /**
-     * Obtener la posición del puntero actual (0-indexada)
-     */
-    public int getPosicionPuntero() {
-        if (punteroActual == null || cabeza == null) return -1;
-        
-        clsNodoDoble temp = cabeza;
-        int posicion = 0;
-        
-        while (temp != null) {
-            if (temp == punteroActual) return posicion;
-            temp = temp.getNext();
-            posicion++;
-        }
-        return -1;
-    }
-    
-    /**
-     * Verificar si el puntero es nulo
-     */
-    public boolean esPunteroNulo() {
-        return punteroActual == null;
-    }
-
-    public String recorridoForward(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        clsNodoDoble aux = cabeza;
-        while(aux != null){
-            sb.append(aux.getDato());
-            if(aux.getNext() != null) sb.append(",");
-            aux = aux.getNext();
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    public String recorridoBackward(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        clsNodoDoble aux = cola;
-        while(aux != null){
-            sb.append(aux.getDato());
-            if(aux.getPrev() != null) sb.append(",");
-            aux = aux.getPrev();
-        }
-        sb.append("]");
-        return sb.toString();
-    }
-
-    // Getters para dibujo desde GUI
-    public clsNodoDoble getCabeza(){
-        return this.cabeza;
-    }
-
-    public clsNodoDoble getCola(){
-        return this.cola;
-    }
-
-    // ==================== MÉTODOS ADICIONALES PARA LISTA DOBLE ====================
-
-    /**
-     * Insertar a la izquierda de una posición específica (antes del nodo en esa posición)
-     * @param pos Posición de referencia (0-indexada)
-     * @param dato Valor a insertar
-     * @return true si se insertó correctamente, false si la posición no existe
-     */
-    public boolean insertarIzquierda(int pos, int dato) {
-        if (pos < 0) return false;
-        if (pos == 0 || cabeza == null) {
-            insertarInicio(dato);
-            return true;
-        }
-        
-        clsNodoDoble aux = cabeza;
-        int i = 0;
-        
-        // Navegar hasta la posición
-        while (aux != null && i < pos) {
-            aux = aux.getNext();
-            i++;
-        }
-        
-        if (aux == null) return false; // Posición fuera de rango
-        
-        // Insertar antes del nodo actual
-        clsNodoDoble nuevo = new clsNodoDoble(dato);
-        clsNodoDoble anterior = aux.getPrev();
-        
-        nuevo.setNext(aux);
-        nuevo.setPrev(anterior);
-        aux.setPrev(nuevo);
-        
-        if (anterior != null) {
-            anterior.setNext(nuevo);
-        } else {
-            cabeza = nuevo; // El nuevo nodo es la nueva cabeza
-        }
-        
-        return true;
-    }
-
-    /**
-     * Insertar a la derecha de una posición específica (después del nodo en esa posición)
-     * @param pos Posición de referencia (0-indexada)
-     * @param dato Valor a insertar
-     * @return true si se insertó correctamente, false si la posición no existe
-     */
-    public boolean insertarDerecha(int pos, int dato) {
-        if (pos < 0 || cabeza == null) return false;
-        
-        clsNodoDoble aux = cabeza;
-        int i = 0;
-        
-        // Navegar hasta la posición
-        while (aux != null && i < pos) {
-            aux = aux.getNext();
-            i++;
-        }
-        
-        if (aux == null) return false; // Posición fuera de rango
-        
-        // Si es el último nodo, usar insertarFinal
-        if (aux == cola) {
-            insertarFinal(dato);
-            return true;
-        }
-        
-        // Insertar después del nodo actual
-        clsNodoDoble nuevo = new clsNodoDoble(dato);
-        clsNodoDoble siguiente = aux.getNext();
-        
-        nuevo.setPrev(aux);
-        nuevo.setNext(siguiente);
-        aux.setNext(nuevo);
-        
-        if (siguiente != null) {
-            siguiente.setPrev(nuevo);
-        }
-        
-        return true;
-    }
-
-    /**
-     * Eliminar el nodo a la izquierda de una posición específica (anterior al nodo en esa posición)
-     * @param pos Posición de referencia (0-indexada)
-     * @return Valor del nodo eliminado, -1 si no se pudo eliminar
-     */
-    public int eliminarIzquierda(int pos) {
-        if (pos <= 0 || cabeza == null) return -1; // No hay nodo a la izquierda de posición 0
-        
-        clsNodoDoble aux = cabeza;
-        int i = 0;
-        
-        // Navegar hasta la posición
-        while (aux != null && i < pos) {
-            aux = aux.getNext();
-            i++;
-        }
-        
-        if (aux == null || aux.getPrev() == null) return -1; // No hay nodo anterior
-        
-        // Eliminar el nodo anterior
-        clsNodoDoble aEliminar = aux.getPrev();
-        int valor = aEliminar.getDato();
-        
-        clsNodoDoble anterior = aEliminar.getPrev();
-        
-        aux.setPrev(anterior);
-        if (anterior != null) {
-            anterior.setNext(aux);
-        } else {
-            cabeza = aux; // Actualizar la cabeza si el nodo eliminado era el primero
-        }
-
-        punteroActual = aux; // Actualizar el puntero al nodo actual
-        return valor;
-    }
-
-    /**
-     * Eliminar el nodo a la derecha de una posición específica (posterior al nodo en esa posición)
-     * @param pos Posición de referencia (0-indexada)
-     * @return Valor del nodo eliminado, -1 si no se pudo eliminar
-     */
-    public int eliminarDerecha(int pos) {
-        if (pos < 0 || cabeza == null) return -1;
-        
-        clsNodoDoble aux = cabeza;
-        int i = 0;
-        
-        // Navegar hasta la posición
-        while (aux != null && i < pos) {
-            aux = aux.getNext();
-            i++;
-        }
-        
-        if (aux == null || aux.getNext() == null) return -1; // No hay nodo siguiente
-        
-        // Eliminar el nodo siguiente
-        clsNodoDoble aEliminar = aux.getNext();
-        int valor = aEliminar.getDato();
-        
-        clsNodoDoble siguiente = aEliminar.getNext();
-        
-        aux.setNext(siguiente);
-        if (siguiente != null) {
-            siguiente.setPrev(aux);
-        } else {
-            cola = aux; // aux se convierte en la nueva cola
-        }
-        
-        return valor;
-    }
-
-    /**
-     * Insertar manteniendo orden ascendente
-     * @param dato Valor a insertar ordenadamente
-     */
-    public void insertarOrdenado(int dato) {
-        clsNodoDoble nuevo = new clsNodoDoble(dato);
-        
-        // Lista vacía
-        if (cabeza == null) {
+            // Lista vacía
             cabeza = cola = nuevo;
-            return;
-        }
-        
-        // Insertar al inicio si es menor que cabeza
-        if (dato <= cabeza.getDato()) {
-            insertarInicio(dato);
-            return;
-        }
-        
-        // Insertar al final si es mayor que cola
-        if (dato >= cola.getDato()) {
-            insertarFinal(dato);
-            return;
-        }
-        
-        // Buscar posición correcta
-        clsNodoDoble aux = cabeza;
-        while (aux.getNext() != null && aux.getNext().getDato() < dato) {
-            aux = aux.getNext();
-        }
-        
-        // Insertar después de aux
-        clsNodoDoble siguiente = aux.getNext();
-        aux.setNext(nuevo);
-        nuevo.setPrev(aux);
-        nuevo.setNext(siguiente);
-        if (siguiente != null) {
-            siguiente.setPrev(nuevo);
+            pLD = nuevo; // El puntero apunta al primer nodo
+        } else {
+            // Lista con elementos
+            cola.setRefD(nuevo); // Referencia Derecha de cola apunta al nuevo
+            nuevo.setRefI(cola); // Referencia Izquierda del nuevo apunta a cola
+            cola = nuevo;
         }
     }
 
-    /**
-     * Sumar todos los elementos de la lista
-     * @return Suma total de los elementos
-     */
-    public int sumarElementos() {
-        int suma = 0;
-        clsNodoDoble aux = cabeza;
-        
-        while (aux != null) {
-            suma += aux.getDato();
-            aux = aux.getNext();
-        }
-        
-        return suma;
-    }
+    public void insertarDerecha(int dato) {
+        clsNodoDoble nAux = new clsNodoDoble(dato);
 
-    /**
-     * Ordenar la lista en orden ascendente usando algoritmo burbuja
-     */
-    public void ordenarAscendente() {
-        if (cabeza == null || cabeza.getNext() == null) return;
-        
-        boolean intercambio;
-        do {
-            intercambio = false;
-            clsNodoDoble actual = cabeza;
-            
-            while (actual.getNext() != null) {
-                if (actual.getDato() > actual.getNext().getDato()) {
-                    // Intercambiar valores
-                    int temp = actual.getDato();
-                    actual.setDato(actual.getNext().getDato());
-                    actual.getNext().setDato(temp);
-                    intercambio = true;
-                }
-                actual = actual.getNext();
+        if (pLD == null) {
+            // Caso 1: Lista vacía o puntero no posicionado
+            pLD = nAux;
+            if (cabeza == null) {
+                cabeza = cola = nAux;
             }
-        } while (intercambio);
+        } else if (pLD.getRefD() == null) {
+            // Caso 2: Puntero está en el último nodo
+            pLD.setRefD(nAux);      // RefD del puntero apunta al nuevo nodo
+            nAux.setRefI(pLD);      // RefI del nuevo apunta al puntero
+            cola = nAux; // Actualizar la cola
+        } else {
+            // Caso 3: Puntero está en el medio
+            clsNodoDoble p1Siguiente = pLD.getRefD();
+            
+            pLD.setRefD(nAux);          // RefD del puntero apunta al nuevo
+            nAux.setRefI(pLD);          // RefI del nuevo apunta al puntero
+            
+            nAux.setRefD(p1Siguiente);  // RefD del nuevo apunta al siguiente
+            p1Siguiente.setRefI(nAux);  // RefI del siguiente apunta al nuevo
+        }
+    }
+
+    public void insertarIzquierda(int dato) {
+        clsNodoDoble nAux = new clsNodoDoble(dato);
+
+        if (pLD == null) {
+            // Caso 1: Lista vacía o puntero no posicionado
+            pLD = nAux;
+            if (cabeza == null) {
+                cabeza = cola = nAux;
+            }
+        } else if (pLD.getRefI() == null) {
+            // Caso 2: Puntero está en el primer nodo
+            nAux.setRefD(pLD);      // RefD del nuevo apunta al puntero
+            pLD.setRefI(nAux);      // RefI del puntero apunta al nuevo
+            cabeza = nAux; // Actualizar la cabeza
+        } else {
+            // Caso 3: Puntero está en el medio
+            clsNodoDoble p1Anterior = pLD.getRefI();
+            
+            p1Anterior.setRefD(nAux);   // RefD del anterior apunta al nuevo
+            nAux.setRefI(p1Anterior);   // RefI del nuevo apunta al anterior
+            
+            nAux.setRefD(pLD);          // RefD del nuevo apunta al puntero
+            pLD.setRefI(nAux);          // RefI del puntero apunta al nuevo
+        }
+    }
+
+    // ==================== ELIMINAR MÉTODOS EDUCATIVOS ====================
+    
+    /**
+     * MÉTODO EDUCATIVO: Eliminar el primer nodo (cabeza) de la lista
+     * Usa RefD (Referencia Derecha) y RefI (Referencia Izquierda) para mayor claridad
+     */
+    public int eliminarInicio() {
+        if (cabeza == null) {
+            return -1; // Lista vacía
+        }
+        
+        int valor = cabeza.getDato();
+        
+        if (cabeza == cola) {
+            // Solo hay un elemento
+            cabeza = cola = null;
+            pLD = null; // Resetear puntero
+        } else {
+            // Hay más de un elemento
+            cabeza = cabeza.getRefD();      // La nueva cabeza es el siguiente nodo
+            cabeza.setRefI(null);           // RefI de la nueva cabeza apunta a null
+            
+            // Ajustar puntero si estaba en el nodo eliminado
+            if (pLD != null && pLD.getRefI() == null && pLD != cabeza) {
+                pLD = cabeza; // Mover puntero a la nueva cabeza
+            }
+        }
+        
+        return valor;
+    }
+   
+    /**
+     * MÉTODO EDUCATIVO: Eliminar a la derecha del puntero
+     * Usa RefD (Referencia Derecha) y RefI (Referencia Izquierda) para mayor claridad
+     */
+    public void eliminarDerecha() {
+        if (pLD == null || pLD.getRefD() == null) {
+            return; // No hay nada que eliminar
+        }
+        
+        clsNodoDoble aEliminar = pLD.getRefD();
+        clsNodoDoble siguienteDelEliminado = aEliminar.getRefD();
+        
+        if (siguienteDelEliminado == null) {
+            // Eliminando el último nodo
+            pLD.setRefD(null);  // RefD del puntero queda en null
+            cola = pLD;
+        } else {
+            // Eliminando un nodo del medio
+            pLD.setRefD(siguienteDelEliminado);         // RefD del puntero apunta al siguiente
+            siguienteDelEliminado.setRefI(pLD);         // RefI del siguiente apunta al puntero
+        }
     }
 
     /**
-     * Verificar si la lista está vacía
-     * @return true si está vacía, false en caso contrario
+     * MÉTODO EDUCATIVO: Eliminar a la izquierda del puntero
+     * Usa RefD (Referencia Derecha) y RefI (Referencia Izquierda) para mayor claridad
      */
+    public void eliminarIzquierda() {
+        if (pLD == null || pLD.getRefI() == null) {
+            return; // No hay nada que eliminar
+        }
+        
+        clsNodoDoble aEliminar = pLD.getRefI();
+        clsNodoDoble anteriorDelEliminado = aEliminar.getRefI();
+        
+        if (anteriorDelEliminado == null) {
+            // Eliminando el primer nodo
+            pLD.setRefI(null);  // RefI del puntero queda en null
+            cabeza = pLD;
+        } else {
+            // Eliminando un nodo del medio
+            anteriorDelEliminado.setRefD(pLD);          // RefD del anterior apunta al puntero
+            pLD.setRefI(anteriorDelEliminado);          // RefI del puntero apunta al anterior
+        }
+    }
+
+    // ==================== NAVEGACIÓN DEL PUNTERO ====================
+    
+    public void moverPunteroInicio() {
+        pLD = cabeza;
+    }
+
+    public boolean moverPunteroSiguiente() {
+        if (pLD != null && pLD.getRefD() != null) {
+            pLD = pLD.getRefD();    // Mover a la referencia derecha
+            return true;
+        }
+        return false;
+    }
+
+    public boolean moverPunteroAnterior() {
+        if (pLD != null && pLD.getRefI() != null) {
+            pLD = pLD.getRefI();    // Mover a la referencia izquierda
+            return true;
+        }
+        return false;
+    }
+
+    public void moverPunteroFinal() {
+        pLD = cola;
+    }
+
+    // ==================== MÉTODOS DE ACCESO ====================
+    
+    public clsNodoDoble getCabeza() {
+        return cabeza;
+    }
+
+    public clsNodoDoble getCola() {
+        return cola;
+    }
+
+    public clsNodoDoble getPunteroActual() {
+        return pLD;
+    }
+
     public boolean estaVacia() {
         return cabeza == null;
     }
+
+    public boolean esPunteroNulo() {
+        return pLD == null;
+    }
+
+    // ==================== MÉTODOS EDUCATIVOS ADICIONALES ====================
+    
+    public void vaciar() {
+        cabeza = cola = pLD = null;
+    }
+
+    public int size() {
+        int count = 0;
+        clsNodoDoble actual = cabeza;
+        while (actual != null) {
+            count++;
+            actual = actual.getRefD();  // Avanzar con RefD
+        }
+        return count;
+    }
+
+    public String recorridoForward() {
+        StringBuilder sb = new StringBuilder();
+        clsNodoDoble actual = cabeza;
+        while (actual != null) {
+            sb.append(actual.getDato());
+            if (actual.getRefD() != null) {         // RefD para siguiente
+                sb.append(" <-> ");
+            }
+            actual = actual.getRefD();              // Avanzar con RefD
+        }
+        return sb.toString();
+    }
+
+    public String recorridoBackward() {
+        StringBuilder sb = new StringBuilder();
+        clsNodoDoble actual = cola;
+        while (actual != null) {
+            sb.append(actual.getDato());
+            if (actual.getRefI() != null) {         // RefI para anterior
+                sb.append(" <-> ");
+            }
+            actual = actual.getRefI();              // Retroceder con RefI
+        }
+        return sb.toString();
+    }
+
+    // ==================== MÉTODOS PARA MANTENER COMPATIBILIDAD ====================
+    
+    public void insertarOrdenado(int dato) {
+        // Versión simple: insertar y luego ordenar
+        insertarFinal(dato);
+        ordenarAscendente();
+    }
+
+    public void ordenarAscendente() {
+        // Algoritmo burbuja simple para propósitos educativos
+        if (cabeza == null || cabeza == cola) return;
+        
+        boolean intercambio = true;
+        while (intercambio) {
+            intercambio = false;
+            clsNodoDoble actual = cabeza;
+            while (actual.getRefD() != null) {                      // RefD para siguiente
+                if (actual.getDato() > actual.getRefD().getDato()) {
+                    // Intercambiar valores (más simple que intercambiar nodos)
+                    int temp = actual.getDato();
+                    actual.setDato(actual.getRefD().getDato());
+                    actual.getRefD().setDato(temp);
+                    intercambio = true;
+                }
+                actual = actual.getRefD();                          // Avanzar con RefD
+            }
+        }
+    }
+
+    public int[] buscarTodasLasPosiciones(int valor) {
+        java.util.ArrayList<Integer> posiciones = new java.util.ArrayList<>();
+        clsNodoDoble actual = cabeza;
+        int pos = 0;
+        
+        while (actual != null) {
+            if (actual.getDato() == valor) {
+                posiciones.add(pos);
+            }
+            actual = actual.getRefD();  // Avanzar con RefD
+            pos++;
+        }
+        
+        return posiciones.stream().mapToInt(i -> i).toArray();
+    }
+
+    public int sumarElementos() {
+        int suma = 0;
+        clsNodoDoble actual = cabeza;
+        while (actual != null) {
+            suma += actual.getDato();
+            actual = actual.getRefD();  // Avanzar con RefD
+        }
+        return suma;
+    }
+
+    // ==================== MÉTODOS DE COMPATIBILIDAD CON INTERFAZ ====================
     
     /**
-     * Obtener información del puntero actual
+     * MÉTODO REQUERIDO POR LA INTERFAZ: Insertar a la derecha usando posición actual del puntero
      */
+    public boolean insertarDerecha(int pos, int dato) {
+        // Mover puntero a la posición y luego insertar
+        if (moverPunteroAPosicion(pos)) {
+            insertarDerecha(dato);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * MÉTODO REQUERIDO POR LA INTERFAZ: Insertar a la izquierda usando posición actual del puntero
+     */
+    public boolean insertarIzquierda(int pos, int dato) {
+        // Mover puntero a la posición y luego insertar
+        if (moverPunteroAPosicion(pos)) {
+            insertarIzquierda(dato);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * MÉTODO REQUERIDO POR LA INTERFAZ: Eliminar a la derecha usando posición actual del puntero
+     */
+    public int eliminarDerecha(int pos) {
+        if (moverPunteroAPosicion(pos) && pLD.getRefD() != null) {
+            int valor = pLD.getRefD().getDato();    // Obtener dato del nodo derecho
+            eliminarDerecha();
+            return valor;
+        }
+        return -1;
+    }
+
+    /**
+     * MÉTODO REQUERIDO POR LA INTERFAZ: Eliminar a la izquierda usando posición actual del puntero
+     */
+    public int eliminarIzquierda(int pos) {
+        if (moverPunteroAPosicion(pos) && pLD.getRefI() != null) {
+            int valor = pLD.getRefI().getDato();    // Obtener dato del nodo izquierdo
+            eliminarIzquierda();
+            return valor;
+        }
+        return -1;
+    }
+
+    /**
+     * MÉTODO AUXILIAR: Mover puntero interno a una posición específica
+     */
+    private boolean moverPunteroAPosicion(int pos) {
+        if (pos < 0 || cabeza == null) return false;
+        
+        pLD = cabeza;
+        for (int i = 0; i < pos && pLD != null; i++) {
+            pLD = pLD.getRefD();    // Usar RefD para navegación
+        }
+        return pLD != null;
+    }
+
+    /**
+     * MÉTODO REQUERIDO POR LA INTERFAZ: Obtener posición numérica del puntero para mostrar en UI
+     */
+    public int getPosicionPuntero() {
+        if (pLD == null) return -1;
+        
+        clsNodoDoble actual = cabeza;
+        int pos = 0;
+        while (actual != null && actual != pLD) {
+            actual = actual.getRefD();  // Usar RefD para navegación
+            pos++;
+        }
+        return actual == pLD ? pos : -1;
+    }
+
+    /**
+     * MÉTODO REQUERIDO POR LA INTERFAZ: Permutar (intercambiar) dos nodos por posición
+     */
+    public boolean permutarNodos(int pos1, int pos2) {
+        if (pos1 == pos2) return true;
+        
+        // Obtener nodos en las posiciones especificadas
+        clsNodoDoble nodo1 = null, nodo2 = null;
+        
+        // Buscar nodo1
+        clsNodoDoble actual = cabeza;
+        for (int i = 0; i < pos1 && actual != null; i++) {
+            actual = actual.getRefD();
+        }
+        if (actual != null) nodo1 = actual;
+        
+        // Buscar nodo2
+        actual = cabeza;
+        for (int i = 0; i < pos2 && actual != null; i++) {
+            actual = actual.getRefD();
+        }
+        if (actual != null) nodo2 = actual;
+        
+        if (nodo1 == null || nodo2 == null) return false;
+        
+        // Intercambiar valores (más simple que intercambiar nodos completos)
+        int temp = nodo1.getDato();
+        nodo1.setDato(nodo2.getDato());
+        nodo2.setDato(temp);
+        
+        return true;
+    }
+
+    // ==================== MÉTODOS ADICIONALES PARA COMPATIBILIDAD ====================
+    
+    public int obtenerValorEnPosicion(int pos) {
+        if (pos < 0 || cabeza == null) return -1;
+        
+        clsNodoDoble actual = cabeza;
+        for (int i = 0; i < pos && actual != null; i++) {
+            actual = actual.getRefD();  // Usar RefD para navegación
+        }
+        return actual != null ? actual.getDato() : -1;
+    }
+
     public String obtenerInfoPuntero() {
-        if (punteroActual == null) {
+        if (pLD == null) {
             return "Nulo";
         }
-        int posicion = getPosicionPuntero();
-        return "Pos " + posicion + " (Valor: " + punteroActual.getDato() + ")";
+        return String.valueOf(pLD.getDato());
     }
 }

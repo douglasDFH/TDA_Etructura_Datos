@@ -25,6 +25,24 @@ public class clsNodoDoble {
         this.dato = dato;
     }
 
+    // Métodos con nombres educativos más claros
+    public clsNodoDoble getRefI() { // Referencia Izquierda
+        return prev;
+    }
+
+    public void setRefI(clsNodoDoble refI) {
+        this.prev = refI;
+    }
+
+    public clsNodoDoble getRefD() { // Referencia Derecha
+        return next;
+    }
+
+    public void setRefD(clsNodoDoble refD) {
+        this.next = refD;
+    }
+    
+    // Mantener métodos antiguos para compatibilidad
     public clsNodoDoble getPrev() {
         return prev;
     }

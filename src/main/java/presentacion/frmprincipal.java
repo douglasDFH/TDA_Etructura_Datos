@@ -85,8 +85,6 @@ public class frmprincipal extends javax.swing.JFrame {
         
         if (selectedIndex == 0) { // Pestaña Pila
             // Solo controles básicos para Pila
-            lblPosicion.setVisible(false);
-            txtPosicion.setVisible(false);
             btnInsertarOrdenado.setVisible(false);
             btnInsertarDerecha.setVisible(false);
             btnEliminarDerecha.setVisible(false);
@@ -101,11 +99,10 @@ public class frmprincipal extends javax.swing.JFrame {
             btnEliminarIzquierda.setVisible(false);
             btnRecorridoForward.setVisible(false);
             btnRecorridoBackward.setVisible(false);
+            btnPermutarNodos.setVisible(false);
             
         } else if (selectedIndex == 1) { // Pestaña Cola
             // Solo controles básicos para Cola
-            lblPosicion.setVisible(false);
-            txtPosicion.setVisible(false);
             btnInsertarOrdenado.setVisible(false);
             btnInsertarDerecha.setVisible(false);
             btnEliminarDerecha.setVisible(false);
@@ -120,11 +117,10 @@ public class frmprincipal extends javax.swing.JFrame {
             btnEliminarIzquierda.setVisible(false);
             btnRecorridoForward.setVisible(false);
             btnRecorridoBackward.setVisible(false);
+            btnPermutarNodos.setVisible(false);
             
         } else if (selectedIndex == 2) { // Pestaña Lista Simple
             // Todos los controles avanzados visibles
-            lblPosicion.setVisible(true);
-            txtPosicion.setVisible(true);
             btnInsertarOrdenado.setVisible(true);
             btnInsertarDerecha.setVisible(true);
             btnEliminarDerecha.setVisible(true);
@@ -139,11 +135,10 @@ public class frmprincipal extends javax.swing.JFrame {
             btnEliminarIzquierda.setVisible(false);
             btnRecorridoForward.setVisible(false);
             btnRecorridoBackward.setVisible(false);
+            btnPermutarNodos.setVisible(false);
             
         } else if (selectedIndex == 3) { // Pestaña Lista Doble
             // Todos los controles para Lista Doble (incluyendo posición y botones específicos)
-            lblPosicion.setVisible(true);
-            txtPosicion.setVisible(true);
             btnInsertarOrdenado.setVisible(true);
             btnInsertarDerecha.setVisible(true);
             btnEliminarDerecha.setVisible(true);
@@ -158,6 +153,7 @@ public class frmprincipal extends javax.swing.JFrame {
             btnEliminarIzquierda.setVisible(true);
             btnRecorridoForward.setVisible(true);
             btnRecorridoBackward.setVisible(true);
+            btnPermutarNodos.setVisible(true);
         }
         
         this.revalidate();
@@ -325,6 +321,7 @@ public class frmprincipal extends javax.swing.JFrame {
         btnEliminarIzquierda = new javax.swing.JButton();
         btnRecorridoForward = new javax.swing.JButton();
         btnRecorridoBackward = new javax.swing.JButton();
+        btnPermutarNodos = new javax.swing.JButton();
         // Botones de navegación del puntero
         btnPunteroInicio = new javax.swing.JButton();
         btnPunteroSiguiente = new javax.swing.JButton();
@@ -339,9 +336,7 @@ public class frmprincipal extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButtonBuscar = new javax.swing.JButton();
         jButtonVaciar = new javax.swing.JButton();
-        lblPosicion = new javax.swing.JLabel();
         txtDato = new javax.swing.JTextField();
-        txtPosicion = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -408,6 +403,10 @@ public class frmprincipal extends javax.swing.JFrame {
         btnRecorridoBackward.setText("← Atrás");
         btnRecorridoBackward.addActionListener(evt -> btnRecorridoBackwardActionPerformed(evt));
 
+        btnPermutarNodos.setText("🔀 Permutar");
+        btnPermutarNodos.setToolTipText("Permutar (intercambiar) dos nodos por posición");
+        btnPermutarNodos.addActionListener(evt -> btnPermutarNodosActionPerformed(evt));
+
         // Configuración de botones de navegación del puntero
         btnPunteroInicio.setText("⟦⤶⟧");
         btnPunteroInicio.setToolTipText("Ir al inicio");
@@ -440,8 +439,6 @@ public class frmprincipal extends javax.swing.JFrame {
         lblInfoPuntero.setText("Puntero: Inicio");
         lblInfoPuntero.setForeground(java.awt.Color.BLUE);
 
-        lblPosicion.setText("Posición (solo para inserción ordenada):");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -453,11 +450,7 @@ public class frmprincipal extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(dato, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5)
-                        .addComponent(txtDato, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(lblPosicion)
-                        .addGap(5, 5, 5)
-                        .addComponent(txtPosicion, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtDato, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnInsertarOrdenado)
                         .addGap(5, 5, 5)
@@ -485,7 +478,9 @@ public class frmprincipal extends javax.swing.JFrame {
                         .addGap(10, 10, 10)
                         .addComponent(btnRecorridoForward)
                         .addGap(10, 10, 10)
-                        .addComponent(btnRecorridoBackward))
+                        .addComponent(btnRecorridoBackward)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnPermutarNodos))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnPunteroInicio)
                         .addGap(5, 5, 5)
@@ -512,9 +507,7 @@ public class frmprincipal extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dato)
-                    .addComponent(txtDato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblPosicion)
-                    .addComponent(txtPosicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDato, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnInsertarOrdenado)
@@ -534,7 +527,8 @@ public class frmprincipal extends javax.swing.JFrame {
                     .addComponent(btnInsertarIzquierda)
                     .addComponent(btnEliminarIzquierda)
                     .addComponent(btnRecorridoForward)
-                    .addComponent(btnRecorridoBackward))
+                    .addComponent(btnRecorridoBackward)
+                    .addComponent(btnPermutarNodos))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPunteroInicio)
@@ -829,6 +823,7 @@ public class frmprincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarIzquierda;
     private javax.swing.JButton btnRecorridoForward;
     private javax.swing.JButton btnRecorridoBackward;
+    private javax.swing.JButton btnPermutarNodos;
     // Botones de navegación del puntero
     private javax.swing.JButton btnPunteroInicio;
     private javax.swing.JButton btnPunteroSiguiente;
@@ -845,10 +840,8 @@ public class frmprincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonVaciar;
-    private javax.swing.JLabel lblPosicion;
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JTextField txtDato;
-    private javax.swing.JTextField txtPosicion;
     // End of variables declaration//GEN-END:variables
     
 
@@ -1289,6 +1282,10 @@ public class frmprincipal extends javax.swing.JFrame {
     private void btnRecorridoBackwardActionPerformed(java.awt.event.ActionEvent evt) {
         recorridoBackwardAction();
     }
+    
+    private void btnPermutarNodosActionPerformed(java.awt.event.ActionEvent evt) {
+        permutarNodosAction();
+    }
 
     // ==================== MÉTODOS DE ACCIÓN PARA LISTA DOBLE ====================
     
@@ -1433,6 +1430,122 @@ public class frmprincipal extends javax.swing.JFrame {
             "Recorrido Backward (Tail ← Head):\n" + recorrido,
             "Lista Doble - Recorrido Inverso", 
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void permutarNodosAction() {
+        try {
+            // TDA CONSISTENCIA: Verificar que la lista no esté vacía
+            if (objListaDoble.estaVacia()) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "No se pueden permutar nodos: La lista está vacía.\n" +
+                    "Inserte al menos 2 elementos antes de permutar.",
+                    "Lista Vacía - TDA", 
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            // TDA CONSISTENCIA: Verificar que haya al menos 2 nodos
+            if (objListaDoble.size() < 2) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Se necesitan al menos 2 nodos para realizar una permutación.\n" +
+                    "Tamaño actual de la lista: " + objListaDoble.size(),
+                    "Insuficientes Nodos - TDA", 
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            // Solicitar las posiciones al usuario
+            String pos1Str = javax.swing.JOptionPane.showInputDialog(this,
+                "Ingrese la primera posición a permutar (0 a " + (objListaDoble.size()-1) + "):",
+                "Permutación de Nodos - Posición 1",
+                javax.swing.JOptionPane.QUESTION_MESSAGE);
+                
+            if (pos1Str == null) return; // Usuario canceló
+            
+            String pos2Str = javax.swing.JOptionPane.showInputDialog(this,
+                "Ingrese la segunda posición a permutar (0 a " + (objListaDoble.size()-1) + "):",
+                "Permutación de Nodos - Posición 2",
+                javax.swing.JOptionPane.QUESTION_MESSAGE);
+                
+            if (pos2Str == null) return; // Usuario canceló
+            
+            // Convertir a enteros y validar
+            int pos1 = Integer.parseInt(pos1Str.trim());
+            int pos2 = Integer.parseInt(pos2Str.trim());
+            
+            // Validar rango de posiciones
+            int tamaño = objListaDoble.size();
+            if (pos1 < 0 || pos1 >= tamaño || pos2 < 0 || pos2 >= tamaño) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Posiciones inválidas. Deben estar entre 0 y " + (tamaño-1) + ".\n" +
+                    "Posición 1: " + pos1 + "\n" +
+                    "Posición 2: " + pos2,
+                    "Error de Rango - TDA", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Mostrar confirmación con información de los nodos
+            int valor1 = objListaDoble.obtenerValorEnPosicion(pos1);
+            int valor2 = objListaDoble.obtenerValorEnPosicion(pos2);
+            
+            if (valor1 == -1 || valor2 == -1) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error: No se pudieron encontrar los nodos en las posiciones especificadas.",
+                    "Error de Búsqueda - TDA", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            int confirmacion = javax.swing.JOptionPane.showConfirmDialog(this,
+                "¿Confirma la permutación de nodos?\n\n" +
+                "Posición " + pos1 + " (Valor: " + valor1 + ") ↔ " +
+                "Posición " + pos2 + " (Valor: " + valor2 + ")\n\n" +
+                "Esta operación intercambiará completamente los nodos, no solo sus valores.",
+                "Confirmar Permutación - TDA",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.QUESTION_MESSAGE);
+                
+            if (confirmacion != javax.swing.JOptionPane.YES_OPTION) return;
+            
+            // Realizar la permutación
+            String estadoAntes = obtenerEstadoListaDoble();
+            boolean exito = objListaDoble.permutarNodos(pos1, pos2);
+            
+            if (exito) {
+                String estadoDespues = obtenerEstadoListaDoble();
+                registrarOperacion("LISTA_DOBLE", "PERMUTAR_NODOS", 
+                    "pos1:" + pos1 + ",pos2:" + pos2, estadoAntes, estadoDespues);
+                    
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "¡Permutación exitosa!\n\n" +
+                    "Los nodos en las posiciones " + pos1 + " y " + pos2 + " han sido intercambiados.\n" +
+                    "El puntero se ha mantenido consistente con la nueva estructura.",
+                    "Permutación Completada - TDA", 
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    
+                drawSelected();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Error: No se pudo completar la permutación.\n" +
+                    "Verifique que las posiciones sean válidas.",
+                    "Error en Permutación - TDA", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (NumberFormatException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Error: Ingrese únicamente números enteros válidos para las posiciones.\n" +
+                "Ejemplo: 0, 1, 2, 3, etc.",
+                "Error de Entrada - TDA", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            System.out.println("Error al permutar nodos: " + ex.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Error inesperado al permutar: " + ex.getMessage(),
+                "Error de Sistema", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     // Métodos de acción para navegación del puntero
@@ -1761,72 +1874,104 @@ public class frmprincipal extends javax.swing.JFrame {
         areaEstado.setEditable(false);
         javax.swing.JScrollPane scrollEstado = new javax.swing.JScrollPane(areaEstado);
         
-        // Variable para controlar el paso actual
+        // Variables para controlar el paso actual y sub-paso
         final int[] pasoActual = {0};
+        final int[] subPaso = {0}; // Para manejar pasos dentro de cada operación
         
         // Panel para visualización gráfica
         javax.swing.JPanel panelVisualizacion = new javax.swing.JPanel() {
             @Override
             protected void paintComponent(java.awt.Graphics g) {
                 super.paintComponent(g);
-                // Aquí se dibujará la visualización paso a paso
-                dibujarVisualizacionAnalisis(g, this.getWidth(), this.getHeight(), pasoActual[0], operacionesFiltradas);
+                // Aquí se dibujará la visualización paso a paso con sub-pasos
+                dibujarVisualizacionAnalisisConSubPasos(g, this.getWidth(), this.getHeight(), pasoActual[0], subPaso[0], operacionesFiltradas);
             }
         };
         panelVisualizacion.setPreferredSize(new java.awt.Dimension(400, 300));
         panelVisualizacion.setBackground(java.awt.Color.WHITE);
         panelVisualizacion.setBorder(javax.swing.BorderFactory.createTitledBorder("Visualización Gráfica"));
         
-        // Actualizar información del paso
+        // Actualizar información del paso con sub-pasos
         Runnable actualizarPaso = () -> {
-            lblPaso.setText("Paso: " + pasoActual[0] + " / " + operacionesFiltradas.size());
-            
             if (operacionesFiltradas.isEmpty()) {
+                lblPaso.setText("Paso: 0 / 0");
                 areaEstado.setText("No hay operaciones registradas para " + estructuraActual + " aún.\n\nRealiza algunas operaciones en esta estructura y luego abre el análisis.");
                 btnAnterior.setEnabled(false);
                 btnSiguiente.setEnabled(false);
-            } else {
-                btnAnterior.setEnabled(pasoActual[0] > 0);
-                btnSiguiente.setEnabled(pasoActual[0] < operacionesFiltradas.size());
+                subPaso[0] = 0;
+            } else if (pasoActual[0] == 0) {
+                lblPaso.setText("Paso: 0 / " + operacionesFiltradas.size() + " (Estado Inicial)");
+                areaEstado.setText("ESTADO INICIAL:\nLa estructura " + estructuraActual + " está vacía.\n\nHaz clic en 'Siguiente' para ver la primera operación.");
+                btnAnterior.setEnabled(false);
+                btnSiguiente.setEnabled(true);
+                subPaso[0] = 0;
+            } else if (pasoActual[0] <= operacionesFiltradas.size()) {
+                OperacionAnalisis op = operacionesFiltradas.get(pasoActual[0] - 1);
+                int maxSubPasos = obtenerMaxSubPasos(op);
                 
-                if (pasoActual[0] == 0) {
-                    areaEstado.setText("ESTADO INICIAL:\nLa estructura " + estructuraActual + " está vacía.\n\nHaz clic en 'Siguiente' para ver la primera operación.");
-                } else if (pasoActual[0] <= operacionesFiltradas.size()) {
-                    OperacionAnalisis op = operacionesFiltradas.get(pasoActual[0] - 1);
-                    StringBuilder info = new StringBuilder();
-                    info.append("OPERACIÓN ").append(pasoActual[0]).append(":\n");
-                    info.append("Estructura: ").append(op.estructura).append("\n");
-                    info.append("Operación: ").append(op.operacion).append("\n");
-                    if (!op.valor.isEmpty()) {
-                        info.append("Valor: ").append(op.valor).append("\n");
-                    }
-                    info.append("\nESTADO ANTES:\n").append(op.estadoAntes).append("\n");
-                    info.append("\nESTADO DESPUÉS:\n").append(op.estadoDespues).append("\n");
-                    info.append("\nEXPLICACIÓN TÉCNICA:\n").append(obtenerExplicacionOperacion(op));
-                    info.append("\n\nMÉTODO DE NEGOCIO:\n").append(obtenerCodigoNegocio(op));
-                    areaEstado.setText(info.toString());
+                lblPaso.setText("Paso: " + pasoActual[0] + " / " + operacionesFiltradas.size() + 
+                              " (Sub-paso: " + (subPaso[0] + 1) + " / " + (maxSubPasos + 1) + ")");
+                
+                StringBuilder info = new StringBuilder();
+                info.append("OPERACIÓN ").append(pasoActual[0]).append(":\n");
+                info.append("Estructura: ").append(op.estructura).append("\n");
+                info.append("Operación: ").append(op.operacion).append("\n");
+                if (!op.valor.isEmpty()) {
+                    info.append("Valor: ").append(op.valor).append("\n");
                 }
+                info.append("\n").append(obtenerExplicacionSubPaso(op, subPaso[0]));
+                info.append("\n\nMÉTODO DE NEGOCIO:\n").append(obtenerCodigoNegocio(op));
+                areaEstado.setText(info.toString());
+                
+                // Control de navegación de sub-pasos
+                btnAnterior.setEnabled(pasoActual[0] > 0 || subPaso[0] > 0);
+                btnSiguiente.setEnabled(pasoActual[0] < operacionesFiltradas.size() || subPaso[0] < maxSubPasos);
             }
             panelVisualizacion.repaint();
         };
         
-        // Eventos de botones
+        // Eventos de botones con manejo de sub-pasos
         btnAnterior.addActionListener(e -> {
-            if (pasoActual[0] > 0) {
+            if (subPaso[0] > 0) {
+                // Retroceder en sub-pasos
+                subPaso[0]--;
+            } else if (pasoActual[0] > 0) {
+                // Retroceder al paso anterior y ir al último sub-paso
                 pasoActual[0]--;
-                actualizarPaso.run();
+                if (pasoActual[0] > 0) {
+                    OperacionAnalisis op = operacionesFiltradas.get(pasoActual[0] - 1);
+                    subPaso[0] = obtenerMaxSubPasos(op);
+                } else {
+                    subPaso[0] = 0;
+                }
             }
+            actualizarPaso.run();
         });
         
         btnSiguiente.addActionListener(e -> {
-            if (pasoActual[0] < operacionesFiltradas.size()) {
-                pasoActual[0]++;
-                actualizarPaso.run();
+            if (pasoActual[0] == 0) {
+                // Del estado inicial al primer paso
+                pasoActual[0] = 1;
+                subPaso[0] = 0;
+            } else if (pasoActual[0] <= operacionesFiltradas.size()) {
+                OperacionAnalisis op = operacionesFiltradas.get(pasoActual[0] - 1);
+                int maxSubPasos = obtenerMaxSubPasos(op);
+                
+                if (subPaso[0] < maxSubPasos) {
+                    // Avanzar en sub-pasos
+                    subPaso[0]++;
+                } else if (pasoActual[0] < operacionesFiltradas.size()) {
+                    // Avanzar al siguiente paso
+                    pasoActual[0]++;
+                    subPaso[0] = 0;
+                }
             }
+            actualizarPaso.run();
         });
         
         btnReiniciar.addActionListener(e -> {
             pasoActual[0] = 0;
+            subPaso[0] = 0;
             actualizarPaso.run();
         });
         
@@ -1897,7 +2042,7 @@ public class frmprincipal extends javax.swing.JFrame {
     }
     
     /**
-     * Dibuja el estado después de una operación específica
+     * Dibuja el estado después de una operación específica con análisis de caso
      */
     private void dibujarEstadoOperacion(java.awt.Graphics2D g2d, OperacionAnalisis op, int inicioX, int inicioY, int tamanoNodo, int espacioEntre, int paso, int ancho, int alto) {
         // Título con información de la operación
@@ -1909,6 +2054,18 @@ public class frmprincipal extends javax.swing.JFrame {
             g2d.setColor(java.awt.Color.DARK_GRAY);
             g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 11));
             g2d.drawString("Valor: " + op.valor, inicioX, inicioY - 25);
+        }
+
+        // Si es una operación de insertar derecha en lista doble, dibujar caso específico
+        if (op.operacion.equals("INSERTAR_DERECHA") && op.estructura.equals("LISTA_DOBLE")) {
+            dibujarCasoInsertarDerecha(g2d, op, inicioX, inicioY, tamanoNodo, ancho, alto);
+            return;
+        }
+
+        // Si es insertar izquierda en lista doble, dibujar caso específico  
+        if (op.operacion.equals("INSERTAR_IZQUIERDA") && op.estructura.equals("LISTA_DOBLE")) {
+            dibujarCasoInsertarIzquierda(g2d, op, inicioX, inicioY, tamanoNodo, ancho, alto);
+            return;
         }
         
         // Parsear el estado después para obtener los nodos
@@ -2183,7 +2340,20 @@ public class frmprincipal extends javax.swing.JFrame {
             case "INSERTAR_FINAL":
                 return "Se crea nuevo nodo con valor " + op.valor + "\nSe conecta al final de la lista\nSe actualizan las referencias";
             case "INSERTAR_DERECHA":
-                return "Se crea nuevo nodo con valor " + op.valor + "\nSe inserta a la derecha del puntero\nSe actualizan los enlaces correctamente";
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    // Analizar qué caso se ejecutó basándose en el estado
+                    String caso = determinarCasoInsertarDerecha(op.estadoAntes, op.estadoDespues, op.valor);
+                    return "📍 " + caso + "\nNuevo nodo: " + op.valor + "\nRefD y RefI actualizadas correctamente";
+                } else {
+                    return "Se crea nuevo nodo con valor " + op.valor + "\nSe inserta a la derecha del puntero\nSe actualizan los enlaces correctamente";
+                }
+            case "INSERTAR_IZQUIERDA":
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    String caso = determinarCasoInsertarIzquierda(op.estadoAntes, op.estadoDespues, op.valor);
+                    return "📍 " + caso + "\nNuevo nodo: " + op.valor + "\nRefD y RefI actualizadas correctamente";
+                } else {
+                    return "Se crea nuevo nodo con valor " + op.valor + "\nSe inserta a la izquierda del puntero\nSe actualizan los enlaces correctamente";
+                }
             case "ELIMINAR_INICIO":
                 return "Se elimina el primer nodo (valor " + op.valor + ")\nLa 'cabeza' ahora apunta al siguiente nodo\nEl puntero se reposiciona automáticamente";
             case "ELIMINAR_FINAL":
@@ -2263,16 +2433,2368 @@ public class frmprincipal extends javax.swing.JFrame {
                 explicacion.append("4. Se libera la memoria del nodo eliminado\n");
                 explicacion.append("5. El tamaño se decrementa en 1");
                 break;
+            case "insertar_derecha":
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    explicacion.append("ANÁLISIS EDUCATIVO POR CASOS:\n\n");
+                    explicacion.append("📍 CASO 1 - Lista vacía (pLD = null):\n");
+                    explicacion.append("   • El nuevo nodo se convierte en cabeza y cola\n");
+                    explicacion.append("   • pLD apunta al nuevo nodo\n");
+                    explicacion.append("   • RefD y RefI del nuevo nodo quedan null\n\n");
+                    explicacion.append("📍 CASO 2 - Puntero en último nodo (pLD.RefD = null):\n");
+                    explicacion.append("   • El nuevo nodo se agrega después del puntero\n");
+                    explicacion.append("   • pLD.RefD → nuevo nodo (referencia derecha)\n");
+                    explicacion.append("   • nuevo.RefI → pLD (referencia izquierda)\n");
+                    explicacion.append("   • Cola se actualiza al nuevo nodo\n\n");
+                    explicacion.append("📍 CASO 3 - Puntero en medio (pLD.RefD ≠ null):\n");
+                    explicacion.append("   • Se guarda referencia al nodo siguiente\n");
+                    explicacion.append("   • pLD.RefD → nuevo nodo\n");
+                    explicacion.append("   • nuevo.RefI → pLD\n");
+                    explicacion.append("   • nuevo.RefD → nodo siguiente original\n");
+                    explicacion.append("   • siguiente.RefI → nuevo nodo\n");
+                    explicacion.append("   • ¡Se mantiene integridad bidireccional!\n\n");
+                    explicacion.append("🎯 RefD = Referencia Derecha (→)\n");
+                    explicacion.append("🎯 RefI = Referencia Izquierda (←)");
+                } else {
+                    explicacion.append("Se inserta un nuevo nodo a la derecha de la posición indicada");
+                }
+                break;
+            case "insertar_izquierda":
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    explicacion.append("ANÁLISIS EDUCATIVO POR CASOS:\n\n");
+                    explicacion.append("📍 CASO 1 - Lista vacía (pLD = null):\n");
+                    explicacion.append("   • Similar a insertarDerecha cuando lista está vacía\n\n");
+                    explicacion.append("📍 CASO 2 - Puntero en primer nodo (pLD.RefI = null):\n");
+                    explicacion.append("   • El nuevo nodo se convierte en nueva cabeza\n");
+                    explicacion.append("   • nuevo.RefD → pLD\n");
+                    explicacion.append("   • pLD.RefI → nuevo nodo\n");
+                    explicacion.append("   • Cabeza se actualiza al nuevo nodo\n\n");
+                    explicacion.append("📍 CASO 3 - Puntero en medio (pLD.RefI ≠ null):\n");
+                    explicacion.append("   • Se inserta entre el anterior y el puntero actual\n");
+                    explicacion.append("   • anterior.RefD → nuevo nodo\n");
+                    explicacion.append("   • nuevo.RefI → anterior\n");
+                    explicacion.append("   • nuevo.RefD → pLD\n");
+                    explicacion.append("   • pLD.RefI → nuevo nodo");
+                } else {
+                    explicacion.append("Se inserta un nuevo nodo a la izquierda de la posición indicada");
+                }
+                break;
             default:
                 explicacion.append("Operación personalizada: ").append(op.operacion);
         }
         
         return explicacion.toString();
     }
-    
+
     /**
-     * Obtiene el código de la lógica de negocio utilizada para la operación
+     * Determina qué caso específico de insertarDerecha se ejecutó
      */
+    private String determinarCasoInsertarDerecha(String estadoAntes, String estadoDespues, String valor) {
+        if (estadoAntes.contains("Lista vacía") || estadoAntes.trim().isEmpty()) {
+            return "CASO 1: Lista estaba vacía - Nuevo nodo es cabeza y cola";
+        }
+        
+        // Contar nodos antes y después
+        int nodosAntes = contarNodosEnEstado(estadoAntes);
+        int nodosDespues = contarNodosEnEstado(estadoDespues);
+        
+        if (nodosDespues == nodosAntes + 1) {
+            // Se insertó correctamente
+            if (estadoDespues.endsWith(" " + valor + " ")) {
+                return "CASO 2: Insertado al final - Puntero estaba en último nodo";
+            } else if (estadoDespues.contains(" " + valor + " ")) {
+                return "CASO 3: Insertado en medio - Puntero tenía nodo siguiente";
+            }
+        }
+        
+        return "Inserción completada - RefD y RefI enlazadas";
+    }
+
+    /**
+     * Determina qué caso específico de insertarIzquierda se ejecutó
+     */
+    private String determinarCasoInsertarIzquierda(String estadoAntes, String estadoDespues, String valor) {
+        if (estadoAntes.contains("Lista vacía") || estadoAntes.trim().isEmpty()) {
+            return "CASO 1: Lista estaba vacía - Nuevo nodo es cabeza y cola";
+        }
+        
+        if (estadoDespues.startsWith(" " + valor + " ")) {
+            return "CASO 2: Insertado al inicio - Puntero estaba en primer nodo";
+        } else if (estadoDespues.contains(" " + valor + " ")) {
+            return "CASO 3: Insertado en medio - Puntero tenía nodo anterior";
+        }
+        
+        return "Inserción completada - RefD y RefI enlazadas";
+    }
+
+    /**
+     * Cuenta el número de nodos en un estado representado como string
+     */
+    private int contarNodosEnEstado(String estado) {
+        if (estado.contains("Lista vacía") || estado.trim().isEmpty()) {
+            return 0;
+        }
+        
+        // Método simple: contar espacios entre números
+        String[] partes = estado.trim().split("\\s+");
+        int contador = 0;
+        for (String parte : partes) {
+            try {
+                Integer.parseInt(parte);
+                contador++;
+            } catch (NumberFormatException e) {
+                // Ignorar palabras que no sean números
+            }
+        }
+        return contador;
+    }
+
+    /**
+     * Dibuja específicamente los casos del método insertarDerecha
+     */
+    private void dibujarCasoInsertarDerecha(java.awt.Graphics2D g2d, OperacionAnalisis op, int inicioX, int inicioY, int tamanoNodo, int ancho, int alto) {
+        // Determinar qué caso fue ejecutado
+        String caso = determinarCasoInsertarDerecha(op.estadoAntes, op.estadoDespues, op.valor);
+        
+        // Limpiar área
+        g2d.setColor(java.awt.Color.WHITE);
+        g2d.fillRect(0, inicioY, ancho, alto - inicioY);
+        
+        if (caso.contains("CASO 1")) {
+            dibujarCaso1InsertarDerecha(g2d, op.valor, inicioX, inicioY, tamanoNodo);
+        } else if (caso.contains("CASO 2")) {
+            dibujarCaso2InsertarDerecha(g2d, op, inicioX, inicioY, tamanoNodo);
+        } else if (caso.contains("CASO 3")) {
+            dibujarCaso3InsertarDerecha(g2d, op, inicioX, inicioY, tamanoNodo);
+        }
+    }
+
+    /**
+     * CASO 1: Lista vacía - El nuevo nodo se convierte en cabeza y cola
+     */
+    private void dibujarCaso1InsertarDerecha(java.awt.Graphics2D g2d, String valor, int inicioX, int inicioY, int tamanoNodo) {
+        // Título del caso
+        g2d.setColor(java.awt.Color.BLUE);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        g2d.drawString("📍 CASO 1: Lista vacía (pLD = null)", inicioX, inicioY + 20);
+        
+        // Estado ANTES (lista vacía)
+        g2d.setColor(java.awt.Color.BLACK);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
+        g2d.drawString("ANTES:", inicioX, inicioY + 50);
+        
+        // Dibujar cabeza apuntando a null
+        g2d.setColor(java.awt.Color.BLUE);
+        g2d.drawString("cabeza", inicioX, inicioY + 70);
+        dibujarFlecha(g2d, inicioX + 50, inicioY + 65, inicioX + 100, inicioY + 65);
+        g2d.setColor(java.awt.Color.RED);
+        g2d.drawString("null", inicioX + 105, inicioY + 70);
+        
+        // Puntero pLD también null
+        g2d.setColor(java.awt.Color.ORANGE);
+        g2d.drawString("pLD", inicioX, inicioY + 90);
+        dibujarFlecha(g2d, inicioX + 30, inicioY + 85, inicioX + 70, inicioY + 85);
+        g2d.setColor(java.awt.Color.RED);
+        g2d.drawString("null", inicioX + 75, inicioY + 90);
+        
+        // Flecha de transformación
+        g2d.setColor(java.awt.Color.GREEN);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 16));
+        g2d.drawString("⬇ insertarDerecha(" + valor + ") ⬇", inicioX + 50, inicioY + 120);
+        
+        // Estado DESPUÉS
+        g2d.setColor(java.awt.Color.BLACK);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
+        g2d.drawString("DESPUÉS:", inicioX, inicioY + 150);
+        
+        // Dibujar el nuevo nodo (amarillo porque es nuevo)
+        int nodoX = inicioX + 100;
+        int nodoY = inicioY + 170;
+        
+        // Nodo nuevo resaltado
+        g2d.setColor(java.awt.Color.YELLOW);
+        g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+        g2d.setColor(java.awt.Color.BLACK);
+        g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+        g2d.drawString(valor, nodoX + 15, nodoY + 25);
+        
+        // RefI del nuevo nodo apunta a null
+        g2d.setColor(java.awt.Color.GRAY);
+        g2d.drawString("RefI", nodoX - 40, nodoY + 15);
+        dibujarFlecha(g2d, nodoX - 5, nodoY + 10, nodoX - 5, nodoY + 10);
+        g2d.drawString("null", nodoX - 40, nodoY + 35);
+        
+        // RefD del nuevo nodo apunta a null
+        g2d.setColor(java.awt.Color.GRAY);
+        g2d.drawString("RefD", nodoX + 50, nodoY + 15);
+        dibujarFlecha(g2d, nodoX + 45, nodoY + 10, nodoX + 45, nodoY + 10);
+        g2d.drawString("null", nodoX + 50, nodoY + 35);
+        
+        // Cabeza apunta al nuevo nodo
+        g2d.setColor(java.awt.Color.BLUE);
+        g2d.drawString("cabeza", inicioX, inicioY + 180);
+        dibujarFlecha(g2d, inicioX + 50, inicioY + 175, nodoX, nodoY + 20);
+        
+        // Cola apunta al nuevo nodo
+        g2d.setColor(java.awt.Color.GREEN);
+        g2d.drawString("cola", inicioX, inicioY + 200);
+        dibujarFlecha(g2d, inicioX + 35, inicioY + 195, nodoX, nodoY + 30);
+        
+        // pLD apunta al nuevo nodo
+        g2d.setColor(java.awt.Color.ORANGE);
+        g2d.drawString("pLD", inicioX, inicioY + 220);
+        dibujarFlecha(g2d, inicioX + 30, inicioY + 215, nodoX, nodoY + 40);
+        
+        // Explicación
+        g2d.setColor(java.awt.Color.DARK_GRAY);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 10));
+        g2d.drawString("• Nuevo nodo " + valor + " se convierte en cabeza y cola", inicioX, inicioY + 250);
+        g2d.drawString("• pLD apunta al nuevo nodo", inicioX, inicioY + 265);
+        g2d.drawString("• RefD y RefI del nuevo quedan null", inicioX, inicioY + 280);
+    }
+
+    /**
+     * CASO 2: Puntero en último nodo - Insertar al final
+     */
+    private void dibujarCaso2InsertarDerecha(java.awt.Graphics2D g2d, OperacionAnalisis op, int inicioX, int inicioY, int tamanoNodo) {
+        // Título del caso
+        g2d.setColor(java.awt.Color.BLUE);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        g2d.drawString("📍 CASO 2: Puntero en último nodo (pLD.RefD = null)", inicioX, inicioY + 20);
+        
+        // Parsear nodos del estado anterior
+        String[] nodosAntes = parsearEstadoLista(op.estadoAntes);
+        
+        // Estado ANTES
+        g2d.setColor(java.awt.Color.BLACK);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
+        g2d.drawString("ANTES:", inicioX, inicioY + 50);
+        
+        // Dibujar lista existente
+        int espacioNodo = 80;
+        for (int i = 0; i < nodosAntes.length; i++) {
+            int nodoX = inicioX + 50 + (i * espacioNodo);
+            int nodoY = inicioY + 70;
+            
+            // Es el último nodo (donde está pLD)?
+            boolean esUltimo = (i == nodosAntes.length - 1);
+            
+            // Dibujar nodo
+            if (esUltimo) {
+                // Resaltar nodo donde está el puntero pLD
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.fillRect(nodoX - 2, nodoY - 2, tamanoNodo + 4, tamanoNodo + 4);
+            }
+            g2d.setColor(java.awt.Color.WHITE);
+            g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+            g2d.setColor(java.awt.Color.BLACK);
+            g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+            g2d.drawString(nodosAntes[i], nodoX + 15, nodoY + 25);
+            
+            // Enlaces RefD
+            if (i < nodosAntes.length - 1) {
+                g2d.setColor(java.awt.Color.BLACK);
+                dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + 15, nodoX + espacioNodo - 5, nodoY + 15);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 8));
+                g2d.drawString("RefD", nodoX + tamanoNodo + 15, nodoY + 10);
+            } else {
+                // Último nodo: RefD apunta a null
+                g2d.setColor(java.awt.Color.RED);
+                g2d.drawString("RefD→null", nodoX + tamanoNodo + 5, nodoY + 15);
+            }
+            
+            // pLD apunta al último nodo
+            if (esUltimo) {
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
+                g2d.drawString("pLD", nodoX + 15, nodoY - 15);
+                dibujarFlecha(g2d, nodoX + 20, nodoY - 10, nodoX + 20, nodoY);
+            }
+        }
+        
+        // Flecha de transformación
+        g2d.setColor(java.awt.Color.GREEN);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 16));
+        g2d.drawString("⬇ insertarDerecha(" + op.valor + ") ⬇", inicioX + 80, inicioY + 130);
+        
+        // Estado DESPUÉS
+        g2d.setColor(java.awt.Color.BLACK);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
+        g2d.drawString("DESPUÉS:", inicioX, inicioY + 160);
+        
+        // Dibujar lista con nuevo nodo
+        for (int i = 0; i < nodosAntes.length; i++) {
+            int nodoX = inicioX + 50 + (i * espacioNodo);
+            int nodoY = inicioY + 180;
+            
+            boolean esUltimo = (i == nodosAntes.length - 1);
+            
+            // Dibujar nodo existente
+            if (esUltimo) {
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.fillRect(nodoX - 2, nodoY - 2, tamanoNodo + 4, tamanoNodo + 4);
+            }
+            g2d.setColor(java.awt.Color.WHITE);
+            g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+            g2d.setColor(java.awt.Color.BLACK);
+            g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+            g2d.drawString(nodosAntes[i], nodoX + 15, nodoY + 25);
+            
+            // pLD sigue en el mismo nodo
+            if (esUltimo) {
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
+                g2d.drawString("pLD", nodoX + 15, nodoY - 15);
+                dibujarFlecha(g2d, nodoX + 20, nodoY - 10, nodoX + 20, nodoY);
+            }
+            
+            // Enlaces RefD (ahora el último nodo apunta al nuevo)
+            if (!esUltimo) {
+                g2d.setColor(java.awt.Color.BLACK);
+                dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + 15, nodoX + espacioNodo - 5, nodoY + 15);
+            }
+        }
+        
+        // Dibujar nuevo nodo (amarillo)
+        int nuevoNodoX = inicioX + 50 + (nodosAntes.length * espacioNodo);
+        int nuevoNodoY = inicioY + 180;
+        
+        g2d.setColor(java.awt.Color.YELLOW);
+        g2d.fillRect(nuevoNodoX, nuevoNodoY, tamanoNodo, tamanoNodo);
+        g2d.setColor(java.awt.Color.BLACK);
+        g2d.drawRect(nuevoNodoX, nuevoNodoY, tamanoNodo, tamanoNodo);
+        g2d.drawString(op.valor, nuevoNodoX + 15, nuevoNodoY + 25);
+        
+        // RefD del último nodo anterior apunta al nuevo
+        int ultimoNodoX = inicioX + 50 + ((nodosAntes.length - 1) * espacioNodo);
+        g2d.setColor(java.awt.Color.RED);
+        dibujarFlecha(g2d, ultimoNodoX + tamanoNodo, nuevoNodoY + 15, nuevoNodoX, nuevoNodoY + 15);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 8));
+        g2d.drawString("RefD", ultimoNodoX + tamanoNodo + 5, nuevoNodoY + 10);
+        
+        // RefI del nuevo nodo apunta al anterior
+        g2d.setColor(java.awt.Color.BLUE);
+        dibujarFlecha(g2d, nuevoNodoX, nuevoNodoY + 25, ultimoNodoX + tamanoNodo, nuevoNodoY + 25);
+        g2d.drawString("RefI", nuevoNodoX - 25, nuevoNodoY + 30);
+        
+        // RefD del nuevo nodo apunta a null
+        g2d.setColor(java.awt.Color.RED);
+        g2d.drawString("RefD→null", nuevoNodoX + tamanoNodo + 5, nuevoNodoY + 15);
+        
+        // Cola ahora apunta al nuevo nodo
+        g2d.setColor(java.awt.Color.GREEN);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
+        g2d.drawString("cola", nuevoNodoX + 15, nuevoNodoY + 55);
+        dibujarFlecha(g2d, nuevoNodoX + 20, nuevoNodoY + 50, nuevoNodoX + 20, nuevoNodoY + tamanoNodo);
+        
+        // Explicación
+        g2d.setColor(java.awt.Color.DARK_GRAY);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 10));
+        g2d.drawString("• pLD.RefD → nuevo nodo " + op.valor + " (referencia derecha)", inicioX, inicioY + 250);
+        g2d.drawString("• nuevo.RefI → pLD (referencia izquierda)", inicioX, inicioY + 265);
+        g2d.drawString("• Cola se actualiza al nuevo nodo", inicioX, inicioY + 280);
+    }
+
+    /**
+     * CASO 3: Puntero en medio - Insertar entre nodos
+     */
+    private void dibujarCaso3InsertarDerecha(java.awt.Graphics2D g2d, OperacionAnalisis op, int inicioX, int inicioY, int tamanoNodo) {
+        // Título del caso
+        g2d.setColor(java.awt.Color.BLUE);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        g2d.drawString("📍 CASO 3: Puntero en medio (pLD.RefD ≠ null)", inicioX, inicioY + 20);
+        
+        // Para simplificar, mostrar ejemplo con 3 nodos: [10] <-> [20] <-> [30]
+        // pLD apunta a [20], insertar 25 a la derecha
+        
+        // Estado ANTES
+        g2d.setColor(java.awt.Color.BLACK);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
+        g2d.drawString("ANTES: pLD en medio", inicioX, inicioY + 50);
+        
+        // Dibujar 3 nodos de ejemplo
+        String[] nodosEjemplo = {"10", "20", "30"};
+        int espacioNodo = 80;
+        int punteroPos = 1; // pLD apunta al nodo del medio (índice 1)
+        
+        for (int i = 0; i < nodosEjemplo.length; i++) {
+            int nodoX = inicioX + 30 + (i * espacioNodo);
+            int nodoY = inicioY + 70;
+            
+            boolean esPuntero = (i == punteroPos);
+            
+            // Resaltar nodo donde está pLD
+            if (esPuntero) {
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.fillRect(nodoX - 2, nodoY - 2, tamanoNodo + 4, tamanoNodo + 4);
+            }
+            
+            g2d.setColor(java.awt.Color.WHITE);
+            g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+            g2d.setColor(java.awt.Color.BLACK);
+            g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+            g2d.drawString(nodosEjemplo[i], nodoX + 15, nodoY + 25);
+            
+            // pLD apunta al nodo del medio
+            if (esPuntero) {
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
+                g2d.drawString("pLD", nodoX + 15, nodoY - 15);
+                dibujarFlecha(g2d, nodoX + 20, nodoY - 10, nodoX + 20, nodoY);
+            }
+            
+            // Enlaces RefD
+            if (i < nodosEjemplo.length - 1) {
+                g2d.setColor(java.awt.Color.BLACK);
+                dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + 12, nodoX + espacioNodo - 5, nodoY + 12);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 8));
+                g2d.drawString("RefD", nodoX + tamanoNodo + 15, nodoY + 8);
+            }
+            
+            // Enlaces RefI
+            if (i > 0) {
+                g2d.setColor(java.awt.Color.BLUE);
+                dibujarFlecha(g2d, nodoX, nodoY + 28, nodoX - espacioNodo + tamanoNodo + 5, nodoY + 28);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 8));
+                g2d.drawString("RefI", nodoX - 25, nodoY + 35);
+            }
+        }
+        
+        // Flecha de transformación
+        g2d.setColor(java.awt.Color.GREEN);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 16));
+        g2d.drawString("⬇ insertarDerecha(" + op.valor + ") ⬇", inicioX + 50, inicioY + 130);
+        
+        // Estado DESPUÉS
+        g2d.setColor(java.awt.Color.BLACK);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
+        g2d.drawString("DESPUÉS: Nuevo nodo entre pLD y siguiente", inicioX, inicioY + 160);
+        
+        // Dibujar nodos existentes + nuevo nodo insertado
+        String[] nodosConNuevo = {"10", "20", op.valor, "30"};
+        int espacioReducido = 65;
+        
+        for (int i = 0; i < nodosConNuevo.length; i++) {
+            int nodoX = inicioX + 20 + (i * espacioReducido);
+            int nodoY = inicioY + 180;
+            
+            boolean esPuntero = (i == 1); // pLD sigue en el nodo original (índice 1)
+            boolean esNuevo = (i == 2);   // El nuevo nodo está en índice 2
+            
+            // Resaltar nodos especiales
+            if (esPuntero) {
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.fillRect(nodoX - 2, nodoY - 2, tamanoNodo + 4, tamanoNodo + 4);
+            } else if (esNuevo) {
+                g2d.setColor(java.awt.Color.YELLOW);
+                g2d.fillRect(nodoX - 1, nodoY - 1, tamanoNodo + 2, tamanoNodo + 2);
+            }
+            
+            g2d.setColor(java.awt.Color.WHITE);
+            g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+            g2d.setColor(java.awt.Color.BLACK);
+            g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+            g2d.drawString(nodosConNuevo[i], nodoX + 12, nodoY + 25);
+            
+            // Marcar pLD
+            if (esPuntero) {
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
+                g2d.drawString("pLD", nodoX + 12, nodoY - 15);
+                dibujarFlecha(g2d, nodoX + 17, nodoY - 10, nodoX + 17, nodoY);
+            }
+            
+            // Marcar nuevo nodo
+            if (esNuevo) {
+                g2d.setColor(java.awt.Color.RED);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
+                g2d.drawString("NUEVO", nodoX + 5, nodoY + 55);
+            }
+            
+            // Enlaces RefD con colores especiales
+            if (i < nodosConNuevo.length - 1) {
+                if (esPuntero || esNuevo) {
+                    g2d.setColor(java.awt.Color.RED); // Enlaces nuevos en rojo
+                } else {
+                    g2d.setColor(java.awt.Color.BLACK);
+                }
+                dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + 12, nodoX + espacioReducido - 5, nodoY + 12);
+                
+                if (esPuntero) {
+                    g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 8));
+                    g2d.drawString("RefD", nodoX + tamanoNodo + 8, nodoY + 8);
+                }
+            }
+            
+            // Enlaces RefI con colores especiales
+            if (i > 0) {
+                if (esPuntero || esNuevo) {
+                    g2d.setColor(java.awt.Color.BLUE); // Enlaces nuevos en azul
+                } else {
+                    g2d.setColor(java.awt.Color.GRAY);
+                }
+                dibujarFlecha(g2d, nodoX, nodoY + 28, nodoX - espacioReducido + tamanoNodo + 5, nodoY + 28);
+                
+                if (esNuevo) {
+                    g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 8));
+                    g2d.drawString("RefI", nodoX - 20, nodoY + 35);
+                }
+            }
+        }
+        
+        // Explicación con pasos específicos
+        g2d.setColor(java.awt.Color.DARK_GRAY);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 10));
+        g2d.drawString("• Se guarda referencia al nodo siguiente (30)", inicioX, inicioY + 250);
+        g2d.drawString("• pLD.RefD → nuevo nodo " + op.valor, inicioX, inicioY + 265);
+        g2d.drawString("• nuevo.RefI → pLD, nuevo.RefD → nodo siguiente", inicioX, inicioY + 280);
+        g2d.drawString("• siguiente.RefI → nuevo nodo ¡Integridad mantenida!", inicioX, inicioY + 295);
+    }
+
+    /**
+     * Método similar para dibujar casos de insertarIzquierda
+     */
+    private void dibujarCasoInsertarIzquierda(java.awt.Graphics2D g2d, OperacionAnalisis op, int inicioX, int inicioY, int tamanoNodo, int ancho, int alto) {
+        // Similar implementación pero para insertar a la izquierda
+        // Por ahora usar método genérico
+        dibujarEstadoGenerico(g2d, op, inicioX, inicioY, tamanoNodo, ancho, alto);
+    }
+
+    /**
+     * Método genérico para otras operaciones
+     */
+    private void dibujarEstadoGenerico(java.awt.Graphics2D g2d, OperacionAnalisis op, int inicioX, int inicioY, int tamanoNodo, int ancho, int alto) {
+        // Parsear el estado después para obtener los nodos
+        String[] nodos = parsearEstadoLista(op.estadoDespues);
+        
+        if (nodos.length == 0) {
+            // Lista quedó vacía después de la operación
+            dibujarEstadoInicial(g2d, inicioX, inicioY + 20, ancho, alto);
+            return;
+        }
+        
+        // Obtener posición del puntero para resaltarlo
+        int posicionPuntero = obtenerPosicionPuntero(op.estadoDespues);
+        
+        // Ajustar espaciado mejorado
+        int espacioMejorado = Math.max(80, 60 + 20);
+        
+        // Dibujar nodos y enlaces usando método simple
+        for (int i = 0; i < nodos.length; i++) {
+            int nodoX = inicioX + (i * espacioMejorado);
+            int nodoY = inicioY;
+            
+            // Determinar si este nodo es donde está el puntero
+            boolean esPuntero = (i == posicionPuntero);
+            
+            // Dibujar nodo simple
+            if (esPuntero) {
+                g2d.setColor(java.awt.Color.YELLOW);
+                g2d.fillRect(nodoX - 2, nodoY - 2, tamanoNodo + 4, tamanoNodo + 4);
+            }
+            g2d.setColor(java.awt.Color.WHITE);
+            g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+            g2d.setColor(java.awt.Color.BLACK);
+            g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+            g2d.drawString(nodos[i], nodoX + 15, nodoY + 25);
+            
+            // Enlaces entre nodos
+            if (i < nodos.length - 1) {
+                g2d.setColor(java.awt.Color.BLACK);
+                dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + tamanoNodo/2, 
+                            nodoX + espacioMejorado, nodoY + tamanoNodo/2);
+            }
+        }
+    }
+
+    /**
+     * Obtiene la posición real del puntero desde el estado
+     */
+    private int obtenerPosicionPunteroReal(String estado) {
+        // Intentar extraer posición del puntero del estado
+        if (estado.contains("Puntero: pos ")) {
+            try {
+                int inicio = estado.indexOf("Puntero: pos ") + "Puntero: pos ".length();
+                int fin = estado.indexOf(" ", inicio);
+                if (fin == -1) fin = estado.length();
+                String posStr = estado.substring(inicio, fin);
+                return Integer.parseInt(posStr);
+            } catch (Exception e) {
+                // Si no se puede parsear, usar heurística
+            }
+        }
+        
+        // Heurística: si hay 3 o más nodos, asumir que está en el medio
+        String[] nodos = parsearEstadoLista(estado);
+        if (nodos.length >= 3) {
+            return nodos.length / 2; // Posición del medio
+        } else if (nodos.length == 2) {
+            return 0; // Primer nodo
+        }
+        
+        return 0; // Por defecto
+    }
+
+    /**
+     * Método auxiliar para dibujar flechas simples
+     */
+    private void dibujarFlecha(java.awt.Graphics2D g2d, int x1, int y1, int x2, int y2) {
+        // Línea principal
+        g2d.drawLine(x1, y1, x2, y2);
+        
+        // Calcular punta de flecha
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double angulo = Math.atan2(dy, dx);
+        
+        int longitud = 8;
+        double anguloFlecha = Math.PI / 6; // 30 grados
+        
+        int x3 = (int) (x2 - longitud * Math.cos(angulo - anguloFlecha));
+        int y3 = (int) (y2 - longitud * Math.sin(angulo - anguloFlecha));
+        int x4 = (int) (x2 - longitud * Math.cos(angulo + anguloFlecha));
+        int y4 = (int) (y2 - longitud * Math.sin(angulo + anguloFlecha));
+        
+        // Dibujar punta de flecha
+        g2d.drawLine(x2, y2, x3, y3);
+        g2d.drawLine(x2, y2, x4, y4);
+    }
+
+    /**
+     * Determina el número máximo de sub-pasos para una operación
+     */
+    private int obtenerMaxSubPasos(OperacionAnalisis op) {
+        switch (op.operacion) {
+            case "INSERTAR_DERECHA":
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    // Sub-pasos: 1) Crear nodo, 2) Determinar caso, 3) Enlazar RefD, 4) Enlazar RefI, 5) Actualizar cabeza/cola
+                    return 5;
+                }
+                return 3; // Lista simple: menos pasos
+            case "INSERTAR_IZQUIERDA":
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    return 5; // Similar a insertar derecha
+                }
+                return 3;
+            case "INSERTAR_FINAL":
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    return 4; // 1) Estado inicial, 2) Crear nodo, 3) Enlaces, 4) Actualizar punteros
+                }
+                return 3;
+            case "INSERTAR_INICIO":
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    return 4; // 1) Estado inicial, 2) Crear nodo, 3) Enlaces, 4) Actualizar punteros
+                }
+                return 3;
+            default:
+                return 2; // Por defecto: antes y después
+        }
+    }
+
+    /**
+     * Obtiene la explicación específica para un sub-paso
+     */
+    private String obtenerExplicacionSubPaso(OperacionAnalisis op, int subPaso) {
+        if (op.operacion.equals("INSERTAR_DERECHA") && op.estructura.equals("LISTA_DOBLE")) {
+            return obtenerExplicacionSubPasoInsertarDerecha(op, subPaso);
+        } else if (op.operacion.equals("INSERTAR_IZQUIERDA") && op.estructura.equals("LISTA_DOBLE")) {
+            return obtenerExplicacionSubPasoInsertarIzquierda(op, subPaso);
+        } else if (op.operacion.equals("INSERTAR_INICIO") && op.estructura.equals("LISTA_DOBLE")) {
+            return obtenerExplicacionSubPasoInsertarInicio(op, subPaso);
+        } else if (op.operacion.equals("INSERTAR_FINAL") && op.estructura.equals("LISTA_DOBLE")) {
+            return obtenerExplicacionSubPasoInsertarFinal(op, subPaso);
+        } else {
+            // Para otras operaciones, usar explicación genérica
+            switch (subPaso) {
+                case 0: return "ANTES: " + op.estadoAntes;
+                case 1: return "Ejecutando operación: " + op.operacion;
+                case 2: return "DESPUÉS: " + op.estadoDespues;
+                default: return "Operación completada";
+            }
+        }
+    }
+
+    /**
+     * Explicación detallada por sub-pasos para insertarDerecha
+     */
+    private String obtenerExplicacionSubPasoInsertarDerecha(OperacionAnalisis op, int subPaso) {
+        String caso = determinarCasoInsertarDerecha(op.estadoAntes, op.estadoDespues, op.valor);
+        
+        switch (subPaso) {
+            case 0:
+                return "SUB-PASO 1/5: ESTADO INICIAL\n" + 
+                       "Estado antes: " + op.estadoAntes + "\n" + 
+                       "Caso detectado: " + caso;
+            case 1:
+                return "SUB-PASO 2/5: CREAR NUEVO NODO\n" + 
+                       "clsNodoDoble nAux = new clsNodoDoble(" + op.valor + ");\n" +
+                       "El nuevo nodo está en memoria con RefD=null, RefI=null";
+            case 2:
+                if (caso.contains("CASO 1")) {
+                    return "SUB-PASO 3/5: CASO 1 - LISTA VACÍA\n" + 
+                           "if (pLD == null) {\n" + 
+                           "    pLD = nAux;\n" + 
+                           "    cabeza = cola = nAux;\n" + 
+                           "}";
+                } else if (caso.contains("CASO 2")) {
+                    return "SUB-PASO 3/5: CASO 2 - ENLAZAR RefD\n" + 
+                           "pLD.setRefD(nAux);  // pLD → nuevo nodo\n" + 
+                           "El nodo donde está pLD ahora apunta al nuevo nodo";
+                } else {
+                    return "SUB-PASO 3/5: CASO 3 - GUARDAR SIGUIENTE\n" + 
+                           "clsNodoDoble p1Siguiente = pLD.getRefD();\n" + 
+                           "Se guarda referencia al nodo que sigue después de pLD";
+                }
+            case 3:
+                if (caso.contains("CASO 1")) {
+                    return "SUB-PASO 4/5: CASO 1 COMPLETADO\n" + 
+                           "Lista inicializada con el primer nodo\n" + 
+                           "cabeza, cola y pLD apuntan al nuevo nodo";
+                } else if (caso.contains("CASO 2")) {
+                    return "SUB-PASO 4/5: CASO 2 - ENLAZAR RefI\n" + 
+                           "nAux.setRefI(pLD);  // nuevo nodo ← pLD\n" + 
+                           "El nuevo nodo ahora apunta hacia atrás al pLD";
+                } else {
+                    return "SUB-PASO 4/5: CASO 3 - ENLAZAR AL NUEVO\n" + 
+                           "pLD.setRefD(nAux);     // pLD → nuevo\n" + 
+                           "nAux.setRefI(pLD);     // nuevo ← pLD";
+                }
+            case 4:
+                if (caso.contains("CASO 2")) {
+                    return "SUB-PASO 5/5: CASO 2 - ACTUALIZAR COLA\n" + 
+                           "cola = nAux;  // La cola ahora es el nuevo nodo\n" + 
+                           "Inserción al final completada";
+                } else if (caso.contains("CASO 3")) {
+                    return "SUB-PASO 5/5: CASO 3 - COMPLETAR ENLACES\n" + 
+                           "nAux.setRefD(p1Siguiente);     // nuevo → siguiente\n" + 
+                           "p1Siguiente.setRefI(nAux);     // siguiente ← nuevo\n" + 
+                           "¡Integridad bidireccional mantenida!";
+                } else {
+                    return "SUB-PASO 5/5: INSERCIÓN COMPLETADA\n" + 
+                           "Estado final: " + op.estadoDespues;
+                }
+            case 5:
+                return "RESULTADO FINAL:\n" + 
+                       "Estado después: " + op.estadoDespues + "\n" + 
+                       "Operación insertarDerecha completada exitosamente";
+            default:
+                return "Operación completada";
+        }
+    }
+
+    /**
+     * Explicación detallada por sub-pasos para insertarIzquierda
+     */
+    private String obtenerExplicacionSubPasoInsertarIzquierda(OperacionAnalisis op, int subPaso) {
+        String caso = determinarCasoInsertarIzquierda(op.estadoAntes, op.estadoDespues, op.valor);
+        
+        switch (subPaso) {
+            case 0:
+                return "SUB-PASO 1/5: ESTADO INICIAL\n" + 
+                       "Estado antes: " + op.estadoAntes + "\n" + 
+                       "Caso detectado: " + caso;
+            case 1:
+                return "SUB-PASO 2/5: CREAR NUEVO NODO\n" + 
+                       "clsNodoDoble nAux = new clsNodoDoble(" + op.valor + ");\n" +
+                       "El nuevo nodo está en memoria con RefD=null, RefI=null";
+            case 2:
+                if (caso.contains("CASO 1")) {
+                    return "SUB-PASO 3/5: CASO 1 - LISTA VACÍA\n" + 
+                           "if (pLD == null) {\n" + 
+                           "    pLD = nAux;\n" + 
+                           "    cabeza = cola = nAux;\n" + 
+                           "}";
+                } else if (caso.contains("CASO 2")) {
+                    return "SUB-PASO 3/5: CASO 2 - INSERTAR AL INICIO\n" + 
+                           "pLD está en la cabeza (RefI == null)\n" + 
+                           "nAux.setRefD(pLD);  // nuevo → pLD\n" + 
+                           "El nuevo nodo apunta hacia la derecha al pLD";
+                } else {
+                    return "SUB-PASO 3/5: CASO 3 - GUARDAR ANTERIOR\n" + 
+                           "clsNodoDoble p1Anterior = pLD.getRefI();\n" + 
+                           "Se guarda referencia al nodo anterior al pLD";
+                }
+            case 3:
+                if (caso.contains("CASO 1")) {
+                    return "SUB-PASO 4/5: CASO 1 COMPLETADO\n" + 
+                           "Lista inicializada con el primer nodo\n" + 
+                           "cabeza, cola y pLD apuntan al nuevo nodo";
+                } else if (caso.contains("CASO 2")) {
+                    return "SUB-PASO 4/5: CASO 2 - ENLAZAR RefI\n" + 
+                           "pLD.setRefI(nAux);  // pLD ← nuevo\n" + 
+                           "El pLD ahora apunta hacia atrás al nuevo nodo";
+                } else {
+                    return "SUB-PASO 4/5: CASO 3 - ENLAZAR AL ANTERIOR\n" + 
+                           "p1Anterior.setRefD(nAux);  // anterior → nuevo\n" + 
+                           "nAux.setRefI(p1Anterior);  // nuevo ← anterior";
+                }
+            case 4:
+                if (caso.contains("CASO 2")) {
+                    return "SUB-PASO 5/5: CASO 2 - ACTUALIZAR CABEZA\n" + 
+                           "cabeza = nAux;  // La cabeza ahora es el nuevo nodo\n" + 
+                           "Inserción al inicio completada";
+                } else if (caso.contains("CASO 3")) {
+                    return "SUB-PASO 5/5: CASO 3 - COMPLETAR ENLACES\n" + 
+                           "nAux.setRefD(pLD);    // nuevo → pLD\n" + 
+                           "pLD.setRefI(nAux);    // pLD ← nuevo\n" + 
+                           "¡Integridad bidireccional mantenida!";
+                } else {
+                    return "SUB-PASO 5/5: INSERCIÓN COMPLETADA\n" + 
+                           "Estado final: " + op.estadoDespues;
+                }
+            case 5:
+                return "RESULTADO FINAL:\n" + 
+                       "Estado después: " + op.estadoDespues + "\n" + 
+                       "Operación insertarIzquierda completada exitosamente";
+            default:
+                return "Operación completada";
+        }
+    }
+
+    /**
+     * Explicación detallada por sub-pasos para insertarInicio
+     */
+    private String obtenerExplicacionSubPasoInsertarInicio(OperacionAnalisis op, int subPaso) {
+        switch (subPaso) {
+            case 0: 
+                return "SUB-PASO 1/4: ESTADO INICIAL\n" + 
+                       "Estado antes: " + op.estadoAntes + "\n" + 
+                       "Preparando inserción al inicio de la lista";
+            case 1:
+                return "SUB-PASO 2/4: CREAR NUEVO NODO\n" + 
+                       "clsNodoDoble nuevo = new clsNodoDoble(" + op.valor + ");\n" +
+                       "Nuevo nodo creado en memoria";
+            case 2:
+                if (op.estadoAntes.equals("[]") || op.estadoAntes.isEmpty()) {
+                    return "SUB-PASO 3/4: LISTA VACÍA\n" + 
+                           "cabeza = cola = nuevo;\n" + 
+                           "pLD = nuevo;\n" + 
+                           "El nuevo nodo se convierte en el único elemento";
+                } else {
+                    return "SUB-PASO 3/4: ENLAZAR CON CABEZA EXISTENTE\n" + 
+                           "nuevo.setRefD(cabeza);  // nuevo → cabeza actual\n" + 
+                           "cabeza.setRefI(nuevo);  // cabeza ← nuevo";
+                }
+            case 3:
+                if (op.estadoAntes.equals("[]") || op.estadoAntes.isEmpty()) {
+                    return "SUB-PASO 4/4: INSERCIÓN COMPLETADA\n" + 
+                           "Lista inicializada con el primer elemento\n" + 
+                           "Estado final: " + op.estadoDespues;
+                } else {
+                    return "SUB-PASO 4/4: ACTUALIZAR CABEZA\n" + 
+                           "cabeza = nuevo;\n" + 
+                           "El nuevo nodo ahora es la cabeza de la lista\n" + 
+                           "Estado final: " + op.estadoDespues;
+                }
+            default: 
+                return "Inserción al inicio completada";
+        }
+    }
+
+    /**
+     * Explicación detallada por sub-pasos para insertarFinal
+     */
+    private String obtenerExplicacionSubPasoInsertarFinal(OperacionAnalisis op, int subPaso) {
+        switch (subPaso) {
+            case 0: 
+                return "SUB-PASO 1/4: ESTADO INICIAL\n" + 
+                       "Estado antes: " + op.estadoAntes + "\n" + 
+                       "Preparando inserción al final de la lista";
+            case 1:
+                return "SUB-PASO 2/4: CREAR NUEVO NODO\n" + 
+                       "clsNodoDoble nuevo = new clsNodoDoble(" + op.valor + ");\n" +
+                       "Nuevo nodo creado en memoria";
+            case 2:
+                if (op.estadoAntes.equals("[]") || op.estadoAntes.isEmpty()) {
+                    return "SUB-PASO 3/4: LISTA VACÍA\n" + 
+                           "cabeza = cola = nuevo;\n" + 
+                           "pLD = nuevo;\n" + 
+                           "El nuevo nodo se convierte en el único elemento";
+                } else {
+                    return "SUB-PASO 3/4: ENLAZAR CON COLA EXISTENTE\n" + 
+                           "cola.setRefD(nuevo);  // cola actual → nuevo\n" + 
+                           "nuevo.setRefI(cola);  // nuevo ← cola actual";
+                }
+            case 3:
+                if (op.estadoAntes.equals("[]") || op.estadoAntes.isEmpty()) {
+                    return "SUB-PASO 4/4: INSERCIÓN COMPLETADA\n" + 
+                           "Lista inicializada con el primer elemento\n" + 
+                           "Estado final: " + op.estadoDespues;
+                } else {
+                    return "SUB-PASO 4/4: ACTUALIZAR COLA\n" + 
+                           "cola = nuevo;\n" + 
+                           "El nuevo nodo ahora es la cola de la lista\n" + 
+                           "Estado final: " + op.estadoDespues;
+                }
+            default: 
+                return "Inserción al final completada";
+        }
+    }
+
+    /**
+     * Nueva visualización con sub-pasos gráficos
+     */
+    private void dibujarVisualizacionAnalisisConSubPasos(java.awt.Graphics g, int ancho, int alto, int paso, int subPaso, java.util.ArrayList<OperacionAnalisis> operaciones) {
+        java.awt.Graphics2D g2d = (java.awt.Graphics2D) g;
+        g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        if (paso == 0) {
+            // Estado inicial
+            dibujarEstadoInicial(g2d, 30, 50, ancho, alto);
+            return;
+        }
+        
+        if (paso <= operaciones.size()) {
+            OperacionAnalisis op = operaciones.get(paso - 1);
+            
+            // Dibujar específicamente según la operación y sub-paso
+            if (op.operacion.equals("INSERTAR_DERECHA") && op.estructura.equals("LISTA_DOBLE")) {
+                dibujarSubPasosInsertarDerecha(g2d, op, subPaso, 30, 50, 40, ancho, alto);
+            } else if (op.operacion.equals("INSERTAR_INICIO") && op.estructura.equals("LISTA_DOBLE")) {
+                dibujarSubPasosInsertarInicio(g2d, op, subPaso, 30, 50, 40, ancho, alto);
+            } else if (op.operacion.equals("INSERTAR_FINAL") && op.estructura.equals("LISTA_DOBLE")) {
+                dibujarSubPasosInsertarFinal(g2d, op, subPaso, 30, 50, 40, ancho, alto);
+            } else if (op.operacion.equals("INSERTAR_IZQUIERDA") && op.estructura.equals("LISTA_DOBLE")) {
+                dibujarSubPasosInsertarIzquierda(g2d, op, subPaso, 30, 50, 40, ancho, alto);
+            } else {
+                // Para otras operaciones, usar visualización genérica
+                dibujarVisualizacionGenerica(g2d, op, subPaso, 30, 50, 40, ancho, alto);
+            }
+        }
+    }
+
+    /**
+     * Dibuja los sub-pasos específicos del método insertarDerecha
+     */
+    private void dibujarSubPasosInsertarDerecha(java.awt.Graphics2D g2d, OperacionAnalisis op, int subPaso, int inicioX, int inicioY, int tamanoNodo, int ancho, int alto) {
+        // Limpiar área
+        g2d.setColor(java.awt.Color.WHITE);
+        g2d.fillRect(0, 0, ancho, alto);
+        
+        // Título
+        g2d.setColor(java.awt.Color.BLUE);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        g2d.drawString("insertarDerecha(" + op.valor + ") - Sub-paso " + (subPaso + 1) + "/5", inicioX, inicioY - 10);
+        
+        String caso = determinarCasoInsertarDerecha(op.estadoAntes, op.estadoDespues, op.valor);
+        
+        if (caso.contains("CASO 1")) {
+            dibujarSubPasosCaso1(g2d, op.valor, subPaso, inicioX, inicioY + 20, tamanoNodo);
+        } else if (caso.contains("CASO 2")) {
+            dibujarSubPasosCaso2(g2d, op, subPaso, inicioX, inicioY + 20, tamanoNodo);
+        } else {
+            dibujarSubPasosCaso3(g2d, op, subPaso, inicioX, inicioY + 20, tamanoNodo);
+        }
+    }
+
+    /**
+     * Sub-pasos gráficos para Caso 1: Lista vacía
+     */
+    private void dibujarSubPasosCaso1(java.awt.Graphics2D g2d, String valor, int subPaso, int x, int y, int tamanoNodo) {
+        switch (subPaso) {
+            case 0: // Estado inicial
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 1: Estado inicial - Lista vacía", x, y);
+                g2d.setColor(java.awt.Color.BLUE);
+                g2d.drawString("cabeza → null", x, y + 30);
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.drawString("pLD → null", x, y + 50);
+                break;
+                
+            case 1: // Crear nodo
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 2: Crear nuevo nodo", x, y);
+                g2d.drawString("clsNodoDoble nAux = new clsNodoDoble(" + valor + ");", x, y + 15);
+                
+                // Dibujar nuevo nodo con referencias internas visibles
+                dibujarNodoNuevo(g2d, x + 100, y + 30, tamanoNodo, valor, "nAux");
+                break;
+                
+            case 2: // Verificar condición
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 3: if (pLD == null) - VERDADERO", x, y);
+                g2d.setColor(java.awt.Color.GREEN);
+                g2d.drawString("✓ Lista está vacía, ejecutar CASO 1", x, y + 20);
+                
+                // Mostrar el nodo con referencias visibles
+                dibujarNodoConReferencias(g2d, x + 100, y + 40, tamanoNodo, valor, 
+                                        java.awt.Color.YELLOW, "nAux", false, false, null, null);
+                break;
+                
+            case 3: // Asignar pLD
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 4: pLD = nAux;", x, y);
+                g2d.drawString("El puntero ahora apunta al nuevo nodo", x, y + 15);
+                
+                // Nodo con referencias aún en null
+                dibujarNodoConReferencias(g2d, x + 100, y + 40, tamanoNodo, valor, 
+                                        java.awt.Color.YELLOW, "nAux/pLD", false, false, null, null);
+                
+                // Flecha de pLD apuntando al nodo
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.drawString("pLD apunta aquí", x + 50, y + 25);
+                dibujarFlecha(g2d, x + 115, y + 30, x + 115, y + 40);
+                break;
+                
+            case 4: // Asignar cabeza y cola
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 5: cabeza = cola = nAux", x, y);
+                g2d.drawString("Lista inicializada - nodo único con RefD=null, RefI=null", x, y + 15);
+                
+                // Nodo final con referencias claramente visibles
+                dibujarNodoConReferencias(g2d, x + 100, y + 60, tamanoNodo, valor, 
+                                        java.awt.Color.GREEN, "cabeza/cola/pLD", false, false, null, null);
+                
+                // Indicadores de punteros
+                g2d.setColor(java.awt.Color.BLUE);
+                g2d.drawString("cabeza →", x + 40, y + 75);
+                g2d.setColor(java.awt.Color.RED);
+                g2d.drawString("cola →", x + 40, y + 90);
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.drawString("pLD →", x + 40, y + 105);
+                
+                // Nota importante
+                g2d.setColor(java.awt.Color.GRAY);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.ITALIC, 10));
+                g2d.drawString("Nota: Como es el único nodo, RefD y RefI permanecen null", x, y + 130);
+                
+                g2d.setColor(java.awt.Color.GREEN);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 12));
+                g2d.drawString("¡Lista inicializada!", x, y + 145);
+                break;
+        }
+    }
+
+    /**
+     * Sub-pasos gráficos para Caso 2: Insertar al final
+     */
+    private void dibujarSubPasosCaso2(java.awt.Graphics2D g2d, OperacionAnalisis op, int subPaso, int x, int y, int tamanoNodo) {
+        String[] nodosAntes = parsearEstadoLista(op.estadoAntes);
+        int espacioNodo = 70;
+        
+        switch (subPaso) {
+            case 0: // Estado inicial
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 1: Estado inicial - pLD en último nodo", x, y);
+                g2d.drawString("Lista existente con pLD apuntando al final", x, y + 15);
+                
+                // Dibujar lista existente con referencias visibles
+                for (int i = 0; i < nodosAntes.length; i++) {
+                    int nodoX = x + (i * espacioNodo);
+                    int nodoY = y + 40;
+                    
+                    boolean esUltimo = (i == nodosAntes.length - 1);
+                    boolean esPrimero = (i == 0);
+                    
+                    // Determinar valores de referencias
+                    String valorAnterior = esPrimero ? null : nodosAntes[i - 1];
+                    String valorSiguiente = esUltimo ? null : nodosAntes[i + 1];
+                    
+                    // Dibujar nodo con referencias completas
+                    java.awt.Color colorNodo = esUltimo ? java.awt.Color.ORANGE : java.awt.Color.WHITE;
+                    String etiqueta = esUltimo ? "pLD" : null;
+                    
+                    dibujarNodoConReferencias(g2d, nodoX, nodoY, tamanoNodo, 
+                                            nodosAntes[i], colorNodo, etiqueta,
+                                            !esUltimo, // RefD solo si no es último
+                                            !esPrimero, // RefI solo si no es primero
+                                            valorSiguiente, valorAnterior);
+                    
+                    // Flecha entre nodos si no es el último
+                    if (!esUltimo) {
+                        g2d.setColor(java.awt.Color.BLACK);
+                        dibujarFlecha(g2d, nodoX + tamanoNodo + 10, nodoY + 15, 
+                                    nodoX + espacioNodo - 10, nodoY + 15);
+                    }
+                }
+                break;
+                
+            case 1: // Crear nuevo nodo
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 2: Crear nuevo nodo", x, y);
+                g2d.drawString("clsNodoDoble nAux = new clsNodoDoble(" + op.valor + ");", x, y + 15);
+                
+                // Lista existente con nodo pLD mostrando sus referencias
+                if (nodosAntes.length > 0) {
+                    int ultimoX = x + ((nodosAntes.length - 1) * espacioNodo);
+                    int ultimoY = y + 40;
+                    
+                    // Último nodo (pLD) con sus referencias visibles
+                    String valorAnterior = (nodosAntes.length > 1) ? nodosAntes[nodosAntes.length - 2] : null;
+                    dibujarNodoConReferencias(g2d, ultimoX, ultimoY, tamanoNodo, 
+                                            nodosAntes[nodosAntes.length - 1], 
+                                            java.awt.Color.ORANGE, "pLD",
+                                            false, // RefD → null (está al final)
+                                            nodosAntes.length > 1, // RefI → anterior si existe
+                                            null, valorAnterior);
+                }
+                
+                // Nuevo nodo con referencias en null
+                if (nodosAntes.length > 0) {
+                    int nuevoX = x + (nodosAntes.length * espacioNodo);
+                    int nuevoY = y + 40;
+                    dibujarNodoNuevo(g2d, nuevoX, nuevoY, tamanoNodo, op.valor, "nAux");
+                }
+                
+                break;
+                
+            case 2: // Enlazar RefD del pLD al nuevo
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 3: pLD.setRefD(nAux)", x, y);
+                g2d.drawString("El último nodo (pLD) conecta su RefD al nuevo nodo", x, y + 15);
+                
+                // Lista con enlaces
+                if (nodosAntes.length > 0) {
+                    int ultimoX = x + 50;
+                    int ultimoY = y + 40;
+                    
+                    // Último nodo (pLD) ahora con RefD apuntando al nuevo
+                    String valorAnterior = (nodosAntes.length > 1) ? nodosAntes[nodosAntes.length - 2] : null;
+                    dibujarNodoConReferencias(g2d, ultimoX, ultimoY, tamanoNodo, 
+                                            nodosAntes[nodosAntes.length - 1], 
+                                            java.awt.Color.ORANGE, "pLD",
+                                            true, // RefD → nAux (¡CAMBIÓ!)
+                                            nodosAntes.length > 1, // RefI → anterior si existe
+                                            op.valor, valorAnterior);
+                    
+                    // Nuevo nodo aún con referencias null
+                    int nuevoX2 = x + 150;
+                    dibujarNodoNuevo(g2d, nuevoX2, ultimoY, tamanoNodo, op.valor, "nAux");
+                    
+                    // Flecha visual del nuevo enlace RefD
+                    g2d.setColor(java.awt.Color.RED);
+                    dibujarFlecha(g2d, ultimoX + tamanoNodo + 10, ultimoY + 15, nuevoX2 - 5, ultimoY + 15);
+                    g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
+                    g2d.drawString("¡NUEVO ENLACE RefD!", ultimoX + tamanoNodo + 5, ultimoY + 35);
+                }
+                break;
+                
+            case 3: // Enlazar RefI del nuevo al pLD
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 4: nAux.setRefI(pLD)", x, y);
+                g2d.drawString("El nuevo nodo establece su RefI hacia el nodo pLD", x, y + 15);
+                
+                if (nodosAntes.length > 0) {
+                    int ultimoX = x + 50;
+                    int ultimoY = y + 40;
+                    
+                    // Nodo pLD con su RefD ya apuntando al nuevo
+                    String valorAnterior = (nodosAntes.length > 1) ? nodosAntes[nodosAntes.length - 2] : null;
+                    dibujarNodoConReferencias(g2d, ultimoX, ultimoY, tamanoNodo, 
+                                            nodosAntes[nodosAntes.length - 1], 
+                                            java.awt.Color.ORANGE, "pLD",
+                                            true, // RefD → nAux 
+                                            nodosAntes.length > 1, // RefI → anterior
+                                            op.valor, valorAnterior);
+                    
+                    // Nuevo nodo estableciendo su RefI
+                    int nuevoX3 = x + 150;
+                    dibujarNodoConReferencias(g2d, nuevoX3, ultimoY, tamanoNodo, 
+                                            op.valor, java.awt.Color.YELLOW, "nAux",
+                                            false, // RefD → null (será la cola)
+                                            true, // RefI → pLD (¡CAMBIÓ!)
+                                            null, nodosAntes[nodosAntes.length - 1]);
+                    
+                    // Flechas visuales de los enlaces bidireccionales
+                    g2d.setColor(java.awt.Color.RED);
+                    dibujarFlecha(g2d, ultimoX + tamanoNodo, ultimoY + 12, nuevoX3, ultimoY + 12);
+                    
+                    g2d.setColor(java.awt.Color.BLUE);
+                    dibujarFlecha(g2d, nuevoX3, ultimoY + 28, ultimoX + tamanoNodo, ultimoY + 28);
+                    g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
+                    g2d.drawString("¡ENLACE BIDIRECCIONAL!", ultimoX + tamanoNodo + 5, ultimoY + 50);
+                }
+                break;
+                
+            case 4: // Actualizar cola
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 5: cola = nAux", x, y);
+                g2d.drawString("El puntero cola ahora apunta al nuevo nodo", x, y + 15);
+                
+                if (nodosAntes.length > 0) {
+                    int ultimoX = x + 50;
+                    int ultimoY = y + 40;
+                    
+                    // Último nodo (ex-cola, ahora pLD) con referencias completas
+                    String valorAnterior = (nodosAntes.length > 1) ? nodosAntes[nodosAntes.length - 2] : null;
+                    dibujarNodoConReferencias(g2d, ultimoX, ultimoY, tamanoNodo, 
+                                            nodosAntes[nodosAntes.length - 1], 
+                                            java.awt.Color.WHITE, "pLD",
+                                            true, // RefD → nAux
+                                            nodosAntes.length > 1, // RefI → anterior
+                                            op.valor, valorAnterior);
+                    
+                    // Nuevo nodo (ahora es la nueva cola) con referencias completas
+                    int nuevoX4 = x + 150;
+                    dibujarNodoConReferencias(g2d, nuevoX4, ultimoY, tamanoNodo, 
+                                            op.valor, java.awt.Color.GREEN, "NUEVA COLA",
+                                            false, // RefD → null (es la cola)
+                                            true, // RefI → pLD 
+                                            null, nodosAntes[nodosAntes.length - 1]);
+                    
+                    // Flecha visual entre nodos
+                    g2d.setColor(java.awt.Color.BLACK);
+                    dibujarFlecha(g2d, ultimoX + tamanoNodo + 10, ultimoY + 15, nuevoX4 - 5, ultimoY + 15);
+                    
+                    // Indicador del puntero cola
+                    g2d.setColor(java.awt.Color.GREEN);
+                    g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 12));
+                    g2d.drawString("cola →", nuevoX4 + 5, ultimoY + 65);
+                    
+                    g2d.setColor(java.awt.Color.GREEN);
+                    g2d.drawString("¡Lista extendida correctamente!", x, ultimoY + 80);
+                }
+                break;
+        }
+    }
+
+    /**
+     * Sub-pasos gráficos para Caso 3: Insertar en medio
+     */
+    private void dibujarSubPasosCaso3(java.awt.Graphics2D g2d, OperacionAnalisis op, int subPaso, int x, int y, int tamanoNodo) {
+        // Usar datos reales del usuario en lugar de ejemplo hardcodeado
+        String[] nodosReales = parsearEstadoLista(op.estadoAntes);
+        int espacioNodo = 65;
+        
+        // Determinar posición real del puntero
+        int punteroPos = obtenerPosicionPunteroReal(op.estadoAntes);
+        if (punteroPos == -1 && nodosReales.length > 1) {
+            punteroPos = nodosReales.length / 2; // Usar posición del medio si no se puede determinar
+        }
+        
+        switch (subPaso) {
+            case 0: // Estado inicial
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 1: Estado inicial - pLD en posición " + (punteroPos + 1), x, y);
+                g2d.drawString("Se insertará entre pLD y el nodo siguiente", x, y + 15);
+                
+                for (int i = 0; i < nodosReales.length; i++) {
+                    int nodoX = x + (i * espacioNodo);
+                    int nodoY = y + 40;
+                    
+                    boolean esUltimo = (i == nodosReales.length - 1);
+                    boolean esPrimero = (i == 0);
+                    boolean esPLD = (i == punteroPos);
+                    
+                    // Determinar valores de referencias
+                    String valorAnterior = esPrimero ? null : nodosReales[i - 1];
+                    String valorSiguiente = esUltimo ? null : nodosReales[i + 1];
+                    
+                    // Color y etiqueta del nodo
+                    java.awt.Color colorNodo = esPLD ? java.awt.Color.ORANGE : java.awt.Color.WHITE;
+                    String etiqueta = esPLD ? "pLD" : null;
+                    
+                    dibujarNodoConReferencias(g2d, nodoX, nodoY, tamanoNodo, 
+                                            nodosReales[i], colorNodo, etiqueta,
+                                            !esUltimo, // RefD solo si no es último
+                                            !esPrimero, // RefI solo si no es primero
+                                            valorSiguiente, valorAnterior);
+                    
+                    // Flecha entre nodos consecutivos
+                    if (!esUltimo) {
+                        g2d.setColor(java.awt.Color.BLACK);
+                        dibujarFlecha(g2d, nodoX + tamanoNodo + 10, nodoY + 15, 
+                                    nodoX + espacioNodo - 10, nodoY + 15);
+                    }
+                }
+                break;
+                
+            case 1: // Crear nuevo nodo
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 2: Crear nAux = new clsNodoDoble(" + op.valor + ")", x, y);
+                
+                // Lista simplificada con pLD usando datos reales
+                if (punteroPos < nodosReales.length) {
+                    int pldX = x + (punteroPos * espacioNodo);
+                    int pldY = y + 30;
+                    g2d.setColor(java.awt.Color.ORANGE);
+                    g2d.fillRect(pldX - 2, pldY - 2, tamanoNodo + 4, tamanoNodo + 4);
+                    g2d.setColor(java.awt.Color.WHITE);
+                    g2d.fillRect(pldX, pldY, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(pldX, pldY, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosReales[punteroPos], pldX + 15, pldY + 25);
+                    g2d.setColor(java.awt.Color.ORANGE);
+                    g2d.drawString("pLD", pldX + 10, pldY - 10);
+                    
+                    // Nodo siguiente (si existe)
+                    if (punteroPos + 1 < nodosReales.length) {
+                        int sigX = pldX + espacioNodo;
+                        g2d.setColor(java.awt.Color.WHITE);
+                        g2d.fillRect(sigX, pldY, tamanoNodo, tamanoNodo);
+                        g2d.setColor(java.awt.Color.BLACK);
+                        g2d.drawRect(sigX, pldY, tamanoNodo, tamanoNodo);
+                        g2d.drawString(nodosReales[punteroPos + 1], sigX + 15, pldY + 25);
+                    }
+                }
+                
+                // NUEVO NODO con referencias visibles
+                int nuevoX = x + 200;
+                int nuevoY = y + 70;
+                dibujarNodoNuevo(g2d, nuevoX, nuevoY, tamanoNodo, op.valor, "nAux");
+                break;
+                
+            case 2: // Guardar p1Siguiente
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 3: p1Siguiente = pLD.getRefD()", x, y);
+                
+                // Mostrar la operación de guardar referencia con datos reales
+                if (punteroPos < nodosReales.length) {
+                    int pldX2 = x + (punteroPos * espacioNodo);
+                    int pldY2 = y + 40;
+                    
+                    // pLD
+                    g2d.setColor(java.awt.Color.ORANGE);
+                    g2d.fillRect(pldX2 - 2, pldY2 - 2, tamanoNodo + 4, tamanoNodo + 4);
+                    g2d.setColor(java.awt.Color.WHITE);
+                    g2d.fillRect(pldX2, pldY2, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(pldX2, pldY2, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosReales[punteroPos], pldX2 + 15, pldY2 + 25);
+                    
+                    // Nodo siguiente (p1Siguiente) - usar datos reales
+                    if (punteroPos + 1 < nodosReales.length) {
+                        int sigX2 = pldX2 + espacioNodo;
+                        g2d.setColor(java.awt.Color.LIGHT_GRAY);
+                        g2d.fillRect(sigX2 - 2, pldY2 - 2, tamanoNodo + 4, tamanoNodo + 4);
+                        g2d.setColor(java.awt.Color.WHITE);
+                        g2d.fillRect(sigX2, pldY2, tamanoNodo, tamanoNodo);
+                        g2d.setColor(java.awt.Color.BLACK);
+                        g2d.drawRect(sigX2, pldY2, tamanoNodo, tamanoNodo);
+                        g2d.drawString(nodosReales[punteroPos + 1], sigX2 + 15, pldY2 + 25);
+                        g2d.drawString("p1Siguiente", sigX2 - 5, pldY2 - 10);
+                    }
+                }
+                break;
+                
+            case 3: // Enlazar pLD al nuevo y nuevo a pLD
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 4: pLD.setRefD(nAux) y nAux.setRefI(pLD)", x, y);
+                g2d.drawString("Establecer enlaces bidireccionales entre pLD y nAux", x, y + 15);
+                
+                int pldX3 = x + 30;
+                int pldY3 = y + 40;
+                
+                // pLD - con RefD ahora apuntando al nuevo nodo
+                String valorPLD = (punteroPos < nodosReales.length) ? nodosReales[punteroPos] : "null";
+                String valorAnterior = (punteroPos > 0) ? nodosReales[punteroPos - 1] : null;
+                dibujarNodoConReferencias(g2d, pldX3, pldY3, tamanoNodo, 
+                                        valorPLD, java.awt.Color.ORANGE, "pLD",
+                                        true, // RefD → nAux (¡CAMBIÓ!)
+                                        punteroPos > 0, // RefI → anterior
+                                        op.valor, valorAnterior);
+                
+                // Nuevo nodo estableciendo RefI hacia pLD
+                int nuevoX3 = pldX3 + espacioNodo;
+                dibujarNodoConReferencias(g2d, nuevoX3, pldY3, tamanoNodo, 
+                                        op.valor, java.awt.Color.YELLOW, "nAux",
+                                        false, // RefD → null por ahora
+                                        true, // RefI → pLD (¡CAMBIÓ!)
+                                        null, valorPLD);
+                
+                // Flecha visual del enlace bidireccional
+                g2d.setColor(java.awt.Color.BLACK);
+                dibujarFlecha(g2d, pldX3 + tamanoNodo + 10, pldY3 + 15, nuevoX3 - 5, pldY3 + 15);
+                
+                g2d.setColor(java.awt.Color.GREEN);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
+                g2d.drawString("¡Enlaces bidireccionales establecidos!", x, pldY3 + 60);
+                break;
+                
+            case 4: // Completar enlaces con p1Siguiente
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 5: nAux.setRefD(p1Siguiente) y p1Siguiente.setRefI(nAux)", x, y);
+                g2d.drawString("Completar enlaces para integrar nAux en la cadena", x, y + 15);
+                
+                int pldX4 = x + 10;
+                int pldY4 = y + 40;
+                
+                // pLD - con sus referencias completas
+                String valorPLD4 = (punteroPos < nodosReales.length) ? nodosReales[punteroPos] : "null";
+                String valorAnteriorPLD = (punteroPos > 0) ? nodosReales[punteroPos - 1] : null;
+                dibujarNodoConReferencias(g2d, pldX4, pldY4, tamanoNodo, 
+                                        valorPLD4, java.awt.Color.ORANGE, "pLD",
+                                        true, // RefD → nAux
+                                        punteroPos > 0, // RefI → anterior
+                                        op.valor, valorAnteriorPLD);
+                
+                // Nuevo nodo con todas sus referencias establecidas
+                int nuevoX4 = pldX4 + espacioNodo;
+                String valorSiguiente = (punteroPos + 1 < nodosReales.length) ? nodosReales[punteroPos + 1] : null;
+                dibujarNodoConReferencias(g2d, nuevoX4, pldY4, tamanoNodo, 
+                                        op.valor, java.awt.Color.YELLOW, "nAux",
+                                        punteroPos + 1 < nodosReales.length, // RefD → p1Siguiente
+                                        true, // RefI → pLD
+                                        valorSiguiente, valorPLD4);
+                
+                // p1Siguiente con RefI actualizada
+                int sigX4 = nuevoX4 + espacioNodo;
+                if (punteroPos + 1 < nodosReales.length) {
+                    String valorSigSig = (punteroPos + 2 < nodosReales.length) ? nodosReales[punteroPos + 2] : null;
+                    dibujarNodoConReferencias(g2d, sigX4, pldY4, tamanoNodo, 
+                                            nodosReales[punteroPos + 1], java.awt.Color.WHITE, "p1Siguiente",
+                                            punteroPos + 2 < nodosReales.length, // RefD → siguiente
+                                            true, // RefI → nAux (¡CAMBIÓ!)
+                                            valorSigSig, op.valor);
+                }
+                
+                // Flechas visuales entre nodos
+                g2d.setColor(java.awt.Color.BLACK);
+                dibujarFlecha(g2d, pldX4 + tamanoNodo + 10, pldY4 + 15, nuevoX4 - 5, pldY4 + 15);
+                if (punteroPos + 1 < nodosReales.length) {
+                    dibujarFlecha(g2d, nuevoX4 + tamanoNodo + 10, pldY4 + 15, sigX4 - 5, pldY4 + 15);
+                }
+                
+                // Mensaje de éxito
+                g2d.setColor(java.awt.Color.GREEN);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 12));
+                g2d.drawString("¡INTEGRIDAD BIDIRECCIONAL COMPLETA!", x, pldY4 + 70);
+                break;
+        }
+    }
+
+    /**
+     * Dibuja los sub-pasos específicos del método insertarInicio
+     */
+    private void dibujarSubPasosInsertarInicio(java.awt.Graphics2D g2d, OperacionAnalisis op, int subPaso, int inicioX, int inicioY, int tamanoNodo, int ancho, int alto) {
+        // Limpiar área
+        g2d.setColor(java.awt.Color.WHITE);
+        g2d.fillRect(0, 0, ancho, alto);
+        
+        // Título
+        g2d.setColor(java.awt.Color.BLUE);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        g2d.drawString("insertarInicio(" + op.valor + ") - Sub-paso " + (subPaso + 1) + "/4", inicioX, inicioY - 10);
+        
+        // Parsear datos reales
+        String[] nodosReales = parsearEstadoLista(op.estadoAntes);
+        boolean listaVacia = nodosReales.length == 0 || op.estadoAntes.equals("[]");
+        
+        int x = inicioX + 50;
+        int y = inicioY + 30;
+        int espacioNodo = tamanoNodo + 30;
+        
+        switch (subPaso) {
+            case 0: // Estado inicial
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 1: ESTADO INICIAL", x, y);
+                g2d.drawString("Estado antes: " + op.estadoAntes, x, y + 20);
+                
+                if (!listaVacia) {
+                    // Dibujar lista existente
+                    for (int i = 0; i < nodosReales.length; i++) {
+                        int nodoX = x + (i * espacioNodo);
+                        int nodoY = y + 40;
+                        
+                        g2d.setColor(java.awt.Color.LIGHT_GRAY);
+                        g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                        g2d.setColor(java.awt.Color.BLACK);
+                        g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                        g2d.drawString(nodosReales[i], nodoX + 15, nodoY + 25);
+                        
+                        if (i == 0) {
+                            g2d.setColor(java.awt.Color.GREEN);
+                            g2d.drawString("cabeza", nodoX - 5, nodoY - 10);
+                        }
+                        if (i == nodosReales.length - 1) {
+                            g2d.setColor(java.awt.Color.RED);
+                            g2d.drawString("cola", nodoX + 10, nodoY + 55);
+                        }
+                        
+                        // Dibujar flechas RefD
+                        if (i < nodosReales.length - 1) {
+                            g2d.setColor(java.awt.Color.RED);
+                            dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + 12, nodoX + espacioNodo, nodoY + 12);
+                        }
+                        // Dibujar flechas RefI
+                        if (i > 0) {
+                            g2d.setColor(java.awt.Color.BLUE);
+                            dibujarFlecha(g2d, nodoX, nodoY + 28, nodoX - espacioNodo + tamanoNodo, nodoY + 28);
+                        }
+                    }
+                } else {
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawString("Lista vacía: cabeza = null, cola = null", x, y + 60);
+                }
+                break;
+                
+            case 1: // Crear nuevo nodo
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 2: CREAR NUEVO NODO", x, y);
+                g2d.drawString("clsNodoDoble nuevo = new clsNodoDoble(" + op.valor + ");", x, y + 20);
+                
+                // Dibujar nuevo nodo en amarillo
+                int nuevoX1 = x - espacioNodo;
+                int nuevoY1 = y + 40;
+                g2d.setColor(java.awt.Color.YELLOW);
+                g2d.fillRect(nuevoX1, nuevoY1, tamanoNodo, tamanoNodo);
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawRect(nuevoX1, nuevoY1, tamanoNodo, tamanoNodo);
+                g2d.drawString(op.valor, nuevoX1 + 15, nuevoY1 + 25);
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.drawString("NUEVO", nuevoX1 + 5, nuevoY1 - 10);
+                
+                // Dibujar lista existente si la hay
+                if (!listaVacia) {
+                    for (int i = 0; i < nodosReales.length; i++) {
+                        int nodoX = x + (i * espacioNodo);
+                        int nodoY = y + 40;
+                        
+                        g2d.setColor(java.awt.Color.LIGHT_GRAY);
+                        g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                        g2d.setColor(java.awt.Color.BLACK);
+                        g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                        g2d.drawString(nodosReales[i], nodoX + 15, nodoY + 25);
+                        
+                        if (i == 0) {
+                            g2d.setColor(java.awt.Color.GREEN);
+                            g2d.drawString("cabeza", nodoX - 5, nodoY - 10);
+                        }
+                    }
+                }
+                break;
+                
+            case 2: // Enlaces
+                g2d.setColor(java.awt.Color.BLACK);
+                if (listaVacia) {
+                    g2d.drawString("PASO 3: LISTA VACÍA - INICIALIZAR", x, y);
+                    g2d.drawString("cabeza = cola = nuevo;", x, y + 20);
+                    
+                    int nodoX = x + espacioNodo;
+                    int nodoY = y + 40;
+                    g2d.setColor(java.awt.Color.YELLOW);
+                    g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.drawString(op.valor, nodoX + 15, nodoY + 25);
+                    
+                    g2d.setColor(java.awt.Color.GREEN);
+                    g2d.drawString("cabeza", nodoX - 5, nodoY - 10);
+                    g2d.setColor(java.awt.Color.RED);
+                    g2d.drawString("cola", nodoX + 10, nodoY + 55);
+                } else {
+                    g2d.drawString("PASO 3: ENLAZAR CON CABEZA EXISTENTE", x, y);
+                    g2d.drawString("nuevo.setRefD(cabeza);  cabeza.setRefI(nuevo);", x, y + 20);
+                    
+                    int nuevoX2 = x - espacioNodo;
+                    int nuevoY2 = y + 40;
+                    g2d.setColor(java.awt.Color.YELLOW);
+                    g2d.fillRect(nuevoX2, nuevoY2, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(nuevoX2, nuevoY2, tamanoNodo, tamanoNodo);
+                    g2d.drawString(op.valor, nuevoX2 + 15, nuevoY2 + 25);
+                    
+                    // Cabeza actual
+                    int cabezaX = x;
+                    g2d.setColor(java.awt.Color.LIGHT_GRAY);
+                    g2d.fillRect(cabezaX, nuevoY2, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(cabezaX, nuevoY2, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosReales[0], cabezaX + 15, nuevoY2 + 25);
+                    g2d.setColor(java.awt.Color.GREEN);
+                    g2d.drawString("ex-cabeza", cabezaX - 5, nuevoY2 - 10);
+                    
+                    // Enlaces bidireccionales
+                    g2d.setColor(java.awt.Color.RED);
+                    dibujarFlecha(g2d, nuevoX2 + tamanoNodo, nuevoY2 + 12, cabezaX, nuevoY2 + 12);
+                    g2d.drawString("RefD", nuevoX2 + tamanoNodo + 5, nuevoY2 + 8);
+                    
+                    g2d.setColor(java.awt.Color.BLUE);
+                    dibujarFlecha(g2d, cabezaX, nuevoY2 + 28, nuevoX2 + tamanoNodo, nuevoY2 + 28);
+                    g2d.drawString("RefI", cabezaX - 20, nuevoY2 + 35);
+                }
+                break;
+                
+            case 3: // Finalizar
+                g2d.setColor(java.awt.Color.BLACK);
+                if (listaVacia) {
+                    g2d.drawString("PASO 4: INSERCIÓN COMPLETADA", x, y);
+                    g2d.drawString("pLD = nuevo; (lista inicializada)", x, y + 20);
+                } else {
+                    g2d.drawString("PASO 4: ACTUALIZAR CABEZA", x, y);
+                    g2d.drawString("cabeza = nuevo;", x, y + 20);
+                }
+                
+                // Dibujar estado final
+                String[] nodosFinales = parsearEstadoLista(op.estadoDespues);
+                for (int i = 0; i < nodosFinales.length; i++) {
+                    int nodoX = x + (i * espacioNodo);
+                    int nodoY = y + 40;
+                    
+                    if (i == 0) {
+                        g2d.setColor(java.awt.Color.YELLOW); // El nuevo nodo
+                    } else {
+                        g2d.setColor(java.awt.Color.LIGHT_GRAY);
+                    }
+                    g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosFinales[i], nodoX + 15, nodoY + 25);
+                    
+                    if (i == 0) {
+                        g2d.setColor(java.awt.Color.GREEN);
+                        g2d.drawString("NUEVA cabeza", nodoX - 15, nodoY - 10);
+                    }
+                    
+                    // Enlaces
+                    if (i < nodosFinales.length - 1) {
+                        g2d.setColor(java.awt.Color.RED);
+                        dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + 12, nodoX + espacioNodo, nodoY + 12);
+                    }
+                    if (i > 0) {
+                        g2d.setColor(java.awt.Color.BLUE);
+                        dibujarFlecha(g2d, nodoX, nodoY + 28, nodoX - espacioNodo + tamanoNodo, nodoY + 28);
+                    }
+                }
+                
+                g2d.setColor(java.awt.Color.GREEN);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 12));
+                g2d.drawString("¡INSERCIÓN AL INICIO COMPLETADA!", x, y + 100);
+                break;
+        }
+    }
+
+    /**
+     * Dibuja los sub-pasos específicos del método insertarFinal
+     */
+    private void dibujarSubPasosInsertarFinal(java.awt.Graphics2D g2d, OperacionAnalisis op, int subPaso, int inicioX, int inicioY, int tamanoNodo, int ancho, int alto) {
+        // Limpiar área
+        g2d.setColor(java.awt.Color.WHITE);
+        g2d.fillRect(0, 0, ancho, alto);
+        
+        // Título
+        g2d.setColor(java.awt.Color.BLUE);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        g2d.drawString("insertarFinal(" + op.valor + ") - Sub-paso " + (subPaso + 1) + "/4", inicioX, inicioY - 10);
+        
+        // Parsear datos reales
+        String[] nodosReales = parsearEstadoLista(op.estadoAntes);
+        boolean listaVacia = nodosReales.length == 0 || op.estadoAntes.equals("[]");
+        
+        int x = inicioX + 50;
+        int y = inicioY + 30;
+        int espacioNodo = tamanoNodo + 30;
+        
+        switch (subPaso) {
+            case 0: // Estado inicial
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 1: ESTADO INICIAL", x, y);
+                g2d.drawString("Estado antes: " + op.estadoAntes, x, y + 20);
+                
+                if (!listaVacia) {
+                    // Dibujar lista existente con referencias completas
+                    for (int i = 0; i < nodosReales.length; i++) {
+                        int nodoX = x + (i * espacioNodo);
+                        int nodoY = y + 40;
+                        
+                        boolean esUltimo = (i == nodosReales.length - 1);
+                        boolean esPrimero = (i == 0);
+                        
+                        // Determinar valores de referencias
+                        String valorAnteriorFinal = esPrimero ? null : nodosReales[i - 1];
+                        String valorSiguienteFinal = esUltimo ? null : nodosReales[i + 1];
+                        
+                        // Etiquetas especiales
+                        String etiqueta = null;
+                        if (esPrimero) etiqueta = "cabeza";
+                        if (esUltimo) etiqueta = "cola";
+                        
+                        dibujarNodoConReferencias(g2d, nodoX, nodoY, tamanoNodo, 
+                                                nodosReales[i], java.awt.Color.LIGHT_GRAY, etiqueta,
+                                                !esUltimo, // RefD solo si no es último
+                                                !esPrimero, // RefI solo si no es primero
+                                                valorSiguienteFinal, valorAnteriorFinal);
+                        
+                        // Flecha entre nodos consecutivos
+                        if (!esUltimo) {
+                            g2d.setColor(java.awt.Color.BLACK);
+                            dibujarFlecha(g2d, nodoX + tamanoNodo + 10, nodoY + 15, 
+                                        nodoX + espacioNodo - 10, nodoY + 15);
+                        }
+                    }
+                } else {
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawString("Lista vacía: cabeza = null, cola = null", x, y + 60);
+                }
+                break;
+                
+            case 1: // Crear nuevo nodo
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("PASO 2: CREAR NUEVO NODO", x, y);
+                g2d.drawString("clsNodoDoble nuevo = new clsNodoDoble(" + op.valor + ");", x, y + 20);
+                
+                // Dibujar lista existente si la hay
+                if (!listaVacia) {
+                    for (int i = 0; i < nodosReales.length; i++) {
+                        int nodoX = x + (i * espacioNodo);
+                        int nodoY = y + 40;
+                        
+                        g2d.setColor(java.awt.Color.LIGHT_GRAY);
+                        g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                        g2d.setColor(java.awt.Color.BLACK);
+                        g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                        g2d.drawString(nodosReales[i], nodoX + 15, nodoY + 25);
+                        
+                        if (i == nodosReales.length - 1) {
+                            g2d.setColor(java.awt.Color.RED);
+                            g2d.drawString("cola", nodoX + 10, nodoY - 10);
+                        }
+                    }
+                }
+                
+                // Dibujar nuevo nodo con referencias en null
+                int nuevoX = listaVacia ? x + espacioNodo : x + (nodosReales.length * espacioNodo);
+                int nuevoY = y + 40;
+                dibujarNodoNuevo(g2d, nuevoX, nuevoY, tamanoNodo, op.valor, "NUEVO");
+                break;
+                
+            case 2: // Enlaces
+                g2d.setColor(java.awt.Color.BLACK);
+                if (listaVacia) {
+                    g2d.drawString("PASO 3: LISTA VACÍA - INICIALIZAR", x, y);
+                    g2d.drawString("cabeza = cola = nuevo;", x, y + 20);
+                    
+                    int nodoX = x + espacioNodo;
+                    int nodoY = y + 40;
+                    dibujarNodoConReferencias(g2d, nodoX, nodoY, tamanoNodo, 
+                                            op.valor, java.awt.Color.GREEN, "cabeza/cola",
+                                            false, // RefD → null (único nodo)
+                                            false, // RefI → null (único nodo)
+                                            null, null);
+                } else {
+                    g2d.drawString("PASO 3: ENLAZAR CON COLA EXISTENTE", x, y);
+                    g2d.drawString("cola.setRefD(nuevo);  nuevo.setRefI(cola);", x, y + 20);
+                    
+                    // Cola actual con RefD ahora apuntando al nuevo
+                    int colaX = x + ((nodosReales.length - 1) * espacioNodo);
+                    int colaY = y + 40;
+                    String valorAnteriorCola = (nodosReales.length > 1) ? nodosReales[nodosReales.length - 2] : null;
+                    dibujarNodoConReferencias(g2d, colaX, colaY, tamanoNodo, 
+                                            nodosReales[nodosReales.length - 1], 
+                                            java.awt.Color.LIGHT_GRAY, "ex-cola",
+                                            true, // RefD → nuevo (¡CAMBIÓ!)
+                                            nodosReales.length > 1, // RefI → anterior
+                                            op.valor, valorAnteriorCola);
+                    
+                    // Nuevo nodo estableciendo RefI hacia ex-cola
+                    int nuevoX3 = colaX + espacioNodo;
+                    dibujarNodoConReferencias(g2d, nuevoX3, colaY, tamanoNodo, 
+                                            op.valor, java.awt.Color.YELLOW, "nuevo",
+                                            false, // RefD → null (será la nueva cola)
+                                            true, // RefI → ex-cola (¡CAMBIÓ!)
+                                            null, nodosReales[nodosReales.length - 1]);
+                    
+                    // Flecha visual del enlace
+                    g2d.setColor(java.awt.Color.BLACK);
+                    dibujarFlecha(g2d, colaX + tamanoNodo + 10, colaY + 15, nuevoX3 - 5, colaY + 15);
+                }
+                break;
+                
+            case 3: // Finalizar
+                g2d.setColor(java.awt.Color.BLACK);
+                if (listaVacia) {
+                    g2d.drawString("PASO 4: INSERCIÓN COMPLETADA", x, y);
+                    g2d.drawString("pLD = nuevo; (lista inicializada)", x, y + 20);
+                } else {
+                    g2d.drawString("PASO 4: ACTUALIZAR COLA", x, y);
+                    g2d.drawString("cola = nuevo;", x, y + 20);
+                }
+                
+                // Dibujar estado final con referencias completas
+                String[] nodosFinales = parsearEstadoLista(op.estadoDespues);
+                for (int i = 0; i < nodosFinales.length; i++) {
+                    int nodoX = x + (i * espacioNodo);
+                    int nodoY = y + 40;
+                    
+                    boolean esUltimoFinal = (i == nodosFinales.length - 1);
+                    boolean esPrimeroFinal = (i == 0);
+                    boolean esNuevo = esUltimoFinal; // El nuevo siempre es el último
+                    
+                    // Determinar valores de referencias
+                    String valorAnteriorFin = esPrimeroFinal ? null : nodosFinales[i - 1];
+                    String valorSiguienteFin = esUltimoFinal ? null : nodosFinales[i + 1];
+                    
+                    // Color y etiqueta
+                    java.awt.Color colorFinal = esNuevo ? java.awt.Color.GREEN : java.awt.Color.LIGHT_GRAY;
+                    String etiquetaFinal = null;
+                    if (esPrimeroFinal) etiquetaFinal = "cabeza";
+                    if (esUltimoFinal) etiquetaFinal = "NUEVA cola";
+                    
+                    dibujarNodoConReferencias(g2d, nodoX, nodoY, tamanoNodo, 
+                                            nodosFinales[i], colorFinal, etiquetaFinal,
+                                            !esUltimoFinal, // RefD solo si no es último
+                                            !esPrimeroFinal, // RefI solo si no es primero
+                                            valorSiguienteFin, valorAnteriorFin);
+                    
+                    // Flecha entre nodos consecutivos
+                    if (!esUltimoFinal) {
+                        g2d.setColor(java.awt.Color.BLACK);
+                        dibujarFlecha(g2d, nodoX + tamanoNodo + 10, nodoY + 15, 
+                                    nodoX + espacioNodo - 10, nodoY + 15);
+                    }
+                    if (i == 0) {
+                        g2d.setColor(java.awt.Color.GREEN);
+                        g2d.drawString("cabeza", nodoX - 5, nodoY - 10);
+                    }
+                    
+                    // Enlaces
+                    if (i < nodosFinales.length - 1) {
+                        g2d.setColor(java.awt.Color.RED);
+                        dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + 12, nodoX + espacioNodo, nodoY + 12);
+                    }
+                    if (i > 0) {
+                        g2d.setColor(java.awt.Color.BLUE);
+                        dibujarFlecha(g2d, nodoX, nodoY + 28, nodoX - espacioNodo + tamanoNodo, nodoY + 28);
+                    }
+                }
+                
+                g2d.setColor(java.awt.Color.GREEN);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 12));
+                g2d.drawString("¡INSERCIÓN AL FINAL COMPLETADA!", x, y + 100);
+                break;
+        }
+    }
+
+    /**
+     * Dibuja los sub-pasos específicos del método insertarIzquierda
+     */
+    private void dibujarSubPasosInsertarIzquierda(java.awt.Graphics2D g2d, OperacionAnalisis op, int subPaso, int inicioX, int inicioY, int tamanoNodo, int ancho, int alto) {
+        // Limpiar área
+        g2d.setColor(java.awt.Color.WHITE);
+        g2d.fillRect(0, 0, ancho, alto);
+        
+        // Título
+        g2d.setColor(java.awt.Color.BLUE);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        g2d.drawString("insertarIzquierda(" + op.valor + ") - Sub-paso " + (subPaso + 1) + "/5", inicioX, inicioY - 10);
+        
+        String caso = determinarCasoInsertarIzquierda(op.estadoAntes, op.estadoDespues, op.valor);
+        
+        if (caso.contains("CASO 1")) {
+            dibujarSubPasosCaso1Izquierda(g2d, op, subPaso, inicioX, inicioY, tamanoNodo);
+        } else if (caso.contains("CASO 2")) {
+            dibujarSubPasosCaso2Izquierda(g2d, op, subPaso, inicioX, inicioY, tamanoNodo);
+        } else {
+            dibujarSubPasosCaso3Izquierda(g2d, op, subPaso, inicioX, inicioY, tamanoNodo);
+        }
+    }
+
+    /**
+     * Sub-pasos para Caso 1: Lista vacía (insertarIzquierda)
+     */
+    private void dibujarSubPasosCaso1Izquierda(java.awt.Graphics2D g2d, OperacionAnalisis op, int subPaso, int x, int y, int tamanoNodo) {
+        int espacioNodo = tamanoNodo + 30;
+        
+        switch (subPaso) {
+            case 0: // Estado inicial vacío
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("CASO 1: Lista vacía - pLD = null", x, y + 20);
+                g2d.drawString("Estado inicial: " + op.estadoAntes, x, y + 40);
+                
+                g2d.setColor(java.awt.Color.RED);
+                g2d.drawString("cabeza = null, cola = null, pLD = null", x, y + 80);
+                break;
+                
+            case 1: // Crear nuevo nodo
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("Crear nuevo nodo nAux = new clsNodoDoble(" + op.valor + ")", x, y + 20);
+                
+                int nodoX = x + espacioNodo;
+                int nodoY = y + 60;
+                dibujarNodoNuevo(g2d, nodoX, nodoY, tamanoNodo, op.valor, "nAux");
+                break;
+                
+            case 2: // Asignar pLD
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("pLD = nAux; (primera asignación)", x, y + 20);
+                
+                int pldX = x + espacioNodo;
+                int pldY = y + 60;
+                dibujarNodoConReferencias(g2d, pldX, pldY, tamanoNodo, 
+                                        op.valor, java.awt.Color.ORANGE, "pLD",
+                                        false, // RefD → null
+                                        false, // RefI → null
+                                        null, null);
+                break;
+                
+            case 3: // Asignar cabeza y cola
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("cabeza = cola = nAux; (inicializar lista)", x, y + 20);
+                
+                int inicioX = x + espacioNodo;
+                int inicioY = y + 60;
+                dibujarNodoConReferencias(g2d, inicioX, inicioY, tamanoNodo, 
+                                        op.valor, java.awt.Color.GREEN, "cabeza/cola/pLD",
+                                        false, // RefD → null (único nodo)
+                                        false, // RefI → null (único nodo)
+                                        null, null);
+                break;
+                
+            case 4: // Resultado final
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("CASO 1 COMPLETADO", x, y + 20);
+                g2d.drawString("Estado final: " + op.estadoDespues, x, y + 40);
+                
+                int finalX = x + espacioNodo;
+                int finalY = y + 60;
+                g2d.setColor(java.awt.Color.GREEN);
+                g2d.fillRect(finalX, finalY, tamanoNodo, tamanoNodo);
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawRect(finalX, finalY, tamanoNodo, tamanoNodo);
+                g2d.drawString(op.valor, finalX + 15, finalY + 25);
+                
+                g2d.setColor(java.awt.Color.GREEN);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 12));
+                g2d.drawString("¡LISTA INICIALIZADA!", x, finalY + 80);
+                break;
+        }
+    }
+
+    /**
+     * Sub-pasos para Caso 2: Insertar al inicio (pLD en cabeza)
+     */
+    private void dibujarSubPasosCaso2Izquierda(java.awt.Graphics2D g2d, OperacionAnalisis op, int subPaso, int x, int y, int tamanoNodo) {
+        // Parsear datos reales
+        String[] nodosReales = parsearEstadoLista(op.estadoAntes);
+        int espacioNodo = tamanoNodo + 30;
+        
+        switch (subPaso) {
+            case 0: // Estado inicial
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("CASO 2: pLD en la cabeza (RefI == null)", x, y + 20);
+                
+                // Dibujar lista inicial con pLD en cabeza
+                for (int i = 0; i < nodosReales.length; i++) {
+                    int nodoX = x + (i * espacioNodo);
+                    int nodoY = y + 60;
+                    
+                    if (i == 0) {
+                        g2d.setColor(java.awt.Color.ORANGE); // pLD en cabeza
+                    } else {
+                        g2d.setColor(java.awt.Color.LIGHT_GRAY);
+                    }
+                    g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosReales[i], nodoX + 15, nodoY + 25);
+                    
+                    if (i == 0) {
+                        g2d.setColor(java.awt.Color.GREEN);
+                        g2d.drawString("cabeza", nodoX - 5, nodoY - 10);
+                        g2d.setColor(java.awt.Color.ORANGE);
+                        g2d.drawString("pLD", nodoX + 35, nodoY + 15);
+                    }
+                    
+                    // Enlaces RefD
+                    if (i < nodosReales.length - 1) {
+                        g2d.setColor(java.awt.Color.RED);
+                        dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + 12, nodoX + espacioNodo, nodoY + 12);
+                    }
+                }
+                break;
+                
+            case 1: // Crear nuevo nodo
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("Crear nAux = new clsNodoDoble(" + op.valor + ")", x, y + 20);
+                
+                // Nuevo nodo a la izquierda de la cabeza
+                int nuevoX4 = x - espacioNodo;
+                int nuevoY4 = y + 60;
+                g2d.setColor(java.awt.Color.YELLOW);
+                g2d.fillRect(nuevoX4, nuevoY4, tamanoNodo, tamanoNodo);
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawRect(nuevoX4, nuevoY4, tamanoNodo, tamanoNodo);
+                g2d.drawString(op.valor, nuevoX4 + 15, nuevoY4 + 25);
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.drawString("nAux", nuevoX4 + 5, nuevoY4 - 10);
+                
+                // Cabeza actual (pLD)
+                int cabezaX = x;
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.fillRect(cabezaX, nuevoY4, tamanoNodo, tamanoNodo);
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawRect(cabezaX, nuevoY4, tamanoNodo, tamanoNodo);
+                g2d.drawString(nodosReales[0], cabezaX + 15, nuevoY4 + 25);
+                g2d.drawString("pLD", cabezaX + 35, nuevoY4 + 15);
+                break;
+                
+            case 2: // nAux.setRefD(pLD)
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("nAux.setRefD(pLD);", x, y + 20);
+                
+                int nuevoX5 = x - espacioNodo;
+                int nuevoY5 = y + 60;
+                g2d.setColor(java.awt.Color.YELLOW);
+                g2d.fillRect(nuevoX5, nuevoY5, tamanoNodo, tamanoNodo);
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawRect(nuevoX5, nuevoY5, tamanoNodo, tamanoNodo);
+                g2d.drawString(op.valor, nuevoX5 + 15, nuevoY5 + 25);
+                
+                int cabezaX2 = x;
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.fillRect(cabezaX2, nuevoY5, tamanoNodo, tamanoNodo);
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawRect(cabezaX2, nuevoY5, tamanoNodo, tamanoNodo);
+                g2d.drawString(nodosReales[0], cabezaX2 + 15, nuevoY5 + 25);
+                
+                // Flecha RefD
+                g2d.setColor(java.awt.Color.RED);
+                dibujarFlecha(g2d, nuevoX5 + tamanoNodo, nuevoY5 + 12, cabezaX2, nuevoY5 + 12);
+                g2d.drawString("RefD", nuevoX5 + tamanoNodo + 5, nuevoY5 + 8);
+                break;
+                
+            case 3: // pLD.setRefI(nAux)
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("pLD.setRefI(nAux);", x, y + 20);
+                
+                int nuevoX6 = x - espacioNodo;
+                int nuevoY6 = y + 60;
+                g2d.setColor(java.awt.Color.YELLOW);
+                g2d.fillRect(nuevoX6, nuevoY6, tamanoNodo, tamanoNodo);
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawRect(nuevoX6, nuevoY6, tamanoNodo, tamanoNodo);
+                g2d.drawString(op.valor, nuevoX6 + 15, nuevoY6 + 25);
+                
+                int cabezaX3 = x;
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.fillRect(cabezaX3, nuevoY6, tamanoNodo, tamanoNodo);
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawRect(cabezaX3, nuevoY6, tamanoNodo, tamanoNodo);
+                g2d.drawString(nodosReales[0], cabezaX3 + 15, nuevoY6 + 25);
+                
+                // Flechas bidireccionales
+                g2d.setColor(java.awt.Color.RED);
+                dibujarFlecha(g2d, nuevoX6 + tamanoNodo, nuevoY6 + 12, cabezaX3, nuevoY6 + 12);
+                g2d.setColor(java.awt.Color.BLUE);
+                dibujarFlecha(g2d, cabezaX3, nuevoY6 + 28, nuevoX6 + tamanoNodo, nuevoY6 + 28);
+                g2d.drawString("RefI", cabezaX3 - 20, nuevoY6 + 35);
+                break;
+                
+            case 4: // cabeza = nAux
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("cabeza = nAux; (actualizar cabeza)", x, y + 20);
+                
+                // Dibujar estado final con datos reales
+                String[] nodosFinales = parsearEstadoLista(op.estadoDespues);
+                for (int i = 0; i < nodosFinales.length; i++) {
+                    int nodoX = x - espacioNodo + (i * espacioNodo);
+                    int nodoY = y + 60;
+                    
+                    if (i == 0) {
+                        g2d.setColor(java.awt.Color.YELLOW); // Nuevo nodo
+                    } else {
+                        g2d.setColor(java.awt.Color.LIGHT_GRAY);
+                    }
+                    g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosFinales[i], nodoX + 15, nodoY + 25);
+                    
+                    if (i == 0) {
+                        g2d.setColor(java.awt.Color.GREEN);
+                        g2d.drawString("NUEVA cabeza", nodoX - 15, nodoY - 10);
+                    }
+                    
+                    // Enlaces
+                    if (i < nodosFinales.length - 1) {
+                        g2d.setColor(java.awt.Color.RED);
+                        dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + 12, nodoX + espacioNodo, nodoY + 12);
+                    }
+                    if (i > 0) {
+                        g2d.setColor(java.awt.Color.BLUE);
+                        dibujarFlecha(g2d, nodoX, nodoY + 28, nodoX - espacioNodo + tamanoNodo, nodoY + 28);
+                    }
+                }
+                
+                g2d.setColor(java.awt.Color.GREEN);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 12));
+                g2d.drawString("¡INSERCIÓN AL INICIO COMPLETADA!", x, y + 120);
+                break;
+        }
+    }
+
+    /**
+     * Sub-pasos para Caso 3: Insertar en el medio (pLD tiene nodos a ambos lados)
+     */
+    private void dibujarSubPasosCaso3Izquierda(java.awt.Graphics2D g2d, OperacionAnalisis op, int subPaso, int x, int y, int tamanoNodo) {
+        // Parsear datos reales
+        String[] nodosReales = parsearEstadoLista(op.estadoAntes);
+        int punteroPos = obtenerPosicionPunteroReal(op.estadoAntes);
+        int espacioNodo = tamanoNodo + 30;
+        String valorInsertado = op.valor;
+        
+        switch (subPaso) {
+            case 0: // Estado inicial
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("CASO 3: pLD en el medio (tiene nodos anterior y siguiente)", x, y + 20);
+                
+                // Dibujar lista inicial
+                for (int i = 0; i < nodosReales.length; i++) {
+                    int nodoX = x + (i * espacioNodo);
+                    int nodoY = y + 60;
+                    
+                    if (i == punteroPos) {
+                        g2d.setColor(java.awt.Color.ORANGE); // pLD
+                    } else {
+                        g2d.setColor(java.awt.Color.LIGHT_GRAY);
+                    }
+                    g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosReales[i], nodoX + 15, nodoY + 25);
+                    
+                    if (i == punteroPos) {
+                        g2d.setColor(java.awt.Color.ORANGE);
+                        g2d.drawString("pLD", nodoX + 35, nodoY + 15);
+                    }
+                    
+                    // Enlaces RefD
+                    if (i < nodosReales.length - 1) {
+                        g2d.setColor(java.awt.Color.RED);
+                        dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + 12, nodoX + espacioNodo, nodoY + 12);
+                    }
+                    if (i > 0) {
+                        g2d.setColor(java.awt.Color.BLUE);
+                        dibujarFlecha(g2d, nodoX, nodoY + 28, nodoX - espacioNodo + tamanoNodo, nodoY + 28);
+                    }
+                }
+                break;
+                
+            case 1: // Crear nuevo nodo y guardar p1Anterior
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("Crear nAux y guardar p1Anterior = pLD.getRefI()", x, y + 20);
+                
+                // Nuevo nodo (amarillo)
+                int nuevoX7 = x + (punteroPos * espacioNodo) - espacioNodo;
+                int nuevoY7 = y + 40;
+                g2d.setColor(java.awt.Color.YELLOW);
+                g2d.fillRect(nuevoX7, nuevoY7, tamanoNodo, tamanoNodo);
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawRect(nuevoX7, nuevoY7, tamanoNodo, tamanoNodo);
+                g2d.drawString(valorInsertado, nuevoX7 + 15, nuevoY7 + 25);
+                g2d.setColor(java.awt.Color.ORANGE);
+                g2d.drawString("nAux", nuevoX7 + 5, nuevoY7 - 10);
+                
+                // Lista existente con pLD y p1Anterior marcados
+                for (int i = 0; i < nodosReales.length; i++) {
+                    int nodoX = x + (i * espacioNodo);
+                    int nodoY = y + 80;
+                    
+                    if (i == punteroPos) {
+                        g2d.setColor(java.awt.Color.ORANGE); // pLD
+                    } else if (i == punteroPos - 1) {
+                        g2d.setColor(java.awt.Color.CYAN); // p1Anterior
+                    } else {
+                        g2d.setColor(java.awt.Color.LIGHT_GRAY);
+                    }
+                    g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosReales[i], nodoX + 15, nodoY + 25);
+                    
+                    if (i == punteroPos) {
+                        g2d.setColor(java.awt.Color.ORANGE);
+                        g2d.drawString("pLD", nodoX + 10, nodoY - 10);
+                    } else if (i == punteroPos - 1) {
+                        g2d.setColor(java.awt.Color.CYAN);
+                        g2d.drawString("p1Anterior", nodoX - 15, nodoY - 10);
+                    }
+                }
+                break;
+                
+            case 2: // p1Anterior.setRefD(nAux)
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("p1Anterior.setRefD(nAux);", x, y + 20);
+                
+                // Mostrar enlace p1Anterior → nAux
+                if (punteroPos > 0) {
+                    int anteriorX = x + ((punteroPos - 1) * espacioNodo);
+                    int anteriorY = y + 60;
+                    
+                    // p1Anterior
+                    g2d.setColor(java.awt.Color.CYAN);
+                    g2d.fillRect(anteriorX, anteriorY, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(anteriorX, anteriorY, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosReales[punteroPos - 1], anteriorX + 15, anteriorY + 25);
+                    g2d.setColor(java.awt.Color.CYAN);
+                    g2d.drawString("p1Anterior", anteriorX - 15, anteriorY - 10);
+                    
+                    // Nuevo nodo
+                    int nuevoX8 = anteriorX + espacioNodo;
+                    g2d.setColor(java.awt.Color.YELLOW);
+                    g2d.fillRect(nuevoX8, anteriorY, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(nuevoX8, anteriorY, tamanoNodo, tamanoNodo);
+                    g2d.drawString(valorInsertado, nuevoX8 + 15, anteriorY + 25);
+                    g2d.setColor(java.awt.Color.ORANGE);
+                    g2d.drawString("nAux", nuevoX8 + 5, anteriorY - 10);
+                    
+                    // Flecha RefD de anterior a nuevo
+                    g2d.setColor(java.awt.Color.RED);
+                    dibujarFlecha(g2d, anteriorX + tamanoNodo, anteriorY + 12, nuevoX8, anteriorY + 12);
+                    g2d.drawString("RefD", anteriorX + tamanoNodo + 5, anteriorY + 8);
+                }
+                break;
+                
+            case 3: // nAux.setRefI(p1Anterior) y nAux.setRefD(pLD)
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("nAux.setRefI(p1Anterior) y nAux.setRefD(pLD)", x, y + 20);
+                
+                if (punteroPos > 0) {
+                    int anteriorX2 = x + ((punteroPos - 1) * espacioNodo);
+                    int anteriorY2 = y + 60;
+                    
+                    // p1Anterior
+                    g2d.setColor(java.awt.Color.CYAN);
+                    g2d.fillRect(anteriorX2, anteriorY2, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(anteriorX2, anteriorY2, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosReales[punteroPos - 1], anteriorX2 + 15, anteriorY2 + 25);
+                    
+                    // nAux
+                    int nuevoX9 = anteriorX2 + espacioNodo;
+                    g2d.setColor(java.awt.Color.YELLOW);
+                    g2d.fillRect(nuevoX9, anteriorY2, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(nuevoX9, anteriorY2, tamanoNodo, tamanoNodo);
+                    g2d.drawString(valorInsertado, nuevoX9 + 15, anteriorY2 + 25);
+                    
+                    // pLD
+                    int pldX = nuevoX9 + espacioNodo;
+                    g2d.setColor(java.awt.Color.ORANGE);
+                    g2d.fillRect(pldX, anteriorY2, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(pldX, anteriorY2, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosReales[punteroPos], pldX + 15, anteriorY2 + 25);
+                    
+                    // Enlaces bidireccionales
+                    g2d.setColor(java.awt.Color.RED);
+                    dibujarFlecha(g2d, anteriorX2 + tamanoNodo, anteriorY2 + 10, nuevoX9, anteriorY2 + 10);
+                    dibujarFlecha(g2d, nuevoX9 + tamanoNodo, anteriorY2 + 10, pldX, anteriorY2 + 10);
+                    
+                    g2d.setColor(java.awt.Color.BLUE);
+                    dibujarFlecha(g2d, nuevoX9, anteriorY2 + 30, anteriorX2 + tamanoNodo, anteriorY2 + 30);
+                    g2d.drawString("RefI", nuevoX9 - 15, anteriorY2 + 35);
+                }
+                break;
+                
+            case 4: // pLD.setRefI(nAux)
+                g2d.setColor(java.awt.Color.BLACK);
+                g2d.drawString("pLD.setRefI(nAux); - ¡INSERCIÓN COMPLETADA!", x, y + 20);
+                
+                // Dibujar estado final con datos reales
+                String[] nodosFinales = parsearEstadoLista(op.estadoDespues);
+                for (int i = 0; i < nodosFinales.length; i++) {
+                    int nodoX = x + (i * espacioNodo);
+                    int nodoY = y + 60;
+                    
+                    if (nodosFinales[i].equals(valorInsertado) && i == punteroPos) {
+                        g2d.setColor(java.awt.Color.YELLOW); // Nuevo nodo insertado
+                    } else {
+                        g2d.setColor(java.awt.Color.LIGHT_GRAY);
+                    }
+                    g2d.fillRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.setColor(java.awt.Color.BLACK);
+                    g2d.drawRect(nodoX, nodoY, tamanoNodo, tamanoNodo);
+                    g2d.drawString(nodosFinales[i], nodoX + 15, nodoY + 25);
+                    
+                    // Enlaces
+                    if (i < nodosFinales.length - 1) {
+                        g2d.setColor(java.awt.Color.RED);
+                        dibujarFlecha(g2d, nodoX + tamanoNodo, nodoY + 12, nodoX + espacioNodo, nodoY + 12);
+                    }
+                    if (i > 0) {
+                        g2d.setColor(java.awt.Color.BLUE);
+                        dibujarFlecha(g2d, nodoX, nodoY + 28, nodoX - espacioNodo + tamanoNodo, nodoY + 28);
+                    }
+                }
+                
+                g2d.setColor(java.awt.Color.GREEN);
+                g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 12));
+                g2d.drawString("¡INTEGRIDAD BIDIRECCIONAL COMPLETA!", x, y + 110);
+                break;
+        }
+    }
+
+    /**
+     * Dibuja un nodo con sus referencias internas RefD y RefI visibles
+     */
+    private void dibujarNodoConReferencias(java.awt.Graphics2D g2d, int x, int y, int tamanoNodo, 
+                                         String valor, java.awt.Color colorFondo, String etiqueta,
+                                         boolean tieneRefD, boolean tieneRefI, 
+                                         String valorRefD, String valorRefI) {
+        // Dibujar el nodo principal
+        g2d.setColor(colorFondo);
+        g2d.fillRect(x, y, tamanoNodo, tamanoNodo);
+        g2d.setColor(java.awt.Color.BLACK);
+        g2d.drawRect(x, y, tamanoNodo, tamanoNodo);
+        
+        // Valor del nodo en el centro
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 12));
+        g2d.drawString(valor, x + tamanoNodo/3, y + tamanoNodo/2 + 4);
+        
+        // Etiqueta del nodo (arriba)
+        if (etiqueta != null && !etiqueta.isEmpty()) {
+            g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 10));
+            g2d.setColor(java.awt.Color.BLUE);
+            g2d.drawString(etiqueta, x - 5, y - 5);
+            g2d.setColor(java.awt.Color.BLACK);
+        }
+        
+        // Mostrar RefD (Referencia Derecha) - lado derecho del nodo
+        int refDX = x + tamanoNodo + 5;
+        int refDY = y + 5;
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 9));
+        
+        if (tieneRefD) {
+            g2d.setColor(java.awt.Color.RED);
+            g2d.drawString("RefD:", refDX, refDY);
+            g2d.drawString("→" + (valorRefD != null ? valorRefD : "?"), refDX, refDY + 12);
+        } else {
+            g2d.setColor(java.awt.Color.GRAY);
+            g2d.drawString("RefD:", refDX, refDY);
+            g2d.drawString("→null", refDX, refDY + 12);
+        }
+        
+        // Mostrar RefI (Referencia Izquierda) - lado izquierdo del nodo
+        int refIX = x - 35;
+        int refIY = y + 5;
+        
+        if (tieneRefI) {
+            g2d.setColor(java.awt.Color.BLUE);
+            g2d.drawString("RefI:", refIX, refIY);
+            g2d.drawString("←" + (valorRefI != null ? valorRefI : "?"), refIX, refIY + 12);
+        } else {
+            g2d.setColor(java.awt.Color.GRAY);
+            g2d.drawString("RefI:", refIX, refIY);
+            g2d.drawString("←null", refIX, refIY + 12);
+        }
+        
+        g2d.setColor(java.awt.Color.BLACK); // Restaurar color
+    }
+
+    /**
+     * Dibuja un nodo recién creado mostrando sus referencias iniciales en null
+     */
+    private void dibujarNodoNuevo(java.awt.Graphics2D g2d, int x, int y, int tamanoNodo, String valor, String etiqueta) {
+        dibujarNodoConReferencias(g2d, x, y, tamanoNodo, valor, java.awt.Color.YELLOW, 
+                                etiqueta, false, false, null, null);
+        
+        // Agregar indicador de "NUEVO"
+        g2d.setColor(java.awt.Color.ORANGE);
+        g2d.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 8));
+        g2d.drawString("NUEVO", x + 5, y + tamanoNodo + 15);
+        g2d.drawString("RefD=null", x + 5, y + tamanoNodo + 25);
+        g2d.drawString("RefI=null", x + 5, y + tamanoNodo + 35);
+    }
+
+    /**
+     * Visualización genérica para otras operaciones
+     */
+    private void dibujarVisualizacionGenerica(java.awt.Graphics2D g2d, OperacionAnalisis op, int subPaso, int x, int y, int tamanoNodo, int ancho, int alto) {
+        g2d.setColor(java.awt.Color.BLACK);
+        g2d.drawString("Operación: " + op.operacion + " - Paso " + (subPaso + 1), x, y);
+    }
     private String obtenerCodigoNegocio(OperacionAnalisis op) {
         StringBuilder codigo = new StringBuilder();
         
@@ -2347,7 +4869,33 @@ public class frmprincipal extends javax.swing.JFrame {
                 break;
                 
             case "INSERTAR_DERECHA":
-                if (op.estructura.equals("LISTA_SIMPLE")) {
+                if (op.estructura.equals("LISTA_DOBLE")) {
+                    codigo.append("// MÉTODO EDUCATIVO: insertarDerecha(int dato)\n");
+                    codigo.append("// Análisis por casos según posición del puntero pLD\n\n");
+                    codigo.append("clsNodoDoble nAux = new clsNodoDoble(").append(op.valor).append(");\n\n");
+                    codigo.append("if (pLD == null) {\n");
+                    codigo.append("    // CASO 1: Lista vacía o puntero no posicionado\n");
+                    codigo.append("    pLD = nAux;\n");
+                    codigo.append("    if (cabeza == null) {\n");
+                    codigo.append("        cabeza = cola = nAux;\n");
+                    codigo.append("    }\n");
+                    codigo.append("} else if (pLD.getRefD() == null) {\n");
+                    codigo.append("    // CASO 2: Puntero en último nodo (RefD = null)\n");
+                    codigo.append("    pLD.setRefD(nAux);      // RefD del puntero → nuevo\n");
+                    codigo.append("    nAux.setRefI(pLD);      // RefI del nuevo → puntero\n");
+                    codigo.append("    cola = nAux;            // Actualizar cola\n");
+                    codigo.append("} else {\n");
+                    codigo.append("    // CASO 3: Puntero en medio (tiene RefD)\n");
+                    codigo.append("    clsNodoDoble p1Siguiente = pLD.getRefD();\n");
+                    codigo.append("    \n");
+                    codigo.append("    pLD.setRefD(nAux);          // RefD del puntero → nuevo\n");
+                    codigo.append("    nAux.setRefI(pLD);          // RefI del nuevo → puntero\n");
+                    codigo.append("    \n");
+                    codigo.append("    nAux.setRefD(p1Siguiente);  // RefD del nuevo → siguiente\n");
+                    codigo.append("    p1Siguiente.setRefI(nAux);  // RefI del siguiente → nuevo\n");
+                    codigo.append("}\n\n");
+                    codigo.append("// RefD = Referencia Derecha, RefI = Referencia Izquierda");
+                } else if (op.estructura.equals("LISTA_SIMPLE")) {
                     codigo.append("// Método: insertarDerecha(int pos, int valor)\n");
                     codigo.append("clsNodo aux = cabeza;\n");
                     codigo.append("for(int i = 0; i < pos && aux != null; i++)\n");
@@ -2357,16 +4905,6 @@ public class frmprincipal extends javax.swing.JFrame {
                     codigo.append("nuevo.setRef(aux.getRef());\n");
                     codigo.append("aux.setRef(nuevo);\n");
                     codigo.append("return true;");
-                } else if (op.estructura.equals("LISTA_DOBLE")) {
-                    codigo.append("// Método: insertarDerecha(int pos, int valor)\n");
-                    codigo.append("clsNodoDoble aux = obtenerNodoEnPosicion(pos);\n");
-                    codigo.append("if(aux == null) return false;\n");
-                    codigo.append("clsNodoDoble nuevo = new clsNodoDoble(").append(op.valor).append(");\n");
-                    codigo.append("nuevo.setNext(aux.getNext());\n");
-                    codigo.append("nuevo.setPrev(aux);\n");
-                    codigo.append("if(aux.getNext() != null)\n");
-                    codigo.append("    aux.getNext().setPrev(nuevo);\n");
-                    codigo.append("aux.setNext(nuevo);");
                 }
                 break;
                 
@@ -2748,6 +5286,45 @@ public class frmprincipal extends javax.swing.JFrame {
                     codigo.append("actual.setNext(nuevo);\n");
                     codigo.append("// TDA: punteroActual = nuevo");
                 }
+                break;
+                
+            case "PERMUTAR_NODOS":
+                codigo.append("// === PERMUTACIÓN DE NODOS EN LISTA DOBLE ===\n");
+                codigo.append("// Intercambiar posiciones de nodos\n\n");
+                
+                codigo.append("public boolean permutarNodos(int pos1, int pos2) {\n");
+                codigo.append("    // Validaciones iniciales\n");
+                codigo.append("    if (pos1 == pos2) return true; // Misma posición\n");
+                codigo.append("    \n");
+                codigo.append("    // Obtener los nodos en las posiciones especificadas\n");
+                codigo.append("    clsNodoDoble nodo1 = obtenerNodoEnPosicion(pos1);\n");
+                codigo.append("    clsNodoDoble nodo2 = obtenerNodoEnPosicion(pos2);\n");
+                codigo.append("    \n");
+                codigo.append("    if (nodo1 == null || nodo2 == null) {\n");
+                codigo.append("        return false; // Posiciones inválidas\n");
+                codigo.append("    }\n");
+                codigo.append("    \n");
+                codigo.append("    // INTERCAMBIO DE DATOS (método simple)\n");
+                codigo.append("    Object temp = nodo1.getDato();\n");
+                codigo.append("    nodo1.setDato(nodo2.getDato());\n");
+                codigo.append("    nodo2.setDato(temp);\n");
+                codigo.append("    \n");
+                codigo.append("    return true;\n");
+                codigo.append("}\n");
+                codigo.append("\n");
+                codigo.append("// Método auxiliar para obtener nodo por posición\n");
+                codigo.append("public clsNodoDoble obtenerNodoEnPosicion(int pos) {\n");
+                codigo.append("    if (pos < 0 || punteroLista == null) return null;\n");
+                codigo.append("    \n");
+                codigo.append("    clsNodoDoble actual = punteroLista;\n");
+                codigo.append("    for (int i = 0; i < pos && actual != null; i++) {\n");
+                codigo.append("        actual = actual.getNext();\n");
+                codigo.append("    }\n");
+                codigo.append("    return actual;\n");
+                codigo.append("}\n");
+                codigo.append("\n");
+                codigo.append("// TDA: Los punteros estructurales se mantienen\n");
+                codigo.append("// Solo se intercambian los datos, preservando la integridad\n");
                 break;
                 
             default:
