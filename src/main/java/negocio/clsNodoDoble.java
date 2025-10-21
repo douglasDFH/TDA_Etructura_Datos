@@ -13,6 +13,7 @@ public class clsNodoDoble {
     // Atributos para ruleta (nombre y color)
     private String nombre;
     private Color color;
+    private int cantidad; // Cantidad disponible del premio
 
     // Referencias a nodos vecinos
     private clsNodoDoble prev;
@@ -23,6 +24,7 @@ public class clsNodoDoble {
         this.dato = 0;
         this.nombre = null;
         this.color = null;
+        this.cantidad = 1;
         this.prev = null;
         this.next = null;
     }
@@ -32,6 +34,7 @@ public class clsNodoDoble {
         this.dato = dato;
         this.nombre = null;
         this.color = null;
+        this.cantidad = 1;
         this.prev = null;
         this.next = null;
     }
@@ -41,6 +44,17 @@ public class clsNodoDoble {
         this.dato = 0;
         this.nombre = nombre;
         this.color = color;
+        this.cantidad = 1;
+        this.prev = null;
+        this.next = null;
+    }
+
+    // Constructor para elementos de ruleta con cantidad (nombre + color + cantidad)
+    public clsNodoDoble(String nombre, Color color, int cantidad){
+        this.dato = 0;
+        this.nombre = nombre;
+        this.color = color;
+        this.cantidad = cantidad;
         this.prev = null;
         this.next = null;
     }
@@ -69,6 +83,14 @@ public class clsNodoDoble {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     // Métodos con nombres educativos más claros

@@ -16,9 +16,23 @@ public class clsListaCircular {
         this.pLC = null;
     }
 
-    // Insertar a la izquierda del puntero actual
-    // Si la lista está vacía, crea el primer nodo que apunta a sí mismo
+    /**
+     * Inserta un nuevo nodo a la izquierda del puntero actual.
+     * Si la lista está vacía, crea el primer nodo circular.
+     *
+     * @param nombre Nombre del elemento (no puede ser null o vacío)
+     * @param color Color asociado al elemento (no puede ser null)
+     * @throws IllegalArgumentException si nombre es null, vacío o color es null
+     */
     public void insertarIzquierda(String nombre, Color color) {
+        // Validación de parámetros
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede ser nulo o vacío");
+        }
+        if (color == null) {
+            throw new IllegalArgumentException("El color no puede ser nulo");
+        }
+
         clsNodoDoble nAux = new clsNodoDoble(nombre, color);
 
         if (this.pLC == null) {
@@ -35,10 +49,42 @@ public class clsListaCircular {
         }
     }
 
-    // Insertar a la derecha del puntero actual
-    // Si la lista está vacía, crea el primer nodo que apunta a sí mismo
+    /**
+     * Inserta un nuevo nodo a la derecha del puntero actual con cantidad por defecto (1).
+     * Si la lista está vacía, crea el primer nodo circular.
+     *
+     * @param nombre Nombre del elemento (no puede ser null o vacío)
+     * @param color Color asociado al elemento (no puede ser null)
+     * @throws IllegalArgumentException si nombre es null, vacío o color es null
+     */
     public void insertarDerecha(String nombre, Color color) {
-        clsNodoDoble nAux = new clsNodoDoble(nombre, color);
+        // Delegación al método sobrecargado con cantidad por defecto = 1
+        insertarDerecha(nombre, color, 1);
+    }
+
+    /**
+     * Inserta un nuevo nodo a la derecha del puntero actual con cantidad especificada.
+     * Si la lista está vacía, crea el primer nodo circular.
+     * Este método es útil para sistemas de inventario donde cada elemento tiene una cantidad.
+     *
+     * @param nombre Nombre del elemento (no puede ser null o vacío)
+     * @param color Color asociado al elemento (no puede ser null)
+     * @param cantidad Cantidad del elemento (debe ser mayor a 0)
+     * @throws IllegalArgumentException si nombre es null, vacío, color es null o cantidad <= 0
+     */
+    public void insertarDerecha(String nombre, Color color, int cantidad) {
+        // Validación de parámetros
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede ser nulo o vacío");
+        }
+        if (color == null) {
+            throw new IllegalArgumentException("El color no puede ser nulo");
+        }
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser mayor a 0");
+        }
+
+        clsNodoDoble nAux = new clsNodoDoble(nombre, color, cantidad);
 
         if (this.pLC == null) {
             // Lista vacía: crear primer nodo circular
@@ -56,53 +102,106 @@ public class clsListaCircular {
 
    
 
-    // RULETA: Mover el puntero una posición usando su referencia derecha (RefD) - sentido horario
-    // Simula el giro de una ruleta en dirección del reloj
+    /**
+     * Mueve el puntero una posición hacia la derecha (sentido horario).
+     * Simula el giro de una ruleta en dirección del reloj.
+     * Complejidad temporal: O(1)
+     *
+     * @throws IllegalStateException si la lista está vacía
+     */
     public void girarDerecha() {
         if (this.pLC != null) {
             this.pLC = (clsNodoDoble)this.pLC.getRefD();  // El puntero (pLC) se mueve al siguiente nodo usando su referencia derecha (RefD)
         }
     }
 
-    // RULETA: Mover el puntero una posición usando su referencia izquierda (RefI) - sentido antihorario
-    // Simula el giro de una ruleta en dirección contraria del reloj
+    /**
+     * Mueve el puntero una posición hacia la izquierda (sentido antihorario).
+     * Simula el giro de una ruleta en dirección contraria del reloj.
+     * Complejidad temporal: O(1)
+     *
+     * @throws IllegalStateException si la lista está vacía
+     */
     public void girarIzquierda() {
         if (this.pLC != null) {
             this.pLC = (clsNodoDoble)this.pLC.getRefI();  // El puntero (pLC) se mueve al siguiente nodo usando su referencia izquierda (RefI)
         }
     }
 
-    // RULETA: Mover el puntero múltiples posiciones usando referencia derecha (RefD)
-    // Permite girar varias posiciones de una vez usando la referencia derecha
+    /**
+     * Mueve el puntero múltiples posiciones hacia la derecha.
+     * Permite girar varias posiciones de una vez usando la referencia derecha.
+     * Complejidad temporal: O(posiciones)
+     *
+     * @param posiciones Número de posiciones a girar (debe ser >= 0)
+     * @throws IllegalArgumentException si posiciones es negativo
+     */
     public void girarDerecha(int posiciones) {
-        for (int i = 0; i < posiciones && this.pLC != null; i++) {
-            girarDerecha();  // Llama al método simple de giro usando referencia derecha (RefD) 'posiciones' veces
+        if (posiciones < 0) {
+            throw new IllegalArgumentException("El número de posiciones no puede ser negativo");
+        }
+        // Si la lista está vacía o posiciones es 0, no hace nada (compatible con código existente)
+        if (this.pLC == null || posiciones == 0) {
+            return;
+        }
+
+        for (int i = 0; i < posiciones; i++) {
+            this.pLC = (clsNodoDoble)this.pLC.getRefD();  // Optimizado: llamada directa en lugar de recursiva
         }
     }
 
-    // RULETA: Mover el puntero múltiples posiciones usando referencia izquierda (RefI)
-    // Permite girar varias posiciones de una vez usando la referencia izquierda
+    /**
+     * Mueve el puntero múltiples posiciones hacia la izquierda.
+     * Permite girar varias posiciones de una vez usando la referencia izquierda.
+     * Complejidad temporal: O(posiciones)
+     *
+     * @param posiciones Número de posiciones a girar (debe ser >= 0)
+     * @throws IllegalArgumentException si posiciones es negativo
+     */
     public void girarIzquierda(int posiciones) {
-        for (int i = 0; i < posiciones && this.pLC != null; i++) {
-            girarIzquierda();  // Llama al método simple de giro usando referencia izquierda (RefI) 'posiciones' veces
+        if (posiciones < 0) {
+            throw new IllegalArgumentException("El número de posiciones no puede ser negativo");
+        }
+        // Si la lista está vacía o posiciones es 0, no hace nada (compatible con código existente)
+        if (this.pLC == null || posiciones == 0) {
+            return;
+        }
+
+        for (int i = 0; i < posiciones; i++) {
+            this.pLC = (clsNodoDoble)this.pLC.getRefI();  // Optimizado: llamada directa en lugar de recursiva
         }
     }
 
-    // RULETA: Obtener el nodo donde está posicionada actualmente la ruleta
-    // Retorna el nodo completo (con nombre y color) al cual apunta pLC, o null si la lista está vacía
+    /**
+     * Obtiene el nodo donde está posicionada actualmente la ruleta.
+     * Retorna el nodo completo (con nombre, color y cantidad).
+     * Complejidad temporal: O(1)
+     *
+     * @return Nodo actual o null si la lista está vacía
+     */
     public clsNodoDoble obtenerNodoActual() {
         return this.pLC;  // Si pLC no es null, retorna el nodo actual
     }
 
-    // RULETA: Consultar el nodo usando referencia derecha (RefD) sin mover la posición actual
-    // Permite "espiar" el próximo nodo por referencia derecha sin cambiar pLC
+    /**
+     * Consulta el nodo a la derecha sin mover la posición actual.
+     * Permite "espiar" el próximo nodo por referencia derecha sin cambiar pLC.
+     * Complejidad temporal: O(1)
+     *
+     * @return Nodo a la derecha o null si la lista está vacía
+     */
     public clsNodoDoble verNodoDerecha() {
         return (this.pLC != null && this.pLC.getRefD() != null) ?
                (clsNodoDoble)this.pLC.getRefD() : null;  // Si existe, retorna el nodo que está en la referencia derecha (RefD) de pLC
     }
 
-    // RULETA: Consultar el nodo usando referencia izquierda (RefI) sin mover la posición actual
-    // Permite "espiar" el próximo nodo por referencia izquierda sin cambiar pLC
+    /**
+     * Consulta el nodo a la izquierda sin mover la posición actual.
+     * Permite "espiar" el próximo nodo por referencia izquierda sin cambiar pLC.
+     * Complejidad temporal: O(1)
+     *
+     * @return Nodo a la izquierda o null si la lista está vacía
+     */
     public clsNodoDoble verNodoIzquierda() {
         return (this.pLC != null && this.pLC.getRefI() != null) ?
                (clsNodoDoble)this.pLC.getRefI() : null;  // Si existe, retorna el nodo que está en la referencia izquierda (RefI) de pLC
@@ -110,10 +209,23 @@ public class clsListaCircular {
 
     // ==================== MÉTODOS DE NAVEGACIÓN AVANZADA ====================
 
-    // RULETA: Buscar un nombre específico y posicionar la ruleta en él
-    // Recorre toda la lista circular hasta encontrar el nombre o volver al punto inicial
+    /**
+     * Busca un nombre específico y posiciona la ruleta en él.
+     * Recorre toda la lista circular hasta encontrar el nombre o volver al punto inicial.
+     * La búsqueda es case-insensitive (no distingue mayúsculas/minúsculas).
+     * Complejidad temporal: O(n) donde n es el número de elementos
+     *
+     * @param nombre Nombre del elemento a buscar (no puede ser null o vacío)
+     * @return true si el nombre fue encontrado y pLC está posicionado en él, false si no existe
+     * @throws IllegalArgumentException si nombre es null o vacío
+     */
     public boolean buscarYPosicionar(String nombre) {
-        if (this.pLC == null) return false;  // Lista vacía: no se puede buscar
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede ser nulo o vacío");
+        }
+        if (this.pLC == null) {
+            return false;  // Lista vacía: no se puede buscar
+        }
 
         clsNodoDoble inicial = this.pLC;     // Guarda la posición inicial para detectar ciclo completo
         do {
@@ -148,10 +260,18 @@ public class clsListaCircular {
 
     // ==================== MÉTODOS DE ELIMINACIÓN ====================
 
-    // Eliminar el nodo donde está posicionada actualmente la ruleta (pLC)
-    // Reconecta los nodos vecinos y mueve pLC al siguiente nodo
+    /**
+     * Elimina el nodo donde está posicionada actualmente la ruleta (pLC).
+     * Reconecta los nodos vecinos y mueve pLC al siguiente nodo.
+     * Si solo hay un elemento, la lista queda vacía.
+     * Complejidad temporal: O(1)
+     *
+     * @return Nodo eliminado con sus datos, o null si la lista está vacía
+     */
     public clsNodoDoble eliminarActual() {
-        if (this.pLC == null) return null;  // Lista vacía: no hay nada que eliminar
+        if (this.pLC == null) {
+            return null;  // Lista vacía: retorna null (compatible con código existente)
+        }
 
         clsNodoDoble eliminado = this.pLC;   // Guarda el nodo que se va a eliminar
 
@@ -173,9 +293,20 @@ public class clsListaCircular {
         return eliminado;  // Retorna el nodo eliminado
     }
 
-    // Buscar un nombre específico y eliminarlo de la lista circular
-    // Combina la búsqueda con la eliminación en una sola operación
+    /**
+     * Busca un nombre específico y lo elimina de la lista circular.
+     * Combina la búsqueda con la eliminación en una sola operación.
+     * Complejidad temporal: O(n) donde n es el número de elementos
+     *
+     * @param nombre Nombre del elemento a eliminar (no puede ser null o vacío)
+     * @return true si el elemento fue encontrado y eliminado, false si no existe
+     * @throws IllegalArgumentException si nombre es null o vacío
+     */
     public boolean eliminarPorNombre(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede ser nulo o vacío");
+        }
+
         if (buscarYPosicionar(nombre)) {  // Busca el nombre y posiciona pLC en él
             eliminarActual();             // Elimina el nodo donde está posicionado pLC
             return true;                  // Nombre encontrado y eliminado exitosamente

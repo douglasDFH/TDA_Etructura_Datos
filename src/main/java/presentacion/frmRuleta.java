@@ -18,6 +18,7 @@ public class frmRuleta extends javax.swing.JFrame {
     // Componentes adicionales para paneles laterales
     private JTextArea txtListaJugadores;
     private JTextArea txtListaPremios;
+    private JTextField txtCantidadPremio;  // Campo para cantidad de premios
 
     // 10 colores diferentes para las ruletas
     private Color[] coloresJugadores = {
@@ -116,21 +117,36 @@ public class frmRuleta extends javax.swing.JFrame {
         panelListaPremios.setPreferredSize(new Dimension(200, 320));
         panelListaPremios.setBackground(new Color(245, 245, 255));
 
-        JLabel lblInstruccionPrem = new JLabel("<html><center>Escribe un nombre<br>por línea:</center></html>");
+        JLabel lblInstruccionPrem = new JLabel("<html><center>Escribe un premio<br>por línea:</center></html>");
         lblInstruccionPrem.setFont(new Font("Segoe UI", Font.ITALIC, 10));
         lblInstruccionPrem.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblInstruccionPrem.setForeground(Color.BLACK);
 
-        txtListaPremios = new JTextArea(14, 14);
+        txtListaPremios = new JTextArea(10, 14);
         txtListaPremios.setFont(new Font("Arial", Font.PLAIN, 12));
         txtListaPremios.setLineWrap(false);
         JScrollPane scrollPremios = new JScrollPane(txtListaPremios);
-        scrollPremios.setPreferredSize(new Dimension(180, 270));
+        scrollPremios.setPreferredSize(new Dimension(180, 200));
+
+        // Campo para cantidad
+        JLabel lblCantidad = new JLabel("Cantidad:");
+        lblCantidad.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        lblCantidad.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblCantidad.setForeground(Color.BLACK);
+
+        txtCantidadPremio = new JTextField("1");
+        txtCantidadPremio.setFont(new Font("Arial", Font.PLAIN, 12));
+        txtCantidadPremio.setMaximumSize(new Dimension(180, 25));
+        txtCantidadPremio.setHorizontalAlignment(JTextField.CENTER);
 
         panelListaPremios.add(Box.createVerticalStrut(5));
         panelListaPremios.add(lblInstruccionPrem);
         panelListaPremios.add(Box.createVerticalStrut(5));
         panelListaPremios.add(scrollPremios);
+        panelListaPremios.add(Box.createVerticalStrut(10));
+        panelListaPremios.add(lblCantidad);
+        panelListaPremios.add(Box.createVerticalStrut(3));
+        panelListaPremios.add(txtCantidadPremio);
         panelListaPremios.add(Box.createVerticalStrut(5));
 
         // Crear paneles contenedores horizontales para cada ruleta + su lista
@@ -377,7 +393,10 @@ public class frmRuleta extends javax.swing.JFrame {
             g2d.setColor(Color.BLACK);
             g2d.setFont(new Font("Arial", Font.BOLD, 16));
             FontMetrics fm = g2d.getFontMetrics();
-            String nombre = nodo.getNombre();
+            // Mostrar nombre con cantidad si es mayor a 1
+            String nombre = nodo.getCantidad() > 1
+                ? nodo.getNombre() + " (" + nodo.getCantidad() + ")"
+                : nodo.getNombre();
             int textWidth = fm.stringWidth(nombre);
 
             // Guardar transformación original
@@ -454,7 +473,7 @@ public class frmRuleta extends javax.swing.JFrame {
         // Crear el diálogo
         JDialog dialogo = new JDialog(this, "¡RESULTADO DEL JUEGO!", true);
         dialogo.setLayout(new BorderLayout(10, 10));
-        dialogo.setSize(450, 220);
+        dialogo.setSize(450, 200);
         dialogo.setLocationRelativeTo(this);
 
         // Panel principal con padding
@@ -464,44 +483,24 @@ public class frmRuleta extends javax.swing.JFrame {
         panelPrincipal.setBackground(Color.WHITE);
 
         // Panel para el jugador ganador
-        JPanel panelJugador = new JPanel(new BorderLayout(10, 0));
+        JPanel panelJugador = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelJugador.setBackground(Color.WHITE);
-        JLabel lblJugador = new JLabel(" Jugador ganador: " + jugadorGanador.getNombre());
+        JLabel lblJugador = new JLabel("Jugador ganador: " + jugadorGanador.getNombre());
         lblJugador.setFont(new Font("Segoe UI", Font.BOLD, 16));
         lblJugador.setForeground(new Color(0, 128, 0));
-        JButton btnEliminarJugador = new JButton("Eliminar");
-        btnEliminarJugador.setBackground(new Color(255, 100, 100));
-        btnEliminarJugador.setForeground(Color.WHITE);
-        btnEliminarJugador.setFocusPainted(false);
-        btnEliminarJugador.addActionListener(e -> {
-            // Eliminar de la lista circular
-            listaJugadores.eliminarActual();
-            repintarRuletas();
-            // Ocultar el botón
-            btnEliminarJugador.setVisible(false);
-        });
-        panelJugador.add(lblJugador, BorderLayout.CENTER);
-        panelJugador.add(btnEliminarJugador, BorderLayout.EAST);
+        panelJugador.add(lblJugador);
 
         // Panel para el premio ganado
-        JPanel panelPremio = new JPanel(new BorderLayout(10, 0));
+        JPanel panelPremio = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelPremio.setBackground(Color.WHITE);
-        JLabel lblPremio = new JLabel(" Premio ganado: " + premioGanador.getNombre());
+        // Mostrar nombre del premio con la cantidad actual
+        String textoPremio = premioGanador.getCantidad() > 1
+            ? premioGanador.getNombre() + " (Quedan: " + premioGanador.getCantidad() + ")"
+            : premioGanador.getNombre();
+        JLabel lblPremio = new JLabel("Premio ganado: " + textoPremio);
         lblPremio.setFont(new Font("Segoe UI", Font.BOLD, 16));
         lblPremio.setForeground(new Color(204, 102, 0));
-        JButton btnEliminarPremio = new JButton("Eliminar");
-        btnEliminarPremio.setBackground(new Color(255, 100, 100));
-        btnEliminarPremio.setForeground(Color.WHITE);
-        btnEliminarPremio.setFocusPainted(false);
-        btnEliminarPremio.addActionListener(e -> {
-            // Eliminar de la lista circular
-            listaPremios.eliminarActual();
-            repintarRuletas();
-            // Ocultar el botón
-            btnEliminarPremio.setVisible(false);
-        });
-        panelPremio.add(lblPremio, BorderLayout.CENTER);
-        panelPremio.add(btnEliminarPremio, BorderLayout.EAST);
+        panelPremio.add(lblPremio);
 
         // Panel para el botón Cerrar
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 10));
@@ -512,7 +511,26 @@ public class frmRuleta extends javax.swing.JFrame {
         btnCerrar.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnCerrar.setPreferredSize(new Dimension(120, 35));
         btnCerrar.setFocusPainted(false);
-        btnCerrar.addActionListener(e -> dialogo.dispose());
+        btnCerrar.addActionListener(e -> {
+            // Eliminar jugador ganador
+            listaJugadores.eliminarActual();
+
+            // Descontar cantidad del premio
+            int cantidadActual = premioGanador.getCantidad();
+            if (cantidadActual > 1) {
+                // Si quedan más, solo descontar
+                premioGanador.setCantidad(cantidadActual - 1);
+            } else {
+                // Si era el último, eliminar de la lista
+                listaPremios.eliminarActual();
+            }
+
+            // Repintar ruletas
+            repintarRuletas();
+
+            // Cerrar el diálogo
+            dialogo.dispose();
+        });
         panelBoton.add(btnCerrar);
 
         // Agregar espaciado entre componentes
@@ -906,36 +924,59 @@ public class frmRuleta extends javax.swing.JFrame {
 
         if (texto.isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                "Por favor, escribe al menos un nombre en la lista de premios",
+                "Por favor, escribe al menos un premio en la lista",
                 "Lista vacía",
                 JOptionPane.WARNING_MESSAGE);
             return;
         }
 
+        // Obtener cantidad del campo de cantidad
+        int cantidad = 1;
+        try {
+            String txtCantidad = txtCantidadPremio.getText().trim();
+            if (!txtCantidad.isEmpty()) {
+                cantidad = Integer.parseInt(txtCantidad);
+                if (cantidad < 1) {
+                    JOptionPane.showMessageDialog(this,
+                        "La cantidad debe ser un número mayor a 0",
+                        "Cantidad inválida",
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                "La cantidad debe ser un número válido",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         // Dividir por líneas
-        String[] nombres = texto.split("\n");
+        String[] lineas = texto.split("\n");
         int insertados = 0;
 
-        for (String nombre : nombres) {
-            nombre = nombre.trim();
-            if (!nombre.isEmpty()) {
+        for (String linea : lineas) {
+            linea = linea.trim();
+            if (!linea.isEmpty()) {
                 // Alternar colores
                 Color color = coloresPremios[listaPremios.size() % coloresPremios.length];
-                listaPremios.insertarDerecha(nombre, color);
+                listaPremios.insertarDerecha(linea, color, cantidad);
                 insertados++;
             }
         }
 
         if (insertados > 0) {
             JOptionPane.showMessageDialog(this,
-                "Se insertaron " + insertados + " premio(s) en la ruleta",
+                "Se insertaron " + insertados + " premio(s) con cantidad " + cantidad + " en la ruleta",
                 "Éxito",
                 JOptionPane.INFORMATION_MESSAGE);
             txtListaPremios.setText(""); // Limpiar lista
+            txtCantidadPremio.setText("1"); // Restablecer cantidad a 1
             repintarRuletas();
         } else {
             JOptionPane.showMessageDialog(this,
-                "No se encontraron nombres válidos en la lista",
+                "No se encontraron premios válidos en la lista",
                 "Error",
                 JOptionPane.ERROR_MESSAGE);
         }
