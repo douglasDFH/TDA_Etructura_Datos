@@ -271,24 +271,8 @@ public class frmRuleta extends javax.swing.JFrame {
         jPanel2.repaint();
     }
 
-    /**
-     * Agregar elementos de ejemplo para demostración
-     */
-    private void agregarEjemplos() {
-        // Jugadores de ejemplo
-        listaJugadores.insertarDerecha("carlos", coloresJugadores[0]);
-        listaJugadores.insertarDerecha("arturo", coloresJugadores[1]);
 
-        // Premios de ejemplo
-        listaPremios.insertarDerecha("mouse", coloresPremios[0]);
-        listaPremios.insertarDerecha("tclad", coloresPremios[1]);
-
-        repintarRuletas();
-    }
-
-    /**
-     * Panel personalizado para dibujar la ruleta de jugadores
-     */
+  
     class PanelRuletaJugadores extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
