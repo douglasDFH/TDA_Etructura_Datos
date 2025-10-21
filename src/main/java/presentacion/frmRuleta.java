@@ -474,6 +474,7 @@ public class frmRuleta extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        btnIniciarJuego = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         panelJugadores = new PanelRuletaJugadores();
@@ -500,6 +501,16 @@ public class frmRuleta extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("PROYECTO - RULETA DE LA SUERTE");
+
+        btnIniciarJuego.setBackground(new java.awt.Color(255, 153, 0));
+        btnIniciarJuego.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnIniciarJuego.setForeground(new java.awt.Color(255, 255, 255));
+        btnIniciarJuego.setText("INICIAR JUEGO");
+        btnIniciarJuego.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarJuegoActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(240, 240, 240));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -540,7 +551,7 @@ public class frmRuleta extends javax.swing.JFrame {
 
         btnJugar.setBackground(new java.awt.Color(0, 204, 0));
         btnJugar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnJugar.setText("JUGAR");
+        btnJugar.setText("Girar");
         btnJugar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnJugarActionPerformed(evt);
@@ -649,8 +660,8 @@ public class frmRuleta extends javax.swing.JFrame {
         });
 
         btnReclamar.setBackground(new java.awt.Color(0, 204, 204));
-        btnReclamar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnReclamar.setText("RECLAMAR");
+        btnReclamar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnReclamar.setText("Girar");
         btnReclamar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReclamarActionPerformed(evt);
@@ -730,6 +741,9 @@ public class frmRuleta extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnIniciarJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -741,6 +755,8 @@ public class frmRuleta extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnIniciarJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -906,25 +922,98 @@ public class frmRuleta extends javax.swing.JFrame {
 
     private void btnReclamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReclamarActionPerformed
         if (listaPremios.estaVacia()) {
-            JOptionPane.showMessageDialog(this, "No hay premios disponibles", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No hay premios en la ruleta", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (listaJugadores.estaVacia()) {
-            JOptionPane.showMessageDialog(this, "No hay jugadores", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        // Simular giro aleatorio (5-15 giros) - misma velocidad que jugadores
+        int giros = (int) (Math.random() * 11) + 5;
 
-        clsNodoDoble jugador = listaJugadores.obtenerNodoActual();
-        clsNodoDoble premio = listaPremios.eliminarActual();
+        // Crear un Timer para animación
+        Timer timer = new Timer(100, null);
+        final int[] contador = {0};
 
-        JOptionPane.showMessageDialog(this,
-            jugador.getNombre() + " ha reclamado el premio: " + premio.getNombre() + "!",
-            "¡Premio Reclamado!",
-            JOptionPane.INFORMATION_MESSAGE);
+        timer.addActionListener(e -> {
+            listaPremios.girarDerecha();
+            repintarRuletas();
+            contador[0]++;
 
-        repintarRuletas();
+            if (contador[0] >= giros) {
+                timer.stop();
+                clsNodoDoble premioSeleccionado = listaPremios.obtenerNodoActual();
+                JOptionPane.showMessageDialog(this,
+                    "¡Premio seleccionado: " + premioSeleccionado.getNombre() + "!",
+                    "Resultado",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        timer.start();
     }//GEN-LAST:event_btnReclamarActionPerformed
+
+    private void btnIniciarJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarJuegoActionPerformed
+        // Validar que haya jugadores y premios
+        if (listaJugadores.estaVacia()) {
+            JOptionPane.showMessageDialog(this,
+                "No hay jugadores en la ruleta",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (listaPremios.estaVacia()) {
+            JOptionPane.showMessageDialog(this,
+                "No hay premios en la ruleta",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Deshabilitar el botón durante la animación
+        btnIniciarJuego.setEnabled(false);
+
+        // Simular giro aleatorio (10-20 giros)
+        int girosJugadores = (int) (Math.random() * 11) + 10;
+        int girosPremios = (int) (Math.random() * 11) + 10;
+
+        // Crear un Timer para animación
+        Timer timer = new Timer(100, null);
+        final int[] contador = {0};
+        final int totalGiros = Math.max(girosJugadores, girosPremios);
+
+        timer.addActionListener(e -> {
+            // Girar la ruleta de jugadores si aún le quedan giros
+            if (contador[0] < girosJugadores) {
+                listaJugadores.girarDerecha();
+            }
+
+            // Girar la ruleta de premios si aún le quedan giros
+            if (contador[0] < girosPremios) {
+                listaPremios.girarDerecha();
+            }
+
+            repintarRuletas();
+            contador[0]++;
+
+            // Detener cuando ambas ruletas hayan terminado
+            if (contador[0] >= totalGiros) {
+                timer.stop();
+                btnIniciarJuego.setEnabled(true);
+
+                // Mostrar resultado
+                clsNodoDoble jugadorGanador = listaJugadores.obtenerNodoActual();
+                clsNodoDoble premioGanador = listaPremios.obtenerNodoActual();
+
+                JOptionPane.showMessageDialog(this,
+                    "¡El ganador es: " + jugadorGanador.getNombre() + "!\n" +
+                    "Premio ganado: " + premioGanador.getNombre(),
+                    "¡RESULTADO DEL JUEGO!",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        timer.start();
+    }//GEN-LAST:event_btnIniciarJuegoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -970,6 +1059,7 @@ public class frmRuleta extends javax.swing.JFrame {
     private javax.swing.JButton btnGirarDerPremio;
     private javax.swing.JButton btnGirarIzqJugador;
     private javax.swing.JButton btnGirarIzqPremio;
+    private javax.swing.JButton btnIniciarJuego;
     private javax.swing.JButton btnJugar;
     private javax.swing.JButton btnReclamar;
     private javax.swing.JLabel jLabel1;
