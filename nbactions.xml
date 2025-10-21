@@ -13,9 +13,8 @@
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.appArgs></exec.appArgs>
-                <exec.mainClass>presentacion.frmprincipal</exec.mainClass>
+                <exec.mainClass>presentacion.frmRuleta</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.workingdir>C:\Users\59168\OneDrive\Documentos\NetBeansProjects\TDAPila</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -31,10 +30,9 @@
                 <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.appArgs></exec.appArgs>
-                <exec.mainClass>presentacion.frmprincipal</exec.mainClass>
+                <exec.mainClass>presentacion.frmRuleta</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
-                <exec.workingdir>C:\Users\59168\OneDrive\Documentos\NetBeansProjects\TDAPila</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -49,9 +47,8 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.mainClass>presentacion.frmprincipal</exec.mainClass>
+                <exec.mainClass>presentacion.frmRuleta</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.workingdir>C:\Users\59168\OneDrive\Documentos\NetBeansProjects\TDAPila</exec.workingdir>
                 <exec.appArgs></exec.appArgs>
             </properties>
         </action>
