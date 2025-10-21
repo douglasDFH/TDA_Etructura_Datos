@@ -16,8 +16,6 @@ public class clsListaCircular {
         this.pLC = null;
     }
 
-    // ==================== MÉTODOS DE INSERCIÓN ====================
-
     // Insertar a la izquierda del puntero actual
     // Si la lista está vacía, crea el primer nodo que apunta a sí mismo
     public void insertarIzquierda(String nombre, Color color) {
@@ -56,7 +54,7 @@ public class clsListaCircular {
         }
     }
 
-    // ==================== MÉTODOS DE NAVEGACIÓN (RULETA) ====================
+   
 
     // RULETA: Mover el puntero una posición usando su referencia derecha (RefD) - sentido horario
     // Simula el giro de una ruleta en dirección del reloj

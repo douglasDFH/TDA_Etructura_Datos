@@ -64,8 +64,7 @@ public class frmRuleta extends javax.swing.JFrame {
         jLabel4.setVisible(false);
         jLabel5.setVisible(false);
 
-        // Agregar algunos elementos de ejemplo (COMENTADO para iniciar vacío)
-        // agregarEjemplos();
+       
     }
 
     /**
