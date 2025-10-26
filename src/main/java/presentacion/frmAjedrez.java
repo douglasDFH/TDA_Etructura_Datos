@@ -587,11 +587,34 @@ public class frmAjedrez extends javax.swing.JFrame {
 
         for (int fila = 0; fila < 8; fila++) {
             for (int columna = 0; columna < 8; columna++) {
-                JButton boton = new JButton();
+                final int f = fila;
+                final int c = columna;
+
+                // Crear botón personalizado que pinta su propio fondo
+                JButton boton = new JButton() {
+                    @Override
+                    protected void paintComponent(Graphics g) {
+                        // Pintar el fondo con el color asignado
+                        g.setColor(getBackground());
+                        g.fillRect(0, 0, getWidth(), getHeight());
+
+                        // Establecer color del texto antes de pintar
+                        g.setColor(getForeground());
+
+                        // Llamar al método padre para dibujar el texto
+                        super.paintComponent(g);
+                    }
+                };
+
                 boton.setFont(new Font("Segoe UI Symbol", Font.PLAIN, 48));
+                boton.setForeground(Color.BLACK); // Color de las piezas
                 boton.setFocusPainted(false);
-                boton.setBorderPainted(true);
+                boton.setBorderPainted(false);
                 boton.setOpaque(true);
+                boton.setContentAreaFilled(false); // Importante: desactivar el relleno por defecto
+
+                // Deshabilitar efectos visuales
+                boton.setRolloverEnabled(false);
 
                 // Color de la casilla (patrón de ajedrez)
                 if ((fila + columna) % 2 == 0) {
@@ -601,8 +624,6 @@ public class frmAjedrez extends javax.swing.JFrame {
                 }
 
                 // Agregar listener
-                final int f = fila;
-                final int c = columna;
                 boton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -627,19 +648,27 @@ public class frmAjedrez extends javax.swing.JFrame {
 
         for (int fila = 0; fila < 8; fila++) {
             for (int columna = 0; columna < 8; columna++) {
+                JButton boton = botonesTablero[fila][columna];
                 clsPieza pieza = tablero[fila][columna];
 
+                // Actualizar texto (pieza)
                 if (pieza != null) {
-                    botonesTablero[fila][columna].setText(pieza.getSimbolo());
+                    boton.setText(pieza.getSimbolo());
                 } else {
-                    botonesTablero[fila][columna].setText("");
+                    boton.setText("");
                 }
 
-                // Restaurar color original
+                // Restaurar color original del tablero
+                Color colorOriginal;
                 if ((fila + columna) % 2 == 0) {
-                    botonesTablero[fila][columna].setBackground(COLOR_CASILLA_CLARA);
+                    colorOriginal = COLOR_CASILLA_CLARA;
                 } else {
-                    botonesTablero[fila][columna].setBackground(COLOR_CASILLA_OSCURA);
+                    colorOriginal = COLOR_CASILLA_OSCURA;
+                }
+
+                // Solo cambiar el color si es diferente (evita repintado innecesario)
+                if (!boton.getBackground().equals(colorOriginal)) {
+                    boton.setBackground(colorOriginal);
                 }
             }
         }
