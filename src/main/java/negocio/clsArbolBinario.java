@@ -11,28 +11,28 @@ package negocio;
 public class clsArbolBinario {
     private nodoAB raiz;
     public clsArbolBinario(){
-        this.raiz = null;
+        this.raiz = null;       // estado iicial del arbol vacio
     }
-    public void insertarAB(int dato){
-       nodoAB nA = new nodoAB(dato);
-       insertarAB(raiz, nA);
+    public void insertarAB(int dato){   // realizamos la llamada 
+       nodoAB nA = new nodoAB(dato);    // creamos el nuevo nodo
+       insertarAB(raiz, nA);          // llamamos al metodo privado recursivo
        
     }
-    private void insertarAB(nodoAB raizA,nodoAB nAux){
-        if(raiz == null){
-            raiz = nAux;
-        }else{
-            if((int)(nAux.getDato())<= (int) (raizA.getDato())){
-                if(raizA.getHijoI()== null){
-                    raizA.setHijoI(nAux);
-                }else{
-                    insertarAB(raizA.getHijoI(),nAux);
+    private void insertarAB(nodoAB raizA,nodoAB nAux){ // metodo recursivo para insertar
+        if(raiz == null){              // si el arbol esta vacio
+            raiz = nAux;              // el nuevo nodo sera la raiz
+        }else{             // caso contrario si el arbol no esta vacio
+            if((int)(nAux.getDato())<= (int) (raizA.getDato())){ // y si el dato es menor o igual a la raiz
+                if(raizA.getHijoI()== null){                       // si el hijo izquierdo es nulo
+                    raizA.setHijoI(nAux);                               // se inserta el nuevo nodo
+                }else{                                        // caso contrario
+                    insertarAB(raizA.getHijoI(),nAux);            // se llama recursivamente al metodo con el hijo izquierdo
                 }
-            }else{
-                if(raizA.getHijoD()== null){
+            }else{                                       // caso contrario si el dato es mayor a la raiz
+                if(raizA.getHijoD()== null){             // si el hijo derecho es nulo
                     raizA.setHijoD(nAux);
-                }else{
-                    insertarAB(raizA.getHijoD(),nAux);
+                }else{                  // caso contrario
+                    insertarAB(raizA.getHijoD(),nAux);    // se llama recursivamente al metodo con el hijo derecho
                 }
             }
         }
@@ -140,6 +140,76 @@ public class clsArbolBinario {
             }
             System.out.println("Dato: "+ rAux.getDato());
         }
+    }
+
+    // Métodos para obtener la raíz
+    public nodoAB getRaiz() {
+        return raiz;
+    }
+
+    // Métodos para obtener recorridos como String
+    public String getEnOrdenString() {
+        StringBuilder sb = new StringBuilder();
+        getEnOrdenString(raiz, sb);
+        return sb.toString().trim();
+    }
+
+    private void getEnOrdenString(nodoAB rAux, StringBuilder sb) {
+        if(rAux != null){
+            if(rAux.getHijoI()!= null){
+                getEnOrdenString(rAux.getHijoI(), sb);
+            }
+            sb.append(rAux.getDato()).append(" ");
+            if(rAux.getHijoD()!= null){
+                getEnOrdenString(rAux.getHijoD(), sb);
+            }
+        }
+    }
+
+    public String getPreOrdenString() {
+        StringBuilder sb = new StringBuilder();
+        getPreOrdenString(raiz, sb);
+        return sb.toString().trim();
+    }
+
+    private void getPreOrdenString(nodoAB rAux, StringBuilder sb) {
+        if(rAux != null){
+            sb.append(rAux.getDato()).append(" ");
+            if(rAux.getHijoI()!= null){
+                getPreOrdenString(rAux.getHijoI(), sb);
+            }
+            if(rAux.getHijoD()!= null){
+                getPreOrdenString(rAux.getHijoD(), sb);
+            }
+        }
+    }
+
+    public String getPostOrdenString() {
+        StringBuilder sb = new StringBuilder();
+        getPostOrdenString(raiz, sb);
+        return sb.toString().trim();
+    }
+
+    private void getPostOrdenString(nodoAB rAux, StringBuilder sb) {
+        if(rAux != null){
+            if(rAux.getHijoI()!= null){
+                getPostOrdenString(rAux.getHijoI(), sb);
+            }
+            if(rAux.getHijoD()!= null){
+                getPostOrdenString(rAux.getHijoD(), sb);
+            }
+            sb.append(rAux.getDato()).append(" ");
+        }
+    }
+
+    // Método para verificar si el árbol está vacío
+    public boolean estaVacio() {
+        return raiz == null;
+    }
+
+    // Método para limpiar el árbol
+    public void limpiar() {
+        raiz = null;
     }
 }
 
