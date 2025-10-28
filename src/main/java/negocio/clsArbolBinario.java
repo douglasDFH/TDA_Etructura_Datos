@@ -211,5 +211,58 @@ public class clsArbolBinario {
     public void limpiar() {
         raiz = null;
     }
+
+   
+    public int eliminarHojasAscendentes() {
+        if (raiz == null) {
+            return 0; // Árbol vacío
+        }
+        int[] contador = {0}; // Contador de hojas eliminadas
+        raiz = eliminarHojasAscendentes(raiz, contador);
+        return contador[0];
+    }
+
+    // Método de recursividadpara eliminar hojas ascendentes
+    private nodoAB eliminarHojasAscendentes(nodoAB nodo, int[] contador) {
+        if (nodo == null) {
+            return null;
+        }
+
+        // empezamosla  recursividad a  los hijos
+        nodo.setHijoI(eliminarHojasAscendentes(nodo.getHijoI(), contador));
+        nodo.setHijoD(eliminarHojasAscendentes(nodo.getHijoD(), contador));
+
+        // Verificamos si es una hoja (no tiene hijos)
+        boolean esHoja = (nodo.getHijoI() == null && nodo.getHijoD() == null);
+
+        if (esHoja) {
+            // Es una hoja, verificar si su valor es ascendente
+            if (esValorAscendente((int) nodo.getDato())) {
+                contador[0]++; // Incrementar contador
+                return null; // Eliminar esta hoja
+            }
+        }
+
+        return nodo; // Mantener el nodo
+    }
+
+    //para cuando el nodo tiene un solo digito 
+    private boolean esValorAscendente(int valor) {
+        String numStr = String.valueOf(Math.abs(valor)); // Convertir a valor absoluto
+
+        // Si tiene un solo dígito, se considera ascendente
+        if (numStr.length() <= 1) {
+            return true;
+        }
+
+        // Verificar que cada dígito sea menor que el siguiente
+        for (int i = 0; i < numStr.length() - 1; i++) {
+            if (numStr.charAt(i) > numStr.charAt(i + 1)) {
+                return false; // No es ascendente
+            }
+        }
+
+        return true; // Todos los dígitos están en orden ascendente
+    }
 }
 

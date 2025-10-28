@@ -122,6 +122,7 @@ public class frmArbolBinario extends javax.swing.JFrame {
         btnInsertar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
+        btnEliminarHojasAsc = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
         btnEnOrden = new javax.swing.JButton();
@@ -208,6 +209,18 @@ public class frmArbolBinario extends javax.swing.JFrame {
             }
         });
 
+        btnEliminarHojasAsc.setBackground(new java.awt.Color(255, 152, 0));
+        btnEliminarHojasAsc.setFont(new java.awt.Font("Segoe UI", 1, 13));
+        btnEliminarHojasAsc.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminarHojasAsc.setText("Eliminar Hojas Ascendentes");
+        btnEliminarHojasAsc.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEliminarHojasAsc.setFocusPainted(false);
+        btnEliminarHojasAsc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarHojasAscActionPerformed(evt);
+            }
+        });
+
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14));
         jLabel3.setText("Recorridos:");
 
@@ -266,6 +279,7 @@ public class frmArbolBinario extends javax.swing.JFrame {
                     .addComponent(btnInsertar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminarHojasAsc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEnOrden, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnPreOrden, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnPostOrden, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -291,6 +305,8 @@ public class frmArbolBinario extends javax.swing.JFrame {
                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminarHojasAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -448,6 +464,39 @@ public class frmArbolBinario extends javax.swing.JFrame {
         txtResultado.setText("Recorrido Post Orden (Izq-Der-Raíz):\n" + recorrido);
     }//GEN-LAST:event_btnPostOrdenActionPerformed
 
+    private void btnEliminarHojasAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarHojasAscActionPerformed
+        if (arbol.estaVacio()) {
+            JOptionPane.showMessageDialog(this, "El árbol está vacío", "Información", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Desea eliminar todas las hojas con valores ascendentes?\n" +
+                "(Ejemplo: 5, 123, 145, 234 serán eliminadas)",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            int eliminadas = arbol.eliminarHojasAscendentes();
+
+            if (eliminadas > 0) {
+                panelArbol.repaint();
+                txtResultado.setText("Se eliminaron " + eliminadas + " hoja(s) con valores ascendentes");
+                JOptionPane.showMessageDialog(this,
+                        "Se eliminaron " + eliminadas + " hoja(s) ascendente(s)",
+                        "Operación exitosa",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                txtResultado.setText("No se encontraron hojas con valores ascendentes");
+                JOptionPane.showMessageDialog(this,
+                        "No se encontraron hojas con valores ascendentes para eliminar",
+                        "Información",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarHojasAscActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -485,6 +534,7 @@ public class frmArbolBinario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnEliminarHojasAsc;
     private javax.swing.JButton btnEnOrden;
     private javax.swing.JButton btnInsertar;
     private javax.swing.JButton btnLimpiar;
