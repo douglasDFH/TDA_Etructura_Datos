@@ -2,9 +2,11 @@ package negocio;
 
 public class clsListaSimple {
     private clsNodo cabeza;
+    private clsNodo punteroActual; // Puntero para navegación y visualización
 
     public clsListaSimple(){
         this.cabeza = null;
+        this.punteroActual = null;
     }
 
     public void insertarInicio(int dato){
@@ -49,6 +51,8 @@ public class clsListaSimple {
         if(cabeza == null) return -1;
         int val = cabeza.getDato();
         cabeza = cabeza.getRef();
+        // TDA CONSISTENCIA: Actualizar puntero al nuevo inicio
+        punteroActual = cabeza;
         return val;
     }
 
@@ -57,6 +61,8 @@ public class clsListaSimple {
         if(cabeza.getRef() == null){
             int val = cabeza.getDato();
             cabeza = null;
+            // TDA CONSISTENCIA: Lista vacía, puntero a null
+            punteroActual = null;
             return val;
         }
         clsNodo aux = cabeza;
@@ -65,12 +71,20 @@ public class clsListaSimple {
         }
         int val = aux.getRef().getDato();
         aux.setRef(null);
+        // TDA CONSISTENCIA: Si el puntero apuntaba al nodo eliminado, moverlo al anterior
+        if(punteroActual != null && punteroActual.getRef() == null){
+            punteroActual = aux;
+        }
         return val;
     }
 
     public int eliminarPorPos(int pos){
         if(pos < 0 || cabeza == null) return -1;
-        if(pos == 0) return eliminarInicio();
+        if(pos == 0) {
+            int eliminado = eliminarInicio();
+            punteroActual = cabeza; // Actualizar el puntero al nuevo inicio
+            return eliminado;
+        }
         clsNodo aux = cabeza;
         int i = 0;
         while(aux.getRef() != null && i < pos - 1){
@@ -80,6 +94,7 @@ public class clsListaSimple {
         if(aux.getRef() == null) return -1;
         int val = aux.getRef().getDato();
         aux.setRef(aux.getRef().getRef());
+        punteroActual = aux.getRef(); // Actualizar el puntero al siguiente nodo
         return val;
     }
 
@@ -107,6 +122,32 @@ public class clsListaSimple {
         return false;
     }
 
+    /**
+     * Busca un valor y retorna todas las posiciones donde se encuentra
+     * @param valor Valor a buscar
+     * @return Array con todas las posiciones (0-indexadas) donde se encuentra el valor
+     */
+    public int[] buscarTodasLasPosiciones(int valor) {
+        java.util.ArrayList<Integer> posiciones = new java.util.ArrayList<>();
+        clsNodo aux = cabeza;
+        int posicion = 0;
+        
+        while(aux != null) {
+            if(aux.getDato() == valor) {
+                posiciones.add(posicion);
+            }
+            aux = aux.getRef();
+            posicion++;
+        }
+        
+        // Convertir ArrayList a array int[]
+        int[] resultado = new int[posiciones.size()];
+        for(int i = 0; i < posiciones.size(); i++) {
+            resultado[i] = posiciones.get(i);
+        }
+        return resultado;
+    }
+
     public int size(){
         int cnt = 0;
         clsNodo aux = cabeza;
@@ -119,6 +160,92 @@ public class clsListaSimple {
 
     public void vaciar(){
         cabeza = null;
+        punteroActual = null;
+    }
+    
+    // ==================== MÉTODOS DE NAVEGACIÓN DE PUNTERO ====================
+    
+    /**
+     * Mover el puntero al inicio (cabeza) de la lista
+     */
+    public void moverPunteroInicio() {
+        punteroActual = cabeza;
+    }
+    
+    /**
+     * Mover el puntero al siguiente elemento
+     */
+    public boolean moverPunteroSiguiente() {
+        if (punteroActual != null && punteroActual.getRef() != null) {
+            punteroActual = punteroActual.getRef();
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Mover el puntero al final de la lista
+     */
+    public void moverPunteroFinal() {
+        if (cabeza == null) {
+            punteroActual = null;
+            return;
+        }
+        punteroActual = cabeza;
+        while (punteroActual.getRef() != null) {
+            punteroActual = punteroActual.getRef();
+        }
+    }
+    
+    /**
+     * Mover el puntero a una posición específica
+     */
+    public boolean moverPunteroAPosicion(int pos) {
+        if (pos < 0 || cabeza == null) {
+            punteroActual = null;
+            return false;
+        }
+        
+        punteroActual = cabeza;
+        int i = 0;
+        
+        while (punteroActual != null && i < pos) {
+            punteroActual = punteroActual.getRef();
+            i++;
+        }
+        
+        return punteroActual != null;
+    }
+    
+    /**
+     * Obtener el nodo donde está el puntero actual
+     */
+    public clsNodo getPunteroActual() {
+        return punteroActual;
+    }
+    
+    /**
+     * Obtener la posición del puntero actual (0-indexada)
+     */
+    public int getPosicionPuntero() {
+        if (punteroActual == null || cabeza == null) return -1;
+        
+        clsNodo temp = cabeza;
+        int posicion = 0;
+        
+        while (temp != null) {
+            if (temp == punteroActual) return posicion;
+            temp = temp.getRef();
+            posicion++;
+        }
+        return -1;
+    }
+    
+    /**
+     * Verificar si el puntero es nulo
+     */
+    public boolean esPunteroNulo() {
+        return punteroActual == null;
     }
 
     @Override
@@ -342,5 +469,41 @@ public class clsListaSimple {
             aux = aux.getRef();
         }
         return true;
+    }
+    
+    /**
+     * Mover el puntero al nodo anterior
+     */
+    public void moverPunteroAnterior() {
+        if (cabeza == null || punteroActual == null) {
+            punteroActual = null;
+            return;
+        }
+        
+        // Si estamos en la cabeza, no hay anterior
+        if (punteroActual == cabeza) {
+            return;
+        }
+        
+        // Buscar el nodo anterior al actual
+        clsNodo temp = cabeza;
+        while (temp != null && temp.getRef() != punteroActual) {
+            temp = temp.getRef();
+        }
+        
+        if (temp != null) {
+            punteroActual = temp;
+        }
+    }
+    
+    /**
+     * Obtener información del puntero actual
+     */
+    public String obtenerInfoPuntero() {
+        if (punteroActual == null) {
+            return "Nulo";
+        }
+        int posicion = getPosicionPuntero();
+        return "Pos " + posicion + " (Valor: " + punteroActual.getDato() + ")";
     }
 }
